@@ -1,0 +1,38 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "VocsdKaDAVwa5qYtAxCBC"
+uri = "file://artifacts/portfolio/public/images/thumb-scifi.png"
+type = "image"
+title = "sci-fi landscape video thumbnail"
+
+[[generated]]
+id = "nuFldMh5ciQMrjYm1oWxN"
+uri = "file://artifacts/portfolio/public/images/thumb-cyberpunk.png"
+type = "image"
+title = "cyberpunk city video thumbnail"
+
+[[generated]]
+id = "D0q8NR0a-nBN4WboI2p5M"
+uri = "file://artifacts/portfolio/public/images/thumb-noir.png"
+type = "image"
+title = "noir thriller video thumbnail"
+
+[[generated]]
+id = "wxDVH1rPB1YXXE5ucIokz"
+uri = "file://artifacts/portfolio/public/images/thumb-abstract.png"
+type = "image"
+title = "abstract ai video thumbnail"
+
+[[generated]]
+id = "EFx-A9t_-5BjbJmZeJfrt"
+uri = "file://artifacts/portfolio/public/images/thumb-space.png"
+type = "image"
+title = "space exploration video thumbnail"
+
+[[generated]]
+id = "_1RhXhONBFk5jkZ2X2BiJ"
+uri = "file://artifacts/portfolio/public/images/hero-bg.png"
+type = "image"
+title = "monkmonkeyworks hero background"
