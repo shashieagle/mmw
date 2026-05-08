@@ -129,6 +129,9 @@ export default function FilmDetail() {
     return path.startsWith("/objects/") ? `/api/storage${path}` : path;
   };
 
+  const isYoutube = (path: string) => path?.startsWith("youtube:");
+  const getYoutubeId = (path: string) => path?.replace("youtube:", "");
+
   const handleEditSubmit = async (data: EditFormValues) => {
     try {
       const tags = data.tags ? data.tags.split(",").map(t => t.trim()).filter(Boolean) : [];
@@ -197,9 +200,17 @@ export default function FilmDetail() {
       <main className="flex-1">
         {/* Video Player Section */}
         <section className="relative w-full h-[60vh] md:h-screen bg-black pt-20 md:pt-0 group">
-          {video.videoPath ? (
+          {video.videoPath && isYoutube(video.videoPath) ? (
+            <iframe
+              src={`https://www.youtube.com/embed/${getYoutubeId(video.videoPath)}?autoplay=1&mute=1&loop=1&playlist=${getYoutubeId(video.videoPath)}&controls=1&rel=0`}
+              className="w-full h-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title={video.title}
+            />
+          ) : video.videoPath ? (
             <>
-              <video 
+              <video
                 ref={videoRef}
                 src={getMediaUrl(video.videoPath)}
                 poster={video.thumbnailPath ? getMediaUrl(video.thumbnailPath) : undefined}
@@ -211,7 +222,7 @@ export default function FilmDetail() {
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
               />
-              <div 
+              <div
                 className={`absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 cursor-pointer ${isPlaying ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'}`}
                 onClick={togglePlay}
               >

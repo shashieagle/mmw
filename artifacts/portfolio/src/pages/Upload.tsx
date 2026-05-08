@@ -23,6 +23,20 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent } from "@/components/ui/card";
 
+type VideoSource = "upload" | "youtube";
+
+function extractYoutubeId(url: string): string | null {
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+    /^([a-zA-Z0-9_-]{11})$/,
+  ];
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match) return match[1];
+  }
+  return null;
+}
+
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
@@ -31,7 +45,7 @@ const formSchema = z.object({
   duration: z.string().optional(),
   year: z.coerce.number().optional(),
   director: z.string().optional(),
-  tags: z.string().optional(), // We'll split this by comma
+  tags: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -39,9 +53,12 @@ type FormValues = z.infer<typeof formSchema>;
 export default function Upload() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
-  
+
+  const [videoSource, setVideoSource] = useState<VideoSource>("youtube");
   const [videoPath, setVideoPath] = useState<string | null>(null);
   const [thumbnailPath, setThumbnailPath] = useState<string | null>(null);
+  const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [youtubeError, setYoutubeError] = useState("");
 
   const createVideo = useCreateVideo();
   const requestUrl = useRequestUploadUrl();
@@ -61,41 +78,43 @@ export default function Upload() {
   });
 
   const handleGetUploadParams = async (file: any) => {
-    try {
-      const { uploadURL } = await requestUrl.mutateAsync({
-        data: {
-          name: file.name,
-          size: file.size,
-          contentType: file.type || "application/octet-stream",
-        }
-      });
-      
-      return {
-        method: "PUT",
-        url: uploadURL,
-        headers: {
-          "Content-Type": file.type || "application/octet-stream",
-        },
-      };
-    } catch (err) {
-      console.error("Failed to get upload URL:", err);
-      throw err;
+    const { uploadURL } = await requestUrl.mutateAsync({
+      data: {
+        name: file.name,
+        size: file.size,
+        contentType: file.type || "application/octet-stream",
+      },
+    });
+    return {
+      method: "PUT",
+      url: uploadURL,
+      headers: { "Content-Type": file.type || "application/octet-stream" },
+    };
+  };
+
+  const resolvedVideoPath = (): string | null => {
+    if (videoSource === "youtube") {
+      const id = extractYoutubeId(youtubeUrl.trim());
+      return id ? `youtube:${id}` : null;
     }
+    return videoPath;
   };
 
   const onSubmit = async (data: FormValues) => {
-    if (!videoPath) {
-      toast({
-        title: "Error",
-        description: "Please upload a video file first.",
-        variant: "destructive",
-      });
+    const path = resolvedVideoPath();
+
+    if (!path) {
+      if (videoSource === "youtube") {
+        setYoutubeError("Please enter a valid YouTube URL.");
+      } else {
+        toast({ title: "Error", description: "Please upload a video file first.", variant: "destructive" });
+      }
       return;
     }
 
     try {
-      const tags = data.tags ? data.tags.split(",").map(t => t.trim()).filter(Boolean) : [];
-      
+      const tags = data.tags ? data.tags.split(",").map((t) => t.trim()).filter(Boolean) : [];
+
       await createVideo.mutateAsync({
         data: {
           title: data.title,
@@ -106,25 +125,19 @@ export default function Upload() {
           year: data.year,
           director: data.director,
           tags,
-          videoPath,
+          videoPath: path,
           thumbnailPath,
-        }
+        },
       });
 
-      toast({
-        title: "Success",
-        description: "Film has been successfully published to the archive.",
-      });
-      
+      toast({ title: "Success", description: "Film has been successfully published to the archive." });
       setLocation("/films");
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to publish film.",
-        variant: "destructive",
-      });
+    } catch {
+      toast({ title: "Error", description: "Failed to publish film.", variant: "destructive" });
     }
   };
+
+  const youtubePreviewId = extractYoutubeId(youtubeUrl.trim());
 
   return (
     <div className="min-h-screen bg-background flex flex-col pt-24 text-white">
@@ -138,32 +151,84 @@ export default function Upload() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* Upload Area */}
+            {/* Upload / YouTube Area */}
             <div className="lg:col-span-1 flex flex-col gap-8">
+
+              {/* Source toggle */}
               <Card className="bg-black border-white/10">
                 <CardContent className="p-6">
-                  <h3 className="font-bold uppercase tracking-widest text-sm mb-4 border-b border-white/10 pb-2">Video File *</h3>
-                  {videoPath ? (
-                    <div className="bg-green-950/30 border border-green-900/50 p-4 text-green-400 text-sm font-mono break-all">
-                      Uploaded: {videoPath}
+                  <h3 className="font-bold uppercase tracking-widest text-sm mb-4 border-b border-white/10 pb-2">Video Source *</h3>
+                  <div className="flex gap-2 mb-6">
+                    <button
+                      type="button"
+                      onClick={() => { setVideoSource("youtube"); setVideoPath(null); }}
+                      data-testid="toggle-youtube"
+                      className={`flex-1 py-2 text-xs uppercase tracking-widest font-bold border transition-colors ${
+                        videoSource === "youtube"
+                          ? "bg-white text-black border-white"
+                          : "bg-transparent text-gray-400 border-white/20 hover:border-white/50"
+                      }`}
+                    >
+                      YouTube
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => { setVideoSource("upload"); setYoutubeUrl(""); setYoutubeError(""); }}
+                      data-testid="toggle-upload"
+                      className={`flex-1 py-2 text-xs uppercase tracking-widest font-bold border transition-colors ${
+                        videoSource === "upload"
+                          ? "bg-white text-black border-white"
+                          : "bg-transparent text-gray-400 border-white/20 hover:border-white/50"
+                      }`}
+                    >
+                      Upload File
+                    </button>
+                  </div>
+
+                  {videoSource === "youtube" ? (
+                    <div className="space-y-3">
+                      <Input
+                        placeholder="https://youtube.com/watch?v=..."
+                        value={youtubeUrl}
+                        onChange={(e) => { setYoutubeUrl(e.target.value); setYoutubeError(""); }}
+                        data-testid="input-youtube-url"
+                        className="bg-black border-white/20 text-white font-mono text-sm"
+                      />
+                      {youtubeError && <p className="text-red-400 text-xs">{youtubeError}</p>}
+                      {youtubePreviewId && (
+                        <div className="mt-3 aspect-video w-full overflow-hidden border border-white/10">
+                          <iframe
+                            src={`https://www.youtube.com/embed/${youtubePreviewId}`}
+                            className="w-full h-full"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            title="YouTube preview"
+                          />
+                        </div>
+                      )}
                     </div>
                   ) : (
-                    <div className="min-h-[150px] uppy-dark-theme">
-                      <ObjectUploader
-                        onGetUploadParameters={handleGetUploadParams}
-                        onComplete={(result) => {
-                          if (result?.objectPath) {
-                            setVideoPath(result.objectPath);
-                          }
-                        }}
-                      >
-                        Select Video
-                      </ObjectUploader>
-                    </div>
+                    <>
+                      {videoPath ? (
+                        <div className="bg-green-950/30 border border-green-900/50 p-4 text-green-400 text-sm font-mono break-all">
+                          Uploaded: {videoPath}
+                        </div>
+                      ) : (
+                        <div className="min-h-[150px] uppy-dark-theme">
+                          <ObjectUploader
+                            onGetUploadParameters={handleGetUploadParams}
+                            onComplete={(result) => { if (result?.objectPath) setVideoPath(result.objectPath); }}
+                          >
+                            Select Video
+                          </ObjectUploader>
+                        </div>
+                      )}
+                    </>
                   )}
                 </CardContent>
               </Card>
 
+              {/* Thumbnail */}
               <Card className="bg-black border-white/10">
                 <CardContent className="p-6">
                   <h3 className="font-bold uppercase tracking-widest text-sm mb-4 border-b border-white/10 pb-2">Thumbnail Cover</h3>
@@ -175,11 +240,7 @@ export default function Upload() {
                     <div className="min-h-[150px] uppy-dark-theme">
                       <ObjectUploader
                         onGetUploadParameters={handleGetUploadParams}
-                        onComplete={(result) => {
-                          if (result?.objectPath) {
-                            setThumbnailPath(result.objectPath);
-                          }
-                        }}
+                        onComplete={(result) => { if (result?.objectPath) setThumbnailPath(result.objectPath); }}
                       >
                         Select Image
                       </ObjectUploader>
@@ -214,10 +275,10 @@ export default function Upload() {
                       <FormItem>
                         <FormLabel className="uppercase tracking-widest text-xs text-gray-400 font-bold">Synopsis / Description</FormLabel>
                         <FormControl>
-                          <Textarea 
-                            placeholder="A brief description of the film..." 
-                            className="min-h-[150px] bg-black border-white/20 text-white resize-y" 
-                            {...field} 
+                          <Textarea
+                            placeholder="A brief description of the film..."
+                            className="min-h-[150px] bg-black border-white/20 text-white resize-y"
+                            {...field}
                           />
                         </FormControl>
                         <FormMessage />
@@ -310,9 +371,7 @@ export default function Upload() {
                           />
                         </FormControl>
                         <div className="space-y-1 leading-none">
-                          <FormLabel className="uppercase tracking-widest text-xs font-bold text-white">
-                            Feature this film
-                          </FormLabel>
+                          <FormLabel className="uppercase tracking-widest text-xs font-bold text-white">Feature this film</FormLabel>
                           <FormDescription className="text-gray-500">
                             Featured films appear larger on the homepage and archive grid.
                           </FormDescription>
@@ -322,10 +381,11 @@ export default function Upload() {
                   />
 
                   <div className="pt-8 flex justify-end">
-                    <Button 
-                      type="submit" 
-                      size="lg" 
-                      disabled={createVideo.isPending || !videoPath}
+                    <Button
+                      type="submit"
+                      size="lg"
+                      disabled={createVideo.isPending}
+                      data-testid="button-submit"
                       className="bg-white text-black hover:bg-gray-200 rounded-none px-12 uppercase tracking-widest font-bold"
                     >
                       {createVideo.isPending ? "Publishing..." : "Publish Film"}
@@ -338,8 +398,7 @@ export default function Upload() {
         </div>
       </main>
 
-      {/* Add a tiny bit of global CSS just for this page to theme the Uppy dashboard darkly */}
-      <style dangerouslySetContents={{__html: `
+      <style>{`
         .uppy-dark-theme .uppy-Dashboard-inner {
           background-color: transparent !important;
           border: 1px dashed rgba(255,255,255,0.2) !important;
@@ -351,7 +410,8 @@ export default function Upload() {
         .uppy-dark-theme .uppy-Dashboard-dropFilesTitle {
           color: white !important;
         }
-      `}} />
+      `}</style>
+
       <Footer />
     </div>
   );
