@@ -1,7 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 export function Navbar() {
   const [location] = useLocation();
@@ -9,16 +8,15 @@ export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/films", label: "Films" },
+    { href: "/studio", label: "Studio" },
+    { href: "/architects", label: "Architects" },
     { href: "/upload", label: "Upload" },
   ];
 
@@ -47,10 +45,10 @@ export function Navbar() {
               }`}
             >
               {link.label}
-              <span 
+              <span
                 className={`absolute bottom-0 left-0 h-[1px] bg-white transition-all duration-300 ${
                   location === link.href ? "w-full" : "w-0 group-hover:w-full"
-                }`} 
+                }`}
               />
             </Link>
           ))}
