@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "wouter";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useListVideos, useGetVideoStats } from "@workspace/api-client-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -8,17 +8,39 @@ import { VideoCard } from "@/components/VideoCard";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
-const studioCategories = [
-  { label: "AI Film", icon: "◈", desc: "Cinematic shorts, showreels, and visual stories crafted frame-by-frame with generative AI." },
-  { label: "Real Estate", icon: "◉", desc: "Before & after interior staging. Empty rooms transformed into aspirational living spaces — instantly." },
-  { label: "Restaurant & Menus", icon: "◎", desc: "Food photography and menu design reimagined. Consistent, delicious-looking imagery without a single shoot." },
-  { label: "Fashion & Catalogues", icon: "◇", desc: "AI model generation, garment rendering, look-books. Full catalogues without models, studios, or logistics." },
-];
+function Ticker({ text }: { text: string }) {
+  const repeated = Array(12).fill(text).join(" · ");
+  return (
+    <div className="overflow-hidden border-y border-white/10 py-4 bg-black select-none">
+      <div className="flex whitespace-nowrap animate-ticker">
+        <span className="text-xs uppercase tracking-[0.3em] text-gray-600 font-bold pr-8">{repeated}</span>
+        <span className="text-xs uppercase tracking-[0.3em] text-gray-600 font-bold pr-8">{repeated}</span>
+      </div>
+    </div>
+  );
+}
+
+function RevealText({ children, className, delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 60 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.9, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const heroY = useTransform(scrollYProgress, [0, 0.4], ["0%", "25%"]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.35], [1, 0]);
+  const heroScale = useTransform(scrollYProgress, [0, 0.3], [1, 1.06]);
 
   const { data: featuredVideos } = useListVideos({ featured: true });
   const { data: recentVideos } = useListVideos();
@@ -35,12 +57,12 @@ export default function Home() {
     .slice(0, 4);
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col overflow-x-hidden">
       <Navbar />
 
-      {/* 1. Hero */}
-      <section className="relative h-screen w-full overflow-hidden bg-black flex items-center justify-center">
-        <motion.div className="absolute inset-0 z-0" style={{ y, opacity }}>
+      {/* HERO — full screen cinematic */}
+      <section className="relative h-screen w-full overflow-hidden bg-black flex items-end pb-20 md:pb-32">
+        <motion.div className="absolute inset-0 z-0" style={{ y: heroY, scale: heroScale }}>
           {heroVideo ? (
             <img
               src={
@@ -48,331 +70,266 @@ export default function Home() {
                   ? `/api/storage${heroVideo.thumbnailPath}`
                   : heroVideo.thumbnailPath || "/images/hero-bg.png"
               }
-              alt="Hero background"
-              className="w-full h-full object-cover opacity-40"
+              alt=""
+              className="w-full h-full object-cover"
             />
           ) : (
-            <img src="/images/hero-bg.png" alt="Hero background" className="w-full h-full object-cover opacity-40" />
+            <div className="w-full h-full bg-gradient-to-br from-zinc-900 via-black to-zinc-950" />
           )}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/60 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/20" />
         </motion.div>
 
-        <div className="relative z-10 container mx-auto px-6 md:px-12 text-center flex flex-col items-center mt-16 md:mt-0">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
+        <motion.div
+          className="relative z-10 container mx-auto px-6 md:px-12"
+          style={{ opacity: heroOpacity }}
+        >
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.2, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className="mb-8"
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="text-xs uppercase tracking-[0.6em] text-gray-500 font-bold mb-6"
           >
-            <h2 className="text-xs md:text-sm text-gray-400 uppercase tracking-[0.5em] mb-6 font-bold">
-              AI Creative & Business Intelligence
-            </h2>
-            <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-bold tracking-tighter text-white leading-[0.85] font-display">
-              MONK
-              <br />
+            AI Creative & Business Intelligence
+          </motion.p>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
+            className="text-7xl md:text-[10rem] lg:text-[13rem] font-bold tracking-tighter text-white leading-[0.82] font-display"
+          >
+            MONK
+            <br />
+            <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.35)" }}>
               MONKEY
-              <br />
-              WORKS.
-            </h1>
-          </motion.div>
+            </span>
+            <br />
+            WORKS.
+          </motion.h1>
 
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
-            className="flex flex-col items-center gap-6"
+            transition={{ duration: 1, delay: 1.4 }}
+            className="mt-10 flex flex-col sm:flex-row gap-4"
           >
-            <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto font-light leading-relaxed">
-              We create with AI. We build with AI. We architect businesses around AI.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 mt-4">
-              <Link href="/studio">
-                <Button
-                  size="lg"
-                  className="bg-white text-black hover:bg-gray-200 rounded-none px-10 py-7 uppercase tracking-[0.2em] text-xs font-bold"
-                >
-                  Explore Studio
-                </Button>
-              </Link>
-              <Link href="/architects">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-white/30 text-white hover:bg-white/10 rounded-none px-10 py-7 uppercase tracking-[0.2em] text-xs font-bold bg-transparent"
-                >
-                  AI Architects
-                </Button>
-              </Link>
-            </div>
+            <Link href="/studio">
+              <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold">
+                Explore Studio
+              </Button>
+            </Link>
+            <Link href="/architects">
+              <Button
+                variant="outline"
+                className="border-white/30 text-white hover:bg-white/10 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold bg-transparent"
+              >
+                Business Architects
+              </Button>
+            </Link>
           </motion.div>
-        </div>
+        </motion.div>
 
         <motion.div
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-4"
+          className="absolute bottom-10 right-12 z-20 flex flex-col items-center gap-2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 2, duration: 1 }}
+          transition={{ delay: 2.2 }}
         >
-          <span className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold">Scroll</span>
-          <div className="w-[1px] h-16 bg-gradient-to-b from-gray-400 to-transparent" />
+          <div className="w-[1px] h-16 bg-gradient-to-b from-transparent via-gray-500 to-transparent animate-pulse" />
         </motion.div>
       </section>
 
-      {/* 2. Two Arms Introduction */}
-      <section className="py-0 relative z-20 bg-background border-t border-white/5">
-        <div className="grid grid-cols-1 md:grid-cols-2">
-          {/* Studio Arm */}
+      {/* TICKER */}
+      <Ticker text="Creative Studio — Business Intelligence Architects — We build what's next" />
+
+      {/* TWO ARMS — full-bleed split */}
+      <section className="relative z-20 bg-background">
+        <div className="grid grid-cols-1 md:grid-cols-2 min-h-[70vh]">
           <Link href="/studio">
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="group relative overflow-hidden border-b md:border-b-0 md:border-r border-white/10 p-12 md:p-16 lg:p-24 flex flex-col justify-between min-h-[420px] hover:bg-white/[0.02] transition-colors duration-500 cursor-pointer"
+              transition={{ duration: 0.7 }}
+              className="group relative overflow-hidden border-b md:border-b-0 md:border-r border-white/10 p-12 md:p-16 lg:p-24 flex flex-col justify-between min-h-[420px] hover:bg-white/[0.03] transition-all duration-700 cursor-pointer"
             >
               <div>
-                <p className="text-[10px] uppercase tracking-[0.5em] text-gray-600 font-bold mb-6">
-                  Creative Division
-                </p>
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter text-white mb-6 font-display leading-[0.9]">
+                <p className="text-[10px] uppercase tracking-[0.6em] text-gray-600 font-bold mb-8">01 — Creative Division</p>
+                <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-white mb-6 font-display leading-[0.88]">
                   The
                   <br />
                   Studio
                 </h2>
-                <p className="text-gray-500 text-base leading-relaxed max-w-sm">
-                  AI-generated films, real estate transformations, food photography, fashion catalogues.
-                  Whatever the brief — we make it with intelligence.
+                <p className="text-gray-500 text-base leading-relaxed max-w-xs">
+                  Visuals, films, and branded content crafted entirely through AI. We make what
+                  couldn't be made before.
                 </p>
               </div>
-              <div className="mt-10 flex items-center gap-3 text-white text-sm uppercase tracking-widest font-bold group-hover:gap-5 transition-all duration-300">
-                View Work <ArrowRight size={16} />
+              <div className="mt-10 flex items-center gap-3 text-white text-sm uppercase tracking-widest font-bold group-hover:gap-6 transition-all duration-500">
+                View Work <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-300" />
               </div>
-              <div className="absolute inset-0 border border-white/0 group-hover:border-white/10 transition-all duration-500 pointer-events-none" />
+
+              {/* Corner accent */}
+              <div className="absolute bottom-0 right-0 w-24 h-24 border-r border-b border-white/5 group-hover:border-white/20 transition-colors duration-700" />
             </motion.div>
           </Link>
 
-          {/* Architects Arm */}
           <Link href="/architects">
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="group relative overflow-hidden p-12 md:p-16 lg:p-24 flex flex-col justify-between min-h-[420px] bg-zinc-950 hover:bg-zinc-900 transition-colors duration-500 cursor-pointer"
+              transition={{ duration: 0.7, delay: 0.15 }}
+              className="group relative overflow-hidden p-12 md:p-16 lg:p-24 flex flex-col justify-between min-h-[420px] bg-zinc-950 hover:bg-zinc-900 transition-all duration-700 cursor-pointer"
             >
               <div>
-                <p className="text-[10px] uppercase tracking-[0.5em] text-gray-600 font-bold mb-6">
-                  Business Division
-                </p>
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter text-white mb-6 font-display leading-[0.9]">
-                  AI
+                <p className="text-[10px] uppercase tracking-[0.6em] text-gray-600 font-bold mb-8">02 — Business Division</p>
+                <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-white mb-6 font-display leading-[0.88]">
+                  Business
                   <br />
                   Architects
                 </h2>
-                <p className="text-gray-500 text-base leading-relaxed max-w-sm">
-                  Strategy, implementation, and automation consulting for businesses ready to build
-                  their competitive advantage on AI infrastructure.
+                <p className="text-gray-500 text-base leading-relaxed max-w-xs">
+                  Strategy, implementation, and automation for businesses ready to scale with AI at
+                  the core.
                 </p>
               </div>
-              <div className="mt-10 flex items-center gap-3 text-white text-sm uppercase tracking-widest font-bold group-hover:gap-5 transition-all duration-300">
-                See Case Studies <ArrowRight size={16} />
+              <div className="mt-10 flex items-center gap-3 text-white text-sm uppercase tracking-widest font-bold group-hover:gap-6 transition-all duration-500">
+                Case Studies <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-300" />
               </div>
+
+              <div className="absolute bottom-0 right-0 w-24 h-24 border-r border-b border-white/5 group-hover:border-white/20 transition-colors duration-700" />
             </motion.div>
           </Link>
         </div>
       </section>
 
-      {/* 3. What We Do — Studio capabilities */}
-      <section className="py-24 md:py-32 bg-black border-t border-white/5">
+      {/* WHO WE ARE */}
+      <section className="py-32 md:py-48 bg-black border-t border-white/5">
         <div className="container mx-auto px-6 md:px-12">
-          <div className="mb-16 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
-            <div>
-              <p className="text-xs uppercase tracking-[0.3em] text-gray-500 font-bold mb-4">Studio Capabilities</p>
-              <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white font-display">
-                We Create<br />Everything.
-              </h2>
-            </div>
-            <Link href="/studio" className="border-b border-white pb-1 text-sm uppercase tracking-[0.2em] font-bold hover:text-gray-300 hover:border-gray-300 transition-colors">
-              View All Work
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/5">
-            {studioCategories.map((cat, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="bg-black p-8 md:p-10 hover:bg-zinc-950 transition-colors duration-300 group"
-              >
-                <span className="text-3xl text-white/20 group-hover:text-white/40 transition-colors duration-300 mb-6 block">
-                  {cat.icon}
-                </span>
-                <h3 className="text-base font-bold text-white mb-3 uppercase tracking-widest">{cat.label}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed group-hover:text-gray-500 transition-colors">
-                  {cat.desc}
-                </p>
-              </motion.div>
-            ))}
-          </div>
+          <RevealText className="max-w-5xl">
+            <p className="text-xs uppercase tracking-[0.5em] text-gray-600 font-bold mb-8">About</p>
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-white leading-[1.05] mb-10">
+              A Creative Studio<br />and Business Intelligence<br />
+              <span className="text-gray-500">practice built on AI.</span>
+            </h2>
+            <p className="text-gray-400 text-xl font-light leading-relaxed max-w-3xl">
+              Monkmonkeyworks operates across two worlds. Our Creative Studio produces
+              AI-powered visuals and branded content. Our Business Architects division
+              helps companies implement and scale using the technology reshaping every industry.
+              One team. Both sides of the intelligence revolution.
+            </p>
+          </RevealText>
         </div>
       </section>
 
-      {/* 4. Featured Work preview */}
+      {/* TICKER 2 */}
+      <Ticker text="Film · Product Photography · Catalogues · Brand Campaigns · AI Strategy · Implementation · Scale" />
+
+      {/* FEATURED WORK */}
       {galleryVideos.length > 0 && (
         <section className="py-24 md:py-32 bg-background border-t border-white/5">
           <div className="container mx-auto px-6 md:px-12 mb-16 flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
-            <div>
-              <p className="text-xs uppercase tracking-[0.3em] text-gray-500 font-bold mb-4">Selected Works</p>
-              <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white font-display">
-                Recent Output
-              </h2>
-            </div>
-            <Link
-              href="/studio"
-              className="hidden md:inline-block border-b border-white pb-2 text-sm uppercase tracking-[0.2em] font-bold hover:text-gray-300 transition-colors"
-            >
+            <RevealText>
+              <p className="text-xs uppercase tracking-[0.3em] text-gray-500 font-bold mb-4">Studio Output</p>
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white font-display">Selected Works</h2>
+            </RevealText>
+            <Link href="/studio" className="border-b border-white pb-1 text-sm uppercase tracking-[0.2em] font-bold hover:text-gray-300 transition-colors">
               View All
             </Link>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 px-4 md:px-8 max-w-[2000px] mx-auto">
             {galleryVideos.map((video, idx) => (
               <VideoCard key={video.id} video={video} index={idx} featured={idx === 0 || idx === 3} />
             ))}
           </div>
-
-          <div className="mt-16 text-center md:hidden">
-            <Link
-              href="/studio"
-              className="inline-block border-b border-white pb-2 text-xs uppercase tracking-[0.2em] font-bold"
-            >
-              View All Work
-            </Link>
-          </div>
         </section>
       )}
 
-      {/* 5. Architects teaser */}
+      {/* ARCHITECTS TEASER */}
       <section className="py-24 md:py-32 bg-zinc-950 border-t border-white/5">
         <div className="container mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <p className="text-xs uppercase tracking-[0.4em] text-gray-500 font-bold mb-4">AI Architects</p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+            <RevealText>
+              <p className="text-xs uppercase tracking-[0.4em] text-gray-500 font-bold mb-6">Business Architects</p>
               <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white mb-8 font-display leading-[1]">
-                We don't just<br />make things.<br />
-                <span className="text-gray-500">We transform<br />businesses.</span>
+                We don't just<br />create.
+                <br />
+                <span className="text-gray-500">We help companies<br />scale using it.</span>
               </h2>
               <p className="text-gray-400 text-lg leading-relaxed mb-10">
-                From replacing costly photoshoots with AI pipelines to building fully automated
-                content operations — we've done it. Real estate, restaurants, fashion, and more.
+                From replacing costly production pipelines to building end-to-end AI content
+                operations — we architect the systems that let businesses move faster, look better,
+                and spend smarter.
               </p>
               <Link href="/architects">
-                <Button
-                  size="lg"
-                  className="bg-white text-black hover:bg-gray-200 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold inline-flex items-center gap-3"
-                >
+                <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold inline-flex items-center gap-3">
                   View Case Studies <ArrowRight size={14} />
                 </Button>
               </Link>
-            </motion.div>
+            </RevealText>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="grid grid-cols-1 gap-4"
-            >
+            <div className="grid grid-cols-1 gap-px bg-white/5 lg:mt-16">
               {[
-                { tag: "Real Estate", headline: "80% reduction in staging costs", sub: "Premium Property Group" },
-                { tag: "F&B", headline: "Zero food stylists. All locations covered.", sub: "Multi-Chain Restaurant Group" },
-                { tag: "Fashion", headline: "200 SKUs. Zero models. 34% conversion lift.", sub: "D2C Clothing Brand" },
+                { num: "01", headline: "Genesis Photo Albums", sub: "Product photography & premium styling" },
+                { num: "02", headline: "Strategy & Roadmapping", sub: "End-to-end AI adoption plans" },
+                { num: "03", headline: "Visual Content Automation", sub: "Catalogues, campaigns, menus at scale" },
               ].map((item, i) => (
-                <div
-                  key={i}
-                  className="border border-white/10 p-6 hover:border-white/30 transition-colors group"
-                >
-                  <span className="text-[10px] text-gray-600 uppercase tracking-widest font-bold">{item.tag}</span>
-                  <p className="text-white font-bold mt-2 mb-1 group-hover:text-gray-200 transition-colors">
-                    {item.headline}
-                  </p>
-                  <p className="text-gray-600 text-xs">{item.sub}</p>
-                </div>
+                <RevealText key={i} delay={i * 0.1}>
+                  <div className="bg-zinc-950 p-8 hover:bg-black transition-colors group border-b border-white/5 last:border-0">
+                    <p className="text-4xl font-bold text-white/5 font-mono mb-4 group-hover:text-white/10 transition-colors">{item.num}</p>
+                    <p className="text-white font-bold text-lg mb-1 tracking-tight">{item.headline}</p>
+                    <p className="text-gray-600 text-sm">{item.sub}</p>
+                  </div>
+                </RevealText>
               ))}
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 6. Stats */}
-      <section className="py-24 md:py-32 bg-black border-y border-white/10 relative z-20 overflow-hidden">
+      {/* STATS */}
+      <section className="py-24 bg-black border-y border-white/10 relative overflow-hidden">
         <div
-          className="absolute inset-0 opacity-[0.04] pointer-events-none"
+          className="absolute inset-0 opacity-[0.03] pointer-events-none"
           style={{
             backgroundImage:
               'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")',
           }}
         />
-        <div className="container mx-auto px-6 md:px-12 relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+        <div className="container mx-auto px-6 md:px-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { label: "Works Created", value: stats?.totalVideos || 0 },
-              { label: "Featured Projects", value: stats?.featuredCount || 0 },
-              { label: "Creative Categories", value: stats?.totalCategories || 0 },
-              { label: "System Status", value: "Active" },
+              { label: "Works Created", value: stats?.totalVideos ?? "—" },
+              { label: "Featured Projects", value: stats?.featuredCount ?? "—" },
+              { label: "Creative Categories", value: stats?.totalCategories ?? "—" },
+              { label: "Status", value: "Live" },
             ].map((stat, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="text-center md:text-left border-l border-white/10 pl-6"
-              >
-                <p className="text-4xl md:text-6xl font-bold text-white mb-3 font-display tracking-tighter">
-                  {stat.value}
-                </p>
-                <p className="text-xs text-gray-500 uppercase tracking-[0.2em] font-bold">{stat.label}</p>
-              </motion.div>
+              <RevealText key={i} delay={i * 0.1} className="border-l border-white/10 pl-6">
+                <p className="text-4xl md:text-6xl font-bold text-white mb-3 font-display tracking-tighter">{stat.value}</p>
+                <p className="text-xs text-gray-600 uppercase tracking-[0.2em] font-bold">{stat.label}</p>
+              </RevealText>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 7. CTA */}
-      <section className="py-32 md:py-48 bg-background relative z-20">
+      {/* CTA */}
+      <section className="py-32 md:py-48 bg-background">
         <div className="container mx-auto px-6 md:px-12 text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-5xl md:text-8xl font-bold tracking-tighter text-white mb-10 font-display">
-              BUILD WITH US.
+          <RevealText>
+            <h2 className="text-5xl md:text-8xl font-bold tracking-tighter text-white mb-10 font-display leading-[0.9]">
+              BUILD<br />WITH US.
             </h2>
             <p className="text-gray-500 text-lg mb-10 max-w-xl mx-auto">
-              Whether you need a film, a catalogue, or an AI strategy that changes how your business
-              operates — we're the call to make.
+              Creative work or business strategy — we're the call to make when you want AI to actually change something.
             </p>
             <a href="mailto:hello@monkmonkeyworks.com">
-              <Button
-                size="lg"
-                className="bg-white text-black hover:bg-gray-200 rounded-none px-12 py-8 uppercase tracking-[0.2em] text-sm font-bold transition-transform hover:scale-105"
-              >
+              <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-12 py-8 uppercase tracking-[0.2em] text-sm font-bold hover:scale-105 transition-transform">
                 Get in Touch
               </Button>
             </a>
-          </motion.div>
+          </RevealText>
         </div>
       </section>
 
