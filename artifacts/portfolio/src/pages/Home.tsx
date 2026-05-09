@@ -271,7 +271,7 @@ export default function Home() {
 
             <div className="grid grid-cols-1 gap-px bg-white/5 lg:mt-16">
               {[
-                { num: "01", headline: "Genesis Photo Albums", sub: "Product photography & premium styling" },
+                { num: "01", headline: "Product & Brand Photography", sub: "Premium visuals without studio costs" },
                 { num: "02", headline: "Strategy & Roadmapping", sub: "End-to-end AI adoption plans" },
                 { num: "03", headline: "Visual Content Automation", sub: "Catalogues, campaigns, menus at scale" },
               ].map((item, i) => (

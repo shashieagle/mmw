@@ -8,6 +8,7 @@ import Studio from "@/pages/Films";
 import FilmDetail from "@/pages/FilmDetail";
 import Upload from "@/pages/Upload";
 import Architects from "@/pages/Architects";
+import { AdminLock } from "@/components/AdminLock";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ function App() {
           <Router />
         </WouterRouter>
         <Toaster />
+        <AdminLock />
       </TooltipProvider>
     </QueryClientProvider>
   );
