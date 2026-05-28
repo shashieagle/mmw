@@ -104,6 +104,22 @@ export interface UploadUrlResponse {
   objectPath: string;
 }
 
+export interface StudioImage {
+  id: number;
+  imagePath: string;
+  category: string;
+  /** @nullable */
+  caption?: string | null;
+  createdAt: string;
+}
+
+export interface CreateStudioImageBody {
+  imagePath: string;
+  category: string;
+  /** @nullable */
+  caption?: string | null;
+}
+
 export interface ErrorEnvelope {
   error: string;
 }
@@ -117,4 +133,11 @@ export type ListVideosParams = {
    * Filter featured videos only
    */
   featured?: boolean;
+};
+
+export type ListStudioImagesParams = {
+  /**
+   * Filter by category
+   */
+  category?: string;
 };

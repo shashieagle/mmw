@@ -180,6 +180,87 @@ paths:
                 items:
                   type: string
 
+  /images:
+    get:
+      operationId: listStudioImages
+      tags: [images]
+      summary: List all studio images
+      parameters:
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by category
+      responses:
+        "200":
+          description: List of images
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StudioImage"
+    post:
+      operationId: createStudioImage
+      tags: [images]
+      summary: Create a new studio image entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateStudioImageBody"
+      responses:
+        "201":
+          description: Image created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudioImage"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /images/{id}:
+    delete:
+      operationId: deleteStudioImage
+      tags: [images]
+      summary: Delete a studio image
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /images/categories:
+    get:
+      operationId: listImageCategories
+      tags: [images]
+      summary: List all unique image categories
+      responses:
+        "200":
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
   /storage/uploads/request-url:
     post:
       tags: [storage]
@@ -413,6 +494,33 @@ components:
           format: uri
         objectPath:
           type: string
+
+    StudioImage:
+      type: object
+      required: [id, imagePath, category, createdAt]
+      properties:
+        id:
+          type: integer
+        imagePath:
+          type: string
+        category:
+          type: string
+        caption:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    CreateStudioImageBody:
+      type: object
+      required: [imagePath, category]
+      properties:
+        imagePath:
+          type: string
+        category:
+          type: string
+        caption:
+          type: ["string", "null"]
 
     ErrorEnvelope:
       type: object

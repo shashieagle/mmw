@@ -17,10 +17,13 @@ import type {
 } from "@tanstack/react-query";
 
 import type {
+  CreateStudioImageBody,
   CreateVideoBody,
   ErrorEnvelope,
   HealthStatus,
+  ListStudioImagesParams,
   ListVideosParams,
+  StudioImage,
   UpdateVideoBody,
   UploadUrlRequest,
   UploadUrlResponse,
@@ -691,6 +694,348 @@ export function useListCategories<
   request?: SecondParameter<typeof customFetch>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getListCategoriesQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary List all studio images
+ */
+export const getListStudioImagesUrl = (params?: ListStudioImagesParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/api/images?${stringifiedParams}`
+    : `/api/images`;
+};
+
+export const listStudioImages = async (
+  params?: ListStudioImagesParams,
+  options?: RequestInit,
+): Promise<StudioImage[]> => {
+  return customFetch<StudioImage[]>(getListStudioImagesUrl(params), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getListStudioImagesQueryKey = (
+  params?: ListStudioImagesParams,
+) => {
+  return [`/api/images`, ...(params ? [params] : [])] as const;
+};
+
+export const getListStudioImagesQueryOptions = <
+  TData = Awaited<ReturnType<typeof listStudioImages>>,
+  TError = ErrorType<unknown>,
+>(
+  params?: ListStudioImagesParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof listStudioImages>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getListStudioImagesQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof listStudioImages>>
+  > = ({ signal }) => listStudioImages(params, { signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof listStudioImages>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type ListStudioImagesQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listStudioImages>>
+>;
+export type ListStudioImagesQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List all studio images
+ */
+
+export function useListStudioImages<
+  TData = Awaited<ReturnType<typeof listStudioImages>>,
+  TError = ErrorType<unknown>,
+>(
+  params?: ListStudioImagesParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof listStudioImages>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getListStudioImagesQueryOptions(params, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Create a new studio image entry
+ */
+export const getCreateStudioImageUrl = () => {
+  return `/api/images`;
+};
+
+export const createStudioImage = async (
+  createStudioImageBody: CreateStudioImageBody,
+  options?: RequestInit,
+): Promise<StudioImage> => {
+  return customFetch<StudioImage>(getCreateStudioImageUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(createStudioImageBody),
+  });
+};
+
+export const getCreateStudioImageMutationOptions = <
+  TError = ErrorType<ErrorEnvelope>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createStudioImage>>,
+    TError,
+    { data: BodyType<CreateStudioImageBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof createStudioImage>>,
+  TError,
+  { data: BodyType<CreateStudioImageBody> },
+  TContext
+> => {
+  const mutationKey = ["createStudioImage"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof createStudioImage>>,
+    { data: BodyType<CreateStudioImageBody> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return createStudioImage(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type CreateStudioImageMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createStudioImage>>
+>;
+export type CreateStudioImageMutationBody = BodyType<CreateStudioImageBody>;
+export type CreateStudioImageMutationError = ErrorType<ErrorEnvelope>;
+
+/**
+ * @summary Create a new studio image entry
+ */
+export const useCreateStudioImage = <
+  TError = ErrorType<ErrorEnvelope>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createStudioImage>>,
+    TError,
+    { data: BodyType<CreateStudioImageBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof createStudioImage>>,
+  TError,
+  { data: BodyType<CreateStudioImageBody> },
+  TContext
+> => {
+  return useMutation(getCreateStudioImageMutationOptions(options));
+};
+
+/**
+ * @summary Delete a studio image
+ */
+export const getDeleteStudioImageUrl = (id: number) => {
+  return `/api/images/${id}`;
+};
+
+export const deleteStudioImage = async (
+  id: number,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getDeleteStudioImageUrl(id), {
+    ...options,
+    method: "DELETE",
+  });
+};
+
+export const getDeleteStudioImageMutationOptions = <
+  TError = ErrorType<ErrorEnvelope>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteStudioImage>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteStudioImage>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["deleteStudioImage"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteStudioImage>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return deleteStudioImage(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteStudioImageMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteStudioImage>>
+>;
+
+export type DeleteStudioImageMutationError = ErrorType<ErrorEnvelope>;
+
+/**
+ * @summary Delete a studio image
+ */
+export const useDeleteStudioImage = <
+  TError = ErrorType<ErrorEnvelope>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteStudioImage>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof deleteStudioImage>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(getDeleteStudioImageMutationOptions(options));
+};
+
+/**
+ * @summary List all unique image categories
+ */
+export const getListImageCategoriesUrl = () => {
+  return `/api/images/categories`;
+};
+
+export const listImageCategories = async (
+  options?: RequestInit,
+): Promise<string[]> => {
+  return customFetch<string[]>(getListImageCategoriesUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getListImageCategoriesQueryKey = () => {
+  return [`/api/images/categories`] as const;
+};
+
+export const getListImageCategoriesQueryOptions = <
+  TData = Awaited<ReturnType<typeof listImageCategories>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof listImageCategories>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getListImageCategoriesQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof listImageCategories>>
+  > = ({ signal }) => listImageCategories({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof listImageCategories>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type ListImageCategoriesQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listImageCategories>>
+>;
+export type ListImageCategoriesQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List all unique image categories
+ */
+
+export function useListImageCategories<
+  TData = Awaited<ReturnType<typeof listImageCategories>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof listImageCategories>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getListImageCategoriesQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;

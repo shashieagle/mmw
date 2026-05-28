@@ -186,6 +186,46 @@ export const ListCategoriesResponseItem = zod.string();
 export const ListCategoriesResponse = zod.array(ListCategoriesResponseItem);
 
 /**
+ * @summary List all studio images
+ */
+export const ListStudioImagesQueryParams = zod.object({
+  category: zod.coerce.string().optional().describe("Filter by category"),
+});
+
+export const ListStudioImagesResponseItem = zod.object({
+  id: zod.number(),
+  imagePath: zod.string(),
+  category: zod.string(),
+  caption: zod.string().nullish(),
+  createdAt: zod.coerce.date(),
+});
+export const ListStudioImagesResponse = zod.array(ListStudioImagesResponseItem);
+
+/**
+ * @summary Create a new studio image entry
+ */
+export const CreateStudioImageBody = zod.object({
+  imagePath: zod.string(),
+  category: zod.string(),
+  caption: zod.string().nullish(),
+});
+
+/**
+ * @summary Delete a studio image
+ */
+export const DeleteStudioImageParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary List all unique image categories
+ */
+export const ListImageCategoriesResponseItem = zod.string();
+export const ListImageCategoriesResponse = zod.array(
+  ListImageCategoriesResponseItem,
+);
+
+/**
  * @summary Request a presigned URL for file upload
  */
 
