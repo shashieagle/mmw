@@ -48,6 +48,7 @@ const editFormSchema = z.object({
   description: z.string().min(1, "Description is required"),
   category: z.string().min(1, "Category is required"),
   format: z.string().optional(),
+  orientation: z.enum(["landscape", "portrait"]).default("landscape"),
   featured: z.boolean().default(false),
   duration: z.string().optional(),
   year: z.coerce.number().optional(),
@@ -64,7 +65,7 @@ export default function FilmDetail() {
   const { toast } = useToast();
   
   const { isAdmin } = useAdminMode();
-  const { data: video, isLoading, refetch } = useGetVideo(id, { query: { enabled: !!id } });
+  const { data: video, isLoading, refetch } = useGetVideo(id);
   const updateVideo = useUpdateVideo();
   const deleteVideo = useDeleteVideo();
   const { data: allVideos } = useListVideos({});
@@ -81,6 +82,7 @@ export default function FilmDetail() {
       description: "",
       category: "",
       format: "",
+      orientation: "landscape" as const,
       featured: false,
       duration: "",
       year: new Date().getFullYear(),
@@ -100,6 +102,7 @@ export default function FilmDetail() {
         description: video.description,
         category: video.category,
         format: video.format || "",
+        orientation: (video.orientation === "portrait" ? "portrait" : "landscape") as "landscape" | "portrait",
         featured: video.featured,
         duration: video.duration || "",
         year: video.year || undefined,
@@ -151,6 +154,7 @@ export default function FilmDetail() {
           description: data.description,
           category: data.category,
           format: data.format || null,
+          orientation: data.orientation,
           featured: data.featured,
           duration: data.duration,
           year: data.year,
@@ -344,6 +348,33 @@ export default function FilmDetail() {
                                   <Input placeholder="Commercial Ad, UGC Ad…" className="bg-black border-white/20 text-white" {...field} />
                                 </FormControl>
                                 <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="orientation"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs uppercase tracking-widest text-gray-400">Orientation</FormLabel>
+                                <FormControl>
+                                  <div className="flex gap-2">
+                                    {(["landscape", "portrait"] as const).map((opt) => (
+                                      <button
+                                        key={opt}
+                                        type="button"
+                                        onClick={() => field.onChange(opt)}
+                                        className={`flex-1 py-1.5 text-xs uppercase tracking-widest font-bold border transition-colors ${
+                                          field.value === opt
+                                            ? "bg-white text-black border-white"
+                                            : "bg-transparent text-gray-400 border-white/20 hover:border-white/50"
+                                        }`}
+                                      >
+                                        {opt === "landscape" ? "⬛ 16:9" : "▮ 9:16"}
+                                      </button>
+                                    ))}
+                                  </div>
+                                </FormControl>
                               </FormItem>
                             )}
                           />

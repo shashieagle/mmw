@@ -254,22 +254,19 @@ export default function Studio() {
                   ))}
                 </div>
               ) : videos && videos.length > 0 ? (
-                <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
-                  <AnimatePresence mode="popLayout">
-                    {videos.map((video, idx) => (
-                      <motion.div
-                        key={video.id}
-                        layout
-                        initial={{ opacity: 0, scale: 0.96 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.96 }}
-                        transition={{ duration: 0.3, delay: idx * 0.04 }}
-                      >
-                        <VideoCard video={video} index={idx} />
-                      </motion.div>
-                    ))}
-                  </AnimatePresence>
-                </motion.div>
+                <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 md:gap-10">
+                  {videos.map((video, idx) => (
+                    <motion.div
+                      key={video.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: idx * 0.05 }}
+                      className="break-inside-avoid mb-6 md:mb-10"
+                    >
+                      <VideoCard video={video} index={idx} />
+                    </motion.div>
+                  ))}
+                </div>
               ) : (
                 <div className="py-32 text-center border border-white/5 bg-white/5">
                   <h3 className="text-2xl text-white mb-4 tracking-tight">Nothing here yet</h3>

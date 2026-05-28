@@ -26,6 +26,8 @@ export const ListVideosQueryParams = zod.object({
     .describe("Filter featured videos only"),
 });
 
+export const listVideosResponseOrientationDefault = `landscape`;
+
 export const ListVideosResponseItem = zod.object({
   id: zod.number(),
   title: zod.string(),
@@ -42,6 +44,10 @@ export const ListVideosResponseItem = zod.object({
     .describe(
       'Primary format label shown on cards and filter bar (e.g. \"Commercial Ad\")',
     ),
+  orientation: zod
+    .enum(["landscape", "portrait"])
+    .default(listVideosResponseOrientationDefault)
+    .describe("Card aspect ratio — landscape (16:9) or portrait (9:16)"),
   featured: zod.boolean(),
   duration: zod
     .string()
@@ -57,6 +63,7 @@ export const ListVideosResponse = zod.array(ListVideosResponseItem);
 /**
  * @summary Create a new video entry
  */
+export const createVideoBodyOrientationDefault = `landscape`;
 export const createVideoBodyFeaturedDefault = false;
 
 export const CreateVideoBody = zod.object({
@@ -66,6 +73,9 @@ export const CreateVideoBody = zod.object({
   thumbnailPath: zod.string().nullish(),
   category: zod.string(),
   format: zod.string().nullish(),
+  orientation: zod
+    .enum(["landscape", "portrait"])
+    .default(createVideoBodyOrientationDefault),
   featured: zod.boolean().default(createVideoBodyFeaturedDefault),
   duration: zod.string().nullish(),
   year: zod.number().nullish(),
@@ -79,6 +89,8 @@ export const CreateVideoBody = zod.object({
 export const GetVideoParams = zod.object({
   id: zod.coerce.number(),
 });
+
+export const getVideoResponseOrientationDefault = `landscape`;
 
 export const GetVideoResponse = zod.object({
   id: zod.number(),
@@ -96,6 +108,10 @@ export const GetVideoResponse = zod.object({
     .describe(
       'Primary format label shown on cards and filter bar (e.g. \"Commercial Ad\")',
     ),
+  orientation: zod
+    .enum(["landscape", "portrait"])
+    .default(getVideoResponseOrientationDefault)
+    .describe("Card aspect ratio — landscape (16:9) or portrait (9:16)"),
   featured: zod.boolean(),
   duration: zod
     .string()
@@ -121,12 +137,15 @@ export const UpdateVideoBody = zod.object({
   thumbnailPath: zod.string().nullish(),
   category: zod.string().optional(),
   format: zod.string().nullish(),
+  orientation: zod.enum(["landscape", "portrait"]).optional(),
   featured: zod.boolean().optional(),
   duration: zod.string().nullish(),
   year: zod.number().nullish(),
   director: zod.string().nullish(),
   tags: zod.array(zod.string()).optional(),
 });
+
+export const updateVideoResponseOrientationDefault = `landscape`;
 
 export const UpdateVideoResponse = zod.object({
   id: zod.number(),
@@ -144,6 +163,10 @@ export const UpdateVideoResponse = zod.object({
     .describe(
       'Primary format label shown on cards and filter bar (e.g. \"Commercial Ad\")',
     ),
+  orientation: zod
+    .enum(["landscape", "portrait"])
+    .default(updateVideoResponseOrientationDefault)
+    .describe("Card aspect ratio — landscape (16:9) or portrait (9:16)"),
   featured: zod.boolean(),
   duration: zod
     .string()

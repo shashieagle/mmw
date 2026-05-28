@@ -9,6 +9,17 @@ export interface HealthStatus {
   status: string;
 }
 
+/**
+ * Card aspect ratio — landscape (16:9) or portrait (9:16)
+ */
+export type VideoOrientation =
+  (typeof VideoOrientation)[keyof typeof VideoOrientation];
+
+export const VideoOrientation = {
+  landscape: "landscape",
+  portrait: "portrait",
+} as const;
+
 export interface Video {
   id: number;
   title: string;
@@ -26,6 +37,8 @@ export interface Video {
    * @nullable
    */
   format?: string | null;
+  /** Card aspect ratio — landscape (16:9) or portrait (9:16) */
+  orientation?: VideoOrientation;
   featured: boolean;
   /**
    * Human-readable duration (e.g. "2:34")
@@ -40,6 +53,14 @@ export interface Video {
   createdAt: string;
 }
 
+export type CreateVideoBodyOrientation =
+  (typeof CreateVideoBodyOrientation)[keyof typeof CreateVideoBodyOrientation];
+
+export const CreateVideoBodyOrientation = {
+  landscape: "landscape",
+  portrait: "portrait",
+} as const;
+
 export interface CreateVideoBody {
   title: string;
   description: string;
@@ -49,6 +70,7 @@ export interface CreateVideoBody {
   category: string;
   /** @nullable */
   format?: string | null;
+  orientation?: CreateVideoBodyOrientation;
   featured?: boolean;
   /** @nullable */
   duration?: string | null;
@@ -59,6 +81,14 @@ export interface CreateVideoBody {
   tags?: string[];
 }
 
+export type UpdateVideoBodyOrientation =
+  (typeof UpdateVideoBodyOrientation)[keyof typeof UpdateVideoBodyOrientation];
+
+export const UpdateVideoBodyOrientation = {
+  landscape: "landscape",
+  portrait: "portrait",
+} as const;
+
 export interface UpdateVideoBody {
   title?: string;
   description?: string;
@@ -68,6 +98,7 @@ export interface UpdateVideoBody {
   category?: string;
   /** @nullable */
   format?: string | null;
+  orientation?: UpdateVideoBodyOrientation;
   featured?: boolean;
   /** @nullable */
   duration?: string | null;

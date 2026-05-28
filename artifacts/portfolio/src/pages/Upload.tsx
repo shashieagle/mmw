@@ -43,6 +43,7 @@ const formSchema = z.object({
   description: z.string().min(1, "Description is required"),
   category: z.string().min(1, "Category is required"),
   format: z.string().optional(),
+  orientation: z.enum(["landscape", "portrait"]).default("landscape"),
   featured: z.boolean().default(false),
   duration: z.string().optional(),
   year: z.coerce.number().optional(),
@@ -73,6 +74,7 @@ export default function Upload() {
       description: "",
       category: "",
       format: "",
+      orientation: "landscape" as const,
       featured: false,
       duration: "",
       year: new Date().getFullYear(),
@@ -96,7 +98,7 @@ export default function Upload() {
       },
     });
     return {
-      method: "PUT",
+      method: "PUT" as const,
       url: uploadURL,
       headers: { "Content-Type": file.type || "application/octet-stream" },
     };
@@ -131,6 +133,7 @@ export default function Upload() {
           description: data.description,
           category: data.category,
           format: data.format || null,
+          orientation: data.orientation,
           featured: data.featured,
           duration: data.duration,
           year: data.year,
@@ -228,7 +231,7 @@ export default function Upload() {
                         <div className="min-h-[150px] uppy-dark-theme">
                           <ObjectUploader
                             onGetUploadParameters={handleGetUploadParams}
-                            onComplete={(result) => { if (result?.objectPath) setVideoPath(result.objectPath); }}
+                            onComplete={(result) => { const r = result as { objectPath?: string }; if (r?.objectPath) setVideoPath(r.objectPath); }}
                           >
                             Select Video
                           </ObjectUploader>
@@ -251,7 +254,7 @@ export default function Upload() {
                     <div className="min-h-[150px] uppy-dark-theme">
                       <ObjectUploader
                         onGetUploadParameters={handleGetUploadParams}
-                        onComplete={(result) => { if (result?.objectPath) setThumbnailPath(result.objectPath); }}
+                        onComplete={(result) => { const r = result as { objectPath?: string }; if (r?.objectPath) setThumbnailPath(r.objectPath); }}
                       >
                         Select Image
                       </ObjectUploader>
@@ -324,6 +327,35 @@ export default function Upload() {
                           </FormControl>
                           <FormDescription className="text-gray-600 text-xs">Single label shown on the video card badge</FormDescription>
                           <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="orientation"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="uppercase tracking-widest text-xs text-gray-400 font-bold">Video Orientation</FormLabel>
+                          <FormControl>
+                            <div className="flex gap-2">
+                              {(["landscape", "portrait"] as const).map((opt) => (
+                                <button
+                                  key={opt}
+                                  type="button"
+                                  onClick={() => field.onChange(opt)}
+                                  className={`flex-1 py-2 text-xs uppercase tracking-widest font-bold border transition-colors ${
+                                    field.value === opt
+                                      ? "bg-white text-black border-white"
+                                      : "bg-transparent text-gray-400 border-white/20 hover:border-white/50"
+                                  }`}
+                                >
+                                  {opt === "landscape" ? "⬛ Landscape (16:9)" : "▮ Portrait (9:16)"}
+                                </button>
+                              ))}
+                            </div>
+                          </FormControl>
+                          <FormDescription className="text-gray-600 text-xs">Landscape for widescreen films · Portrait for Reels / Shorts</FormDescription>
                         </FormItem>
                       )}
                     />

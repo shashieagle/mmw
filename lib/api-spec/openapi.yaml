@@ -375,6 +375,11 @@ components:
         format:
           type: ["string", "null"]
           description: Primary format label shown on cards and filter bar (e.g. "Commercial Ad")
+        orientation:
+          type: string
+          enum: [landscape, portrait]
+          default: landscape
+          description: Card aspect ratio — landscape (16:9) or portrait (9:16)
         featured:
           type: boolean
         duration:
@@ -408,6 +413,10 @@ components:
           type: string
         format:
           type: ["string", "null"]
+        orientation:
+          type: string
+          enum: [landscape, portrait]
+          default: landscape
         featured:
           type: boolean
           default: false
@@ -437,6 +446,9 @@ components:
           type: string
         format:
           type: ["string", "null"]
+        orientation:
+          type: string
+          enum: [landscape, portrait]
         featured:
           type: boolean
         duration:

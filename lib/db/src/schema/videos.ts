@@ -14,6 +14,7 @@ export const videosTable = pgTable("videos", {
   year: integer("year"),
   director: text("director"),
   format: text("format"),
+  orientation: text("orientation").notNull().default("landscape"),
   tags: text("tags").array().notNull().default([]),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });

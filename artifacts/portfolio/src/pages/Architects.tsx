@@ -161,7 +161,7 @@ function CaseStudyGallery({ slug, isAdmin }: { slug: string; isAdmin: boolean })
       },
     });
     return {
-      method: "PUT",
+      method: "PUT" as const,
       url: uploadURL,
       headers: { "Content-Type": file.type || "application/octet-stream" },
     };
