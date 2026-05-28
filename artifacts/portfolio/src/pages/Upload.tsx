@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,6 +6,7 @@ import * as z from "zod";
 import { ObjectUploader } from "@workspace/object-storage-web";
 import { useCreateVideo, useRequestUploadUrl } from "@workspace/api-client-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAdminMode } from "@/hooks/use-admin-mode";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import {
@@ -53,6 +54,7 @@ type FormValues = z.infer<typeof formSchema>;
 export default function Upload() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const { isAdmin } = useAdminMode();
 
   const [videoSource, setVideoSource] = useState<VideoSource>("youtube");
   const [videoPath, setVideoPath] = useState<string | null>(null);
@@ -76,6 +78,12 @@ export default function Upload() {
       tags: "",
     },
   });
+
+  useEffect(() => {
+    if (!isAdmin) setLocation("/");
+  }, [isAdmin, setLocation]);
+
+  if (!isAdmin) return null;
 
   const handleGetUploadParams = async (file: any) => {
     const { uploadURL } = await requestUrl.mutateAsync({
