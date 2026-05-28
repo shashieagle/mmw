@@ -248,22 +248,36 @@ export default function Studio() {
               transition={{ duration: 0.3 }}
             >
               {isLoadingVideos ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div
+                  className="grid gap-3 md:gap-4"
+                  style={{ gridTemplateColumns: "repeat(3, 1fr)", gridAutoRows: "360px" }}
+                >
                   {[...Array(6)].map((_, i) => (
-                    <div key={i} className="aspect-video bg-white/5 animate-pulse" />
+                    <div key={i} className="bg-white/5 animate-pulse" />
                   ))}
                 </div>
               ) : videos && videos.length > 0 ? (
-                <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 md:gap-10">
+                <div
+                  className="grid gap-3 md:gap-4"
+                  style={{
+                    gridTemplateColumns: "repeat(3, 1fr)",
+                    gridAutoRows: "360px",
+                    gridAutoFlow: "dense",
+                  }}
+                >
                   {videos.map((video, idx) => (
                     <motion.div
                       key={video.id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.4, delay: idx * 0.05 }}
-                      className="break-inside-avoid mb-6 md:mb-10"
+                      className={
+                        video.orientation === "portrait"
+                          ? "col-span-1 row-span-2"
+                          : "col-span-2 row-span-1"
+                      }
                     >
-                      <VideoCard video={video} index={idx} />
+                      <VideoCard video={video} index={idx} gridMode />
                     </motion.div>
                   ))}
                 </div>

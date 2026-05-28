@@ -6,9 +6,10 @@ interface VideoCardProps {
   video: Video;
   index?: number;
   featured?: boolean;
+  gridMode?: boolean;
 }
 
-export function VideoCard({ video, index = 0, featured = false }: VideoCardProps) {
+export function VideoCard({ video, index = 0, featured = false, gridMode = false }: VideoCardProps) {
   const isYoutube = (path: string | null | undefined) => !!path?.startsWith("youtube:");
   const getYoutubeId = (path: string) => path.replace("youtube:", "");
 
@@ -30,7 +31,7 @@ export function VideoCard({ video, index = 0, featured = false }: VideoCardProps
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.8, delay: index * 0.1, ease: [0.21, 0.47, 0.32, 0.98] }}
-      className={`group relative block overflow-hidden ${featured ? "aspect-[21/9]" : video.orientation === "portrait" ? "aspect-[9/16]" : "aspect-video"} bg-black`}
+      className={`group relative block overflow-hidden ${gridMode ? "h-full" : featured ? "aspect-[21/9]" : video.orientation === "portrait" ? "aspect-[9/16]" : "aspect-video"} bg-black`}
     >
       <Link href={`/film/${video.id}`} className="absolute inset-0 z-20">
         <span className="sr-only">View {video.title}</span>
