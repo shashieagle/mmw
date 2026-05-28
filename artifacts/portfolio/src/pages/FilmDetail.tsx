@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams, Link, useLocation } from "wouter";
-import { useGetVideo, useUpdateVideo, useDeleteVideo } from "@workspace/api-client-react";
+import { useGetVideo, useUpdateVideo, useDeleteVideo, useListVideos } from "@workspace/api-client-react";
+import { useAdminMode } from "@/hooks/use-admin-mode";
+import { VideoCard } from "@/components/VideoCard";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { motion } from "framer-motion";
@@ -60,9 +62,11 @@ export default function FilmDetail() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   
+  const { isAdmin } = useAdminMode();
   const { data: video, isLoading, refetch } = useGetVideo(id, { query: { enabled: !!id } });
   const updateVideo = useUpdateVideo();
   const deleteVideo = useDeleteVideo();
+  const { data: allVideos } = useListVideos({});
   
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -248,8 +252,8 @@ export default function FilmDetail() {
                 <ArrowLeft size={16} /> Back to Archive
               </Link>
 
-              {/* Admin Actions */}
-              <div className="flex items-center gap-4 bg-white/5 border border-white/10 p-2 rounded-sm">
+              {/* Admin Actions — only shown when unlocked */}
+              {isAdmin && <div className="flex items-center gap-4 bg-white/5 border border-white/10 p-2 rounded-sm">
                 <span className="text-[10px] uppercase tracking-widest text-gray-500 mr-2 px-2">Admin</span>
                 
                 <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
@@ -403,7 +407,7 @@ export default function FilmDetail() {
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
-              </div>
+              </div>}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
@@ -477,6 +481,45 @@ export default function FilmDetail() {
           </div>
         </section>
       </main>
+
+      {/* Next Up */}
+      {allVideos && allVideos.filter((v) => v.id !== id).length > 0 && (
+        <section className="bg-zinc-950 border-t border-white/10 py-20 md:py-28">
+          <div className="container mx-auto px-6 md:px-12">
+            <div className="flex items-end justify-between mb-12">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.4em] text-gray-600 font-bold mb-2">Continue Watching</p>
+                <h3 className="text-3xl md:text-5xl font-bold tracking-tighter text-white">Next Up</h3>
+              </div>
+              <Link href="/studio" className="text-xs uppercase tracking-widest font-bold text-gray-500 hover:text-white transition-colors border-b border-white/20 pb-1">
+                View All
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {allVideos
+                .filter((v) => v.id !== id)
+                .sort((a, b) => {
+                  // Same category first
+                  if (video && a.category === video.category && b.category !== video.category) return -1;
+                  if (video && b.category === video.category && a.category !== video.category) return 1;
+                  return 0;
+                })
+                .slice(0, 3)
+                .map((v, idx) => (
+                  <motion.div
+                    key={v.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  >
+                    <VideoCard video={v} index={idx} />
+                  </motion.div>
+                ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <Footer />
     </div>
