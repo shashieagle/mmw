@@ -21,6 +21,11 @@ export interface Video {
    */
   thumbnailPath: string | null;
   category: string;
+  /**
+   * Primary format label shown on cards and filter bar (e.g. "Commercial Ad")
+   * @nullable
+   */
+  format?: string | null;
   featured: boolean;
   /**
    * Human-readable duration (e.g. "2:34")
@@ -42,6 +47,8 @@ export interface CreateVideoBody {
   /** @nullable */
   thumbnailPath?: string | null;
   category: string;
+  /** @nullable */
+  format?: string | null;
   featured?: boolean;
   /** @nullable */
   duration?: string | null;
@@ -59,6 +66,8 @@ export interface UpdateVideoBody {
   /** @nullable */
   thumbnailPath?: string | null;
   category?: string;
+  /** @nullable */
+  format?: string | null;
   featured?: boolean;
   /** @nullable */
   duration?: string | null;

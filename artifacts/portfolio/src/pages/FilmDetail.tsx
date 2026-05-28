@@ -47,6 +47,7 @@ const editFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
   category: z.string().min(1, "Category is required"),
+  format: z.string().optional(),
   featured: z.boolean().default(false),
   duration: z.string().optional(),
   year: z.coerce.number().optional(),
@@ -79,6 +80,7 @@ export default function FilmDetail() {
       title: "",
       description: "",
       category: "",
+      format: "",
       featured: false,
       duration: "",
       year: new Date().getFullYear(),
@@ -97,6 +99,7 @@ export default function FilmDetail() {
         title: video.title,
         description: video.description,
         category: video.category,
+        format: video.format || "",
         featured: video.featured,
         duration: video.duration || "",
         year: video.year || undefined,
@@ -147,6 +150,7 @@ export default function FilmDetail() {
           title: data.title,
           description: data.description,
           category: data.category,
+          format: data.format || null,
           featured: data.featured,
           duration: data.duration,
           year: data.year,
@@ -322,9 +326,22 @@ export default function FilmDetail() {
                             name="category"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel className="text-xs uppercase tracking-widest text-gray-400">Category</FormLabel>
+                                <FormLabel className="text-xs uppercase tracking-widest text-gray-400">Industry Category</FormLabel>
                                 <FormControl>
-                                  <Input className="bg-black border-white/20 text-white" {...field} />
+                                  <Input placeholder="Fashion, Film, Food & Beverage…" className="bg-black border-white/20 text-white" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="format"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs uppercase tracking-widest text-gray-400">Primary Format Label</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Commercial Ad, UGC Ad…" className="bg-black border-white/20 text-white" {...field} />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -464,6 +481,13 @@ export default function FilmDetail() {
                   <h4 className="text-xs text-gray-500 uppercase tracking-widest mb-2 font-bold">Category</h4>
                   <p className="text-lg text-white capitalize">{video.category}</p>
                 </div>
+
+                {video.format && (
+                  <div>
+                    <h4 className="text-xs text-gray-500 uppercase tracking-widest mb-2 font-bold">Format</h4>
+                    <p className="text-lg text-white">{video.format}</p>
+                  </div>
+                )}
                 
                 {video.director && (
                   <div>

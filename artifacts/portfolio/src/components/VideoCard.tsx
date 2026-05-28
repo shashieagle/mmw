@@ -57,7 +57,7 @@ export function VideoCard({ video, index = 0, featured = false }: VideoCardProps
         <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
           <div className="flex items-center gap-3 mb-3 md:mb-4">
             <span className="text-xs font-mono text-white/70 uppercase tracking-widest border border-white/20 px-2 py-1 bg-black/50 backdrop-blur-sm">
-              {video.category}
+              {video.format || video.category}
             </span>
             {video.duration && (
               <span className="text-xs font-mono text-white/50">{video.duration}</span>

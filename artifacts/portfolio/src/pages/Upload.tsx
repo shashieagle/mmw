@@ -42,6 +42,7 @@ const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
   category: z.string().min(1, "Category is required"),
+  format: z.string().optional(),
   featured: z.boolean().default(false),
   duration: z.string().optional(),
   year: z.coerce.number().optional(),
@@ -71,6 +72,7 @@ export default function Upload() {
       title: "",
       description: "",
       category: "",
+      format: "",
       featured: false,
       duration: "",
       year: new Date().getFullYear(),
@@ -128,6 +130,7 @@ export default function Upload() {
           title: data.title,
           description: data.description,
           category: data.category,
+          format: data.format || null,
           featured: data.featured,
           duration: data.duration,
           year: data.year,
@@ -300,10 +303,26 @@ export default function Upload() {
                       name="category"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="uppercase tracking-widest text-xs text-gray-400 font-bold">Category</FormLabel>
+                          <FormLabel className="uppercase tracking-widest text-xs text-gray-400 font-bold">Industry Category</FormLabel>
                           <FormControl>
-                            <Input placeholder="E.g. Sci-Fi, Abstract, Narrative" className="bg-black border-white/20 text-white" {...field} />
+                            <Input placeholder="E.g. Fashion, Film, Food & Beverage" className="bg-black border-white/20 text-white" {...field} />
                           </FormControl>
+                          <FormDescription className="text-gray-600 text-xs">Used as the main filter on the Studio page</FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="format"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="uppercase tracking-widest text-xs text-gray-400 font-bold">Primary Format Label</FormLabel>
+                          <FormControl>
+                            <Input placeholder="E.g. Commercial Ad, UGC Ad, Editorial" className="bg-black border-white/20 text-white" {...field} />
+                          </FormControl>
+                          <FormDescription className="text-gray-600 text-xs">Single label shown on the video card badge</FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}

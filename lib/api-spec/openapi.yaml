@@ -291,6 +291,9 @@ components:
           description: Object path for the thumbnail image
         category:
           type: string
+        format:
+          type: ["string", "null"]
+          description: Primary format label shown on cards and filter bar (e.g. "Commercial Ad")
         featured:
           type: boolean
         duration:
@@ -322,6 +325,8 @@ components:
           type: ["string", "null"]
         category:
           type: string
+        format:
+          type: ["string", "null"]
         featured:
           type: boolean
           default: false
@@ -349,6 +354,8 @@ components:
           type: ["string", "null"]
         category:
           type: string
+        format:
+          type: ["string", "null"]
         featured:
           type: boolean
         duration:

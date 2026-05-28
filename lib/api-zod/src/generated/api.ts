@@ -36,6 +36,12 @@ export const ListVideosResponseItem = zod.object({
     .nullable()
     .describe("Object path for the thumbnail image"),
   category: zod.string(),
+  format: zod
+    .string()
+    .nullish()
+    .describe(
+      'Primary format label shown on cards and filter bar (e.g. \"Commercial Ad\")',
+    ),
   featured: zod.boolean(),
   duration: zod
     .string()
@@ -59,6 +65,7 @@ export const CreateVideoBody = zod.object({
   videoPath: zod.string(),
   thumbnailPath: zod.string().nullish(),
   category: zod.string(),
+  format: zod.string().nullish(),
   featured: zod.boolean().default(createVideoBodyFeaturedDefault),
   duration: zod.string().nullish(),
   year: zod.number().nullish(),
@@ -83,6 +90,12 @@ export const GetVideoResponse = zod.object({
     .nullable()
     .describe("Object path for the thumbnail image"),
   category: zod.string(),
+  format: zod
+    .string()
+    .nullish()
+    .describe(
+      'Primary format label shown on cards and filter bar (e.g. \"Commercial Ad\")',
+    ),
   featured: zod.boolean(),
   duration: zod
     .string()
@@ -107,6 +120,7 @@ export const UpdateVideoBody = zod.object({
   videoPath: zod.string().optional(),
   thumbnailPath: zod.string().nullish(),
   category: zod.string().optional(),
+  format: zod.string().nullish(),
   featured: zod.boolean().optional(),
   duration: zod.string().nullish(),
   year: zod.number().nullish(),
@@ -124,6 +138,12 @@ export const UpdateVideoResponse = zod.object({
     .nullable()
     .describe("Object path for the thumbnail image"),
   category: zod.string(),
+  format: zod
+    .string()
+    .nullish()
+    .describe(
+      'Primary format label shown on cards and filter bar (e.g. \"Commercial Ad\")',
+    ),
   featured: zod.boolean(),
   duration: zod
     .string()
