@@ -37,7 +37,7 @@ export function AdminLock() {
       <button
         onClick={handleIconClick}
         title={isAdmin ? "Admin mode active — click to lock" : "Click 3× to enter admin mode"}
-        className={`fixed bottom-6 right-6 z-50 w-9 h-9 flex items-center justify-center transition-all duration-300 ${
+        className={`fixed bottom-6 left-6 z-50 w-9 h-9 flex items-center justify-center transition-all duration-300 ${
           isAdmin
             ? "bg-white text-black opacity-80 hover:opacity-100"
             : "bg-transparent text-gray-700 hover:text-gray-400 opacity-40 hover:opacity-70"
@@ -47,7 +47,7 @@ export function AdminLock() {
       </button>
 
       {isAdmin && (
-        <div className="fixed bottom-6 right-16 z-50 flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-3 py-1.5">
+        <div className="fixed bottom-6 left-16 z-50 flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-3 py-1.5">
           <Eye size={11} className="text-white" />
           <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-white">Admin Mode</span>
         </div>
