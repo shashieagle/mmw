@@ -261,7 +261,7 @@ export default function Studio() {
                   className="grid gap-3 md:gap-4"
                   style={{
                     gridTemplateColumns: "repeat(3, 1fr)",
-                    gridAutoRows: "360px",
+                    gridAutoRows: "440px",
                     gridAutoFlow: "dense",
                   }}
                 >
@@ -273,8 +273,8 @@ export default function Studio() {
                       transition={{ duration: 0.4, delay: idx * 0.05 }}
                       className={
                         video.orientation === "portrait"
-                          ? "col-span-1 row-span-2"
-                          : "col-span-2 row-span-1"
+                          ? "col-span-1"
+                          : "col-span-2"
                       }
                     >
                       <VideoCard video={video} index={idx} gridMode />
