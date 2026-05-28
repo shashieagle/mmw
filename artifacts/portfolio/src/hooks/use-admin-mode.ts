@@ -5,9 +5,11 @@ const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "mmw2025";
 
 export function useAdminMode() {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     setIsAdmin(sessionStorage.getItem(STORAGE_KEY) === "true");
+    setChecked(true);
   }, []);
 
   const unlock = (password: string): boolean => {
@@ -24,5 +26,5 @@ export function useAdminMode() {
     setIsAdmin(false);
   };
 
-  return { isAdmin, unlock, lock };
+  return { isAdmin, checked, unlock, lock };
 }

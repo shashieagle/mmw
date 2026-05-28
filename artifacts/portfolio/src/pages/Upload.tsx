@@ -56,7 +56,7 @@ type FormValues = z.infer<typeof formSchema>;
 export default function Upload() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
-  const { isAdmin } = useAdminMode();
+  const { isAdmin, checked } = useAdminMode();
 
   const [videoSource, setVideoSource] = useState<VideoSource>("youtube");
   const [videoPath, setVideoPath] = useState<string | null>(null);
@@ -84,10 +84,10 @@ export default function Upload() {
   });
 
   useEffect(() => {
-    if (!isAdmin) setLocation("/");
-  }, [isAdmin, setLocation]);
+    if (checked && !isAdmin) setLocation("/");
+  }, [checked, isAdmin, setLocation]);
 
-  if (!isAdmin) return null;
+  if (!checked || !isAdmin) return null;
 
   const handleGetUploadParams = async (file: any) => {
     const { uploadURL } = await requestUrl.mutateAsync({
