@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -66,6 +66,8 @@ export default function Upload() {
 
   const createVideo = useCreateVideo();
   const requestUrl = useRequestUploadUrl();
+  const pendingVideoPath = useRef<string | null>(null);
+  const pendingThumbnailPath = useRef<string | null>(null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -89,14 +91,31 @@ export default function Upload() {
 
   if (!checked || !isAdmin) return null;
 
-  const handleGetUploadParams = async (file: any) => {
-    const { uploadURL } = await requestUrl.mutateAsync({
+  const handleGetVideoUploadParams = async (file: any) => {
+    const { uploadURL, objectPath } = await requestUrl.mutateAsync({
       data: {
         name: file.name,
         size: file.size,
         contentType: file.type || "application/octet-stream",
       },
     });
+    pendingVideoPath.current = objectPath;
+    return {
+      method: "PUT" as const,
+      url: uploadURL,
+      headers: { "Content-Type": file.type || "application/octet-stream" },
+    };
+  };
+
+  const handleGetThumbnailUploadParams = async (file: any) => {
+    const { uploadURL, objectPath } = await requestUrl.mutateAsync({
+      data: {
+        name: file.name,
+        size: file.size,
+        contentType: file.type || "application/octet-stream",
+      },
+    });
+    pendingThumbnailPath.current = objectPath;
     return {
       method: "PUT" as const,
       url: uploadURL,
@@ -230,8 +249,8 @@ export default function Upload() {
                       ) : (
                         <div className="min-h-[150px] uppy-dark-theme">
                           <ObjectUploader
-                            onGetUploadParameters={handleGetUploadParams}
-                            onComplete={(result) => { const r = result as { objectPath?: string }; if (r?.objectPath) setVideoPath(r.objectPath); }}
+                            onGetUploadParameters={handleGetVideoUploadParams}
+                            onComplete={() => { if (pendingVideoPath.current) setVideoPath(pendingVideoPath.current); }}
                           >
                             Select Video
                           </ObjectUploader>
@@ -253,8 +272,8 @@ export default function Upload() {
                   ) : (
                     <div className="min-h-[150px] uppy-dark-theme">
                       <ObjectUploader
-                        onGetUploadParameters={handleGetUploadParams}
-                        onComplete={(result) => { const r = result as { objectPath?: string }; if (r?.objectPath) setThumbnailPath(r.objectPath); }}
+                        onGetUploadParameters={handleGetThumbnailUploadParams}
+                        onComplete={() => { if (pendingThumbnailPath.current) setThumbnailPath(pendingThumbnailPath.current); }}
                       >
                         Select Image
                       </ObjectUploader>

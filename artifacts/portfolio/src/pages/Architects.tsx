@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -152,14 +152,17 @@ function CaseStudyGallery({ slug, isAdmin }: { slug: string; isAdmin: boolean })
     onError: () => toast({ title: "Error", description: "Failed to delete media.", variant: "destructive" }),
   });
 
+  const pendingMediaPath = useRef<string | null>(null);
+
   const handleGetUploadParams = async (file: any) => {
-    const { uploadURL } = await requestUrl.mutateAsync({
+    const { uploadURL, objectPath } = await requestUrl.mutateAsync({
       data: {
         name: file.name,
         size: file.size,
         contentType: file.type || "application/octet-stream",
       },
     });
+    pendingMediaPath.current = objectPath;
     return {
       method: "PUT" as const,
       url: uploadURL,
@@ -167,20 +170,22 @@ function CaseStudyGallery({ slug, isAdmin }: { slug: string; isAdmin: boolean })
     };
   };
 
-  const handleUploadComplete = async (result: any) => {
-    if (!result?.objectPath) return;
+  const handleUploadComplete = async () => {
+    const objectPath = pendingMediaPath.current;
+    if (!objectPath) return;
     setIsUploading(true);
     try {
-      const isVideo = result.objectPath.match(/\.(mp4|mov|webm|avi|mkv)$/i);
+      const isVideo = objectPath.match(/\.(mp4|mov|webm|avi|mkv)$/i);
       const res = await fetch(`/api/case-studies/${slug}/media`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          mediaPath: result.objectPath,
+          mediaPath: objectPath,
           mediaType: isVideo ? "video" : "image",
         }),
       });
       if (!res.ok) throw new Error("Save failed");
+      pendingMediaPath.current = null;
       qc.invalidateQueries({ queryKey: ["case-study-media", slug] });
       setShowUpload(false);
       toast({ title: "Added", description: "Media added to gallery." });
