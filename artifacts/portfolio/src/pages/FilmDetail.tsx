@@ -70,6 +70,7 @@ export default function FilmDetail() {
   
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [youtubeActive, setYoutubeActive] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const form = useForm<EditFormValues>({
@@ -205,13 +206,34 @@ export default function FilmDetail() {
         {/* Video Player Section */}
         <section className="relative w-full h-[60vh] md:h-screen bg-black pt-20 md:pt-0 group">
           {video.videoPath && isYoutube(video.videoPath) ? (
-            <iframe
-              src={`https://www.youtube.com/embed/${getYoutubeId(video.videoPath)}?autoplay=1&mute=1&loop=1&playlist=${getYoutubeId(video.videoPath)}&controls=1&rel=0`}
-              className="w-full h-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              title={video.title}
-            />
+            youtubeActive ? (
+              <iframe
+                src={`https://www.youtube.com/embed/${getYoutubeId(video.videoPath)}?autoplay=1&controls=1&rel=0`}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                title={video.title}
+              />
+            ) : (
+              <div
+                className="relative w-full h-full cursor-pointer overflow-hidden"
+                onClick={() => setYoutubeActive(true)}
+              >
+                <img
+                  src={`https://img.youtube.com/vi/${getYoutubeId(video.videoPath)}/maxresdefault.jpg`}
+                  alt={video.title}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = `https://img.youtube.com/vi/${getYoutubeId(video.videoPath)}/hqdefault.jpg`;
+                  }}
+                />
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/50 transition-colors duration-300">
+                  <div className="w-20 h-20 md:w-28 md:h-28 rounded-full bg-white flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300">
+                    <Play className="text-black ml-2 w-8 h-8 md:w-10 md:h-10" fill="black" />
+                  </div>
+                </div>
+              </div>
+            )
           ) : video.videoPath ? (
             <>
               <video
