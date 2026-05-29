@@ -36,3 +36,9 @@ id = "_1RhXhONBFk5jkZ2X2BiJ"
 uri = "file://artifacts/portfolio/public/images/hero-bg.png"
 type = "image"
 title = "monkmonkeyworks hero background"
+
+[[generated]]
+id = "PUhmhqvx3_NqCQkYuBEA7"
+uri = "file://artifacts/portfolio/public/hero-generated.png"
+type = "image"
+title = "cinematic-dark-vortex-hand-hero"

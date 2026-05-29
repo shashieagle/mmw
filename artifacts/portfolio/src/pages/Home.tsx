@@ -65,8 +65,12 @@ export default function Home() {
       {/* HERO — full screen cinematic */}
       <section className="relative h-screen w-full overflow-hidden bg-black flex items-end pb-20 md:pb-32">
         <motion.div className="absolute inset-0 z-0" style={{ y: heroY, scale: heroScale }}>
-          <div className="w-full h-full bg-gradient-to-br from-zinc-900 via-black to-zinc-950" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/20" />
+          <img
+            src="/hero-generated.png"
+            alt=""
+            className="w-full h-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/10" />
         </motion.div>
 
         <motion.div
