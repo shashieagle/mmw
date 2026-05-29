@@ -73,7 +73,8 @@ export default function Home() {
             <img
               src="/hero-generated.png"
               alt=""
-              className="w-full h-full object-cover object-left-top"
+              className="w-full h-full object-cover"
+              style={{ objectPosition: "left 15%" }}
             />
             {/* Fade left edge into black so it blends with text area */}
             <div className="absolute inset-0" style={{
