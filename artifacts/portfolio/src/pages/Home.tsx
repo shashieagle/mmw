@@ -5,6 +5,7 @@ import { useListVideos, useGetVideoStats } from "@workspace/api-client-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { VideoCard } from "@/components/VideoCard";
+import { HeroBackground } from "@/components/HeroBackground";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
@@ -66,7 +67,8 @@ export default function Home() {
       <section className="relative h-screen w-full overflow-hidden bg-black flex items-end pb-20 md:pb-32">
         <motion.div className="absolute inset-0 z-0" style={{ y: heroY, scale: heroScale }}>
           <div className="w-full h-full bg-gradient-to-br from-zinc-900 via-black to-zinc-950" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/20" />
+          <HeroBackground />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
         </motion.div>
 
         <motion.div
