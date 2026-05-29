@@ -57,34 +57,46 @@ function AdminImageUpload({ onUploaded }: { onUploaded: () => void }) {
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !category.trim()) {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+    if (!category.trim()) {
       toast({ title: "Error", description: "Please enter a category first.", variant: "destructive" });
       return;
     }
     setUploading(true);
-    try {
-      const { uploadURL, objectPath } = await requestUrl.mutateAsync({
-        data: { name: file.name, size: file.size, contentType: file.type || "image/jpeg" },
-      });
-      await fetch(uploadURL, {
-        method: "PUT",
-        body: file,
-        headers: { "Content-Type": file.type || "image/jpeg" },
-      });
-      await createImage.mutateAsync({
-        data: { imagePath: objectPath, category: category.trim(), caption: caption.trim() || null },
-      });
-      toast({ title: "Image uploaded" });
+    let succeeded = 0;
+    let failed = 0;
+    for (const file of files) {
+      try {
+        const { uploadURL, objectPath } = await requestUrl.mutateAsync({
+          data: { name: file.name, size: file.size, contentType: file.type || "image/jpeg" },
+        });
+        await fetch(uploadURL, {
+          method: "PUT",
+          body: file,
+          headers: { "Content-Type": file.type || "image/jpeg" },
+        });
+        await createImage.mutateAsync({
+          data: { imagePath: objectPath, category: category.trim(), caption: caption.trim() || null },
+        });
+        succeeded++;
+      } catch {
+        failed++;
+      }
+    }
+    if (succeeded > 0) {
+      toast({ title: `${succeeded} image${succeeded > 1 ? "s" : ""} uploaded` });
+      onUploaded();
+    }
+    if (failed > 0) {
+      toast({ title: `${failed} upload${failed > 1 ? "s" : ""} failed`, variant: "destructive" });
+    }
+    setUploading(false);
+    if (fileRef.current) fileRef.current.value = "";
+    if (succeeded > 0 && failed === 0) {
       setOpen(false);
       setCategory("");
       setCaption("");
-      onUploaded();
-    } catch {
-      toast({ title: "Upload failed", variant: "destructive" });
-    } finally {
-      setUploading(false);
-      if (fileRef.current) fileRef.current.value = "";
     }
   };
 
@@ -120,8 +132,8 @@ function AdminImageUpload({ onUploaded }: { onUploaded: () => void }) {
         className="bg-black border border-white/20 text-white text-sm px-3 py-2 w-full outline-none focus:border-white/50"
       />
       <label className={`cursor-pointer border border-dashed border-white/30 px-4 py-3 text-xs text-center text-gray-400 hover:border-white/60 hover:text-white transition-all ${uploading ? "opacity-50 pointer-events-none" : ""}`}>
-        {uploading ? "Uploading…" : "Click to choose image"}
-        <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFile} disabled={uploading} />
+        {uploading ? "Uploading…" : "Click to choose images (select multiple)"}
+        <input ref={fileRef} type="file" accept="image/*" multiple className="hidden" onChange={handleFile} disabled={uploading} />
       </label>
     </div>
   );
