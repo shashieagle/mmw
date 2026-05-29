@@ -20,3 +20,4 @@
 export * from "./videos";
 export * from "./caseStudyMedia";
 export * from "./studioImages";
+export * from "./caseStudies";
