@@ -135,7 +135,8 @@ export default function Studio() {
   const { toast } = useToast();
 
   const { data: videoCategories } = useListCategories();
-  const { data: videos, isLoading: isLoadingVideos } = useListVideos({ category: selectedCategory });
+  const { data: rawVideos, isLoading: isLoadingVideos } = useListVideos({ category: selectedCategory });
+  const videos = rawVideos ? [...rawVideos].reverse() : rawVideos;
 
   const { data: imageCategories } = useListImageCategories();
   const { data: images, isLoading: isLoadingImages, refetch: refetchImages } = useListStudioImages({ category: selectedCategory });
