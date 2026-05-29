@@ -5,6 +5,7 @@ import { useListVideos, useGetVideoStats } from "@workspace/api-client-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { VideoCard } from "@/components/VideoCard";
+import { HeroCanvas } from "@/components/HeroCanvas";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
@@ -64,40 +65,10 @@ export default function Home() {
 
       {/* HERO — full screen cinematic */}
       <section className="relative h-screen w-full overflow-hidden bg-black flex items-end pb-20 md:pb-32">
-        {/* Studio light */}
+        {/* Cinematic godray canvas */}
         <motion.div className="absolute inset-0 z-0" style={{ y: heroY, scale: heroScale }}>
-          {/* Base black */}
           <div className="absolute inset-0 bg-black" />
-          {/* Top spot — tight hot overhead beam */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background: "radial-gradient(ellipse 40% 32% at 50% 0%, rgba(255,255,255,0.38) 0%, rgba(255,255,255,0.18) 30%, rgba(255,255,255,0.05) 60%, transparent 80%)",
-            }}
-          />
-          {/* Cone of light — widening beam down the scene */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background: "radial-gradient(ellipse 70% 80% at 50% -10%, rgba(220,225,255,0.10) 0%, transparent 70%)",
-            }}
-          />
-          {/* Floor catch — soft pool at the bottom where the beam lands */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background: "radial-gradient(ellipse 55% 18% at 50% 100%, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.03) 50%, transparent 100%)",
-            }}
-          />
-          {/* Hard shadow sides — deep black wings */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background: "linear-gradient(to right, rgba(0,0,0,0.75) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.75) 100%)",
-            }}
-          />
-          {/* Bottom fade */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+          <HeroCanvas />
         </motion.div>
 
         <motion.div
