@@ -68,7 +68,11 @@ export default function Home() {
               src={
                 heroVideo.thumbnailPath?.startsWith("/objects/")
                   ? `/api/storage${heroVideo.thumbnailPath}`
-                  : heroVideo.thumbnailPath || "/images/hero-bg.png"
+                  : heroVideo.thumbnailPath
+                  ? heroVideo.thumbnailPath
+                  : heroVideo.videoPath?.startsWith("youtube:")
+                  ? `https://img.youtube.com/vi/${heroVideo.videoPath.replace("youtube:", "")}/maxresdefault.jpg`
+                  : "/images/hero-bg.png"
               }
               alt=""
               className="w-full h-full object-cover"

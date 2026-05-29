@@ -1,5 +1,5 @@
 import { Router, type IRouter } from "express";
-import { eq, sql } from "drizzle-orm";
+import { eq, sql, desc } from "drizzle-orm";
 import { db, videosTable } from "@workspace/db";
 import {
   CreateVideoBody,
@@ -34,7 +34,7 @@ router.get("/videos", async (req, res): Promise<void> => {
     dbQuery = dbQuery.where(eq(videosTable.featured, query.data.featured));
   }
 
-  const videos = await dbQuery.orderBy(videosTable.createdAt);
+  const videos = await dbQuery.orderBy(desc(videosTable.createdAt));
   res.json(ListVideosResponse.parse(videos));
 });
 
