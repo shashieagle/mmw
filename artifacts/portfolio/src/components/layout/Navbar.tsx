@@ -30,6 +30,12 @@ export function Navbar() {
     >
       <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group relative z-50">
+          <img
+            src="/logo-icon-transparent.png"
+            alt="MMW"
+            className="h-8 w-8 object-contain"
+            style={{ filter: "brightness(0) invert(1)" }}
+          />
           <span className="text-xl md:text-2xl font-bold tracking-tighter text-white">
             MONKMONKEYWORKS
           </span>
