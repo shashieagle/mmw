@@ -50,10 +50,8 @@ export default function Home() {
     window.scrollTo(0, 0);
   }, []);
 
-  const heroVideo = featuredVideos?.[0] || recentVideos?.[0];
   const galleryVideos = (featuredVideos || [])
-    .slice(1)
-    .concat((recentVideos || []).filter((v) => v.id !== heroVideo?.id))
+    .concat((recentVideos || []).filter((v) => !featuredVideos?.find((f) => f.id === v.id)))
     .slice(0, 4);
 
   return (
@@ -63,23 +61,7 @@ export default function Home() {
       {/* HERO — full screen cinematic */}
       <section className="relative h-screen w-full overflow-hidden bg-black flex items-end pb-20 md:pb-32">
         <motion.div className="absolute inset-0 z-0" style={{ y: heroY, scale: heroScale }}>
-          {heroVideo ? (
-            <img
-              src={
-                heroVideo.thumbnailPath?.startsWith("/objects/")
-                  ? `/api/storage${heroVideo.thumbnailPath}`
-                  : heroVideo.thumbnailPath
-                  ? heroVideo.thumbnailPath
-                  : heroVideo.videoPath?.startsWith("youtube:")
-                  ? `https://img.youtube.com/vi/${heroVideo.videoPath.replace("youtube:", "")}/maxresdefault.jpg`
-                  : "/images/hero-bg.png"
-              }
-              alt=""
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="w-full h-full bg-gradient-to-br from-zinc-900 via-black to-zinc-950" />
-          )}
+          <div className="w-full h-full bg-gradient-to-br from-zinc-900 via-black to-zinc-950" />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/20" />
         </motion.div>
 
