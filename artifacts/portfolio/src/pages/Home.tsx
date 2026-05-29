@@ -52,6 +52,10 @@ export default function Home() {
 
   const galleryVideos = (featuredVideos || [])
     .concat((recentVideos || []).filter((v) => !featuredVideos?.find((f) => f.id === v.id)))
+    .sort((a, b) => {
+      if (a.orientation === b.orientation) return 0;
+      return a.orientation === "landscape" ? -1 : 1;
+    })
     .slice(0, 4);
 
   return (
