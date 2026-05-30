@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { Link } from "wouter";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useListVideos, useGetVideoStats } from "@workspace/api-client-react";
@@ -6,7 +6,8 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { VideoCard } from "@/components/VideoCard";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Pencil, Check, X } from "lucide-react";
+import { useAdminMode } from "@/hooks/use-admin-mode";
 
 function Ticker({ text }: { text: string }) {
   const repeated = Array(12).fill(text).join(" · ");
@@ -36,13 +37,48 @@ function RevealText({ children, className, delay = 0 }: { children: React.ReactN
   );
 }
 
-const JAM_FORMS = {
-  business: "https://forms.gle/YOUR_BUSINESS_FORM_ID",
-  creator:  "https://forms.gle/YOUR_CREATOR_FORM_ID",
-};
-
 function JamSection() {
+  const { isAdmin } = useAdminMode();
   const [active, setActive] = useState<"business" | "creator">("business");
+  const [forms, setForms] = useState({ business: "", creator: "" });
+  const [editing, setEditing] = useState<"business" | "creator" | null>(null);
+  const [draft, setDraft] = useState("");
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((r) => r.json())
+      .then((data: Record<string, string>) => {
+        setForms({
+          business: data["jam_form_business"] ?? "",
+          creator: data["jam_form_creator"] ?? "",
+        });
+      })
+      .catch(() => {});
+  }, []);
+
+  const startEdit = useCallback((key: "business" | "creator") => {
+    setEditing(key);
+    setDraft(forms[key]);
+  }, [forms]);
+
+  const cancelEdit = useCallback(() => { setEditing(null); setDraft(""); }, []);
+
+  const saveEdit = useCallback(async () => {
+    if (!editing) return;
+    setSaving(true);
+    try {
+      await fetch(`/api/settings/jam_form_${editing}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ value: draft }),
+      });
+      setForms((f) => ({ ...f, [editing]: draft }));
+      setEditing(null);
+    } finally {
+      setSaving(false);
+    }
+  }, [editing, draft]);
 
   const content = {
     business: {
@@ -60,27 +96,22 @@ function JamSection() {
   };
 
   const c = content[active];
+  const formUrl = forms[active];
 
   return (
     <section className="py-24 md:py-40 bg-zinc-950 border-t border-white/5 relative overflow-hidden">
-      {/* Subtle background texture */}
       <div className="absolute inset-0 opacity-[0.025] pointer-events-none"
         style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.75%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/%3E%3C/svg%3E")' }}
       />
 
       <div className="container mx-auto px-6 md:px-12 relative z-10">
-        {/* Header */}
         <RevealText className="mb-14 md:mb-20">
-          <p className="text-[10px] uppercase tracking-[0.6em] text-gray-600 font-bold mb-6">
-            Let's Work Together
-          </p>
+          <p className="text-[10px] uppercase tracking-[0.6em] text-gray-600 font-bold mb-6">Let's Work Together</p>
           <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white font-display leading-[0.88] mb-6">
             JAM<br />
             <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)" }}>WITH US.</span>
           </h2>
-          <p className="text-gray-500 text-lg max-w-md">
-            Tell us who you are and what you need. We'll take it from there.
-          </p>
+          <p className="text-gray-500 text-lg max-w-md">Tell us who you are and what you need. We'll take it from there.</p>
         </RevealText>
 
         {/* Toggle */}
@@ -91,9 +122,7 @@ function JamSection() {
                 key={tab}
                 onClick={() => setActive(tab)}
                 className={`px-8 py-3 text-xs uppercase tracking-[0.25em] font-bold transition-all duration-300 ${
-                  active === tab
-                    ? "bg-white text-black"
-                    : "text-gray-500 hover:text-white"
+                  active === tab ? "bg-white text-black" : "text-gray-500 hover:text-white"
                 }`}
               >
                 {tab === "business" ? "Business Owner" : "Creator"}
@@ -102,7 +131,7 @@ function JamSection() {
           </div>
         </RevealText>
 
-        {/* Content card */}
+        {/* Content */}
         <motion.div
           key={active}
           initial={{ opacity: 0, y: 24 }}
@@ -115,9 +144,7 @@ function JamSection() {
             <h3 className="text-4xl md:text-5xl font-bold tracking-tighter text-white font-display leading-[1.0] mb-8 whitespace-pre-line">
               {c.headline}
             </h3>
-            <p className="text-gray-400 text-base leading-relaxed max-w-sm">
-              {c.body}
-            </p>
+            <p className="text-gray-400 text-base leading-relaxed max-w-sm">{c.body}</p>
           </div>
 
           <div className="flex flex-col gap-6 md:items-end">
@@ -132,16 +159,65 @@ function JamSection() {
                 </div>
               ))}
             </div>
+
             <p className="text-gray-600 text-xs uppercase tracking-widest">We ask these in the form ↓</p>
-            <a
-              href={JAM_FORMS[active]}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button className="bg-white text-black hover:bg-gray-100 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold w-full md:w-auto">
-                {c.cta} →
+
+            {/* Admin: editable form URL */}
+            {isAdmin && (
+              <div className="w-full md:max-w-xs">
+                {editing === active ? (
+                  <div className="flex flex-col gap-2">
+                    <input
+                      className="w-full bg-black border border-white/20 text-white text-xs px-3 py-2 outline-none focus:border-white/50 placeholder:text-gray-600"
+                      placeholder="Paste Google Form link…"
+                      value={draft}
+                      onChange={(e) => setDraft(e.target.value)}
+                      autoFocus
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        onClick={saveEdit}
+                        disabled={saving}
+                        className="flex items-center gap-1 px-3 py-1.5 bg-white text-black text-xs font-bold uppercase tracking-wider hover:bg-gray-200 transition-colors disabled:opacity-50"
+                      >
+                        <Check size={11} /> Save
+                      </button>
+                      <button
+                        onClick={cancelEdit}
+                        className="flex items-center gap-1 px-3 py-1.5 border border-white/20 text-gray-400 text-xs hover:text-white transition-colors"
+                      >
+                        <X size={11} /> Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => startEdit(active)}
+                    className="flex items-center gap-2 text-xs text-gray-600 hover:text-white transition-colors border border-white/10 px-3 py-2 w-full"
+                  >
+                    <Pencil size={11} />
+                    {formUrl ? (
+                      <span className="truncate">{formUrl}</span>
+                    ) : (
+                      <span className="text-gray-600">Set {active === "business" ? "Business Owner" : "Creator"} form link…</span>
+                    )}
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* CTA button */}
+            {formUrl ? (
+              <a href={formUrl} target="_blank" rel="noopener noreferrer" className="w-full md:w-auto">
+                <Button className="bg-white text-black hover:bg-gray-100 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold w-full md:w-auto">
+                  {c.cta} →
+                </Button>
+              </a>
+            ) : (
+              <Button disabled className="bg-white/10 text-gray-600 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold w-full md:w-auto cursor-not-allowed">
+                {isAdmin ? "Add form link above to activate" : c.cta + " →"}
               </Button>
-            </a>
+            )}
           </div>
         </motion.div>
       </div>
