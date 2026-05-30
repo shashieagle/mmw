@@ -707,7 +707,7 @@ export default function Architects() {
             </p>
             <a href="mailto:hello@monkmonkeyworks.com">
               <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-12 py-8 uppercase tracking-[0.2em] text-sm font-bold hover:scale-105 transition-transform inline-flex items-center gap-3">
-                Get in Touch <ArrowRight size={16} />
+                Catalyst <ArrowRight size={16} />
               </Button>
             </a>
           </motion.div>
