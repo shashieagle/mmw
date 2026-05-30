@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -705,11 +706,11 @@ export default function Architects() {
             <p className="text-gray-500 text-lg mb-12 max-w-xl mx-auto">
               Tell us what you're building — or what's not working. We'll be straight with you about how technology can fix it.
             </p>
-            <a href="mailto:hello@monkmonkeyworks.com">
+            <Link href="/catalyst">
               <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-12 py-8 uppercase tracking-[0.2em] text-sm font-bold hover:scale-105 transition-transform inline-flex items-center gap-3">
                 Catalyst <ArrowRight size={16} />
               </Button>
-            </a>
+            </Link>
           </motion.div>
         </div>
       </section>

@@ -506,11 +506,11 @@ export default function Home() {
             <p className="text-gray-500 text-lg mb-10 max-w-xl mx-auto">
               Creative work or business strategy — we're the call to make when you want AI to actually change something.
             </p>
-            <a href="mailto:hello@monkmonkeyworks.com">
+            <Link href="/catalyst">
               <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-12 py-8 uppercase tracking-[0.2em] text-sm font-bold hover:scale-105 transition-transform">
                 Catalyst
               </Button>
-            </a>
+            </Link>
           </RevealText>
         </div>
       </section>

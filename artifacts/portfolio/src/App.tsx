@@ -8,6 +8,7 @@ import Studio from "@/pages/Films";
 import FilmDetail from "@/pages/FilmDetail";
 import Upload from "@/pages/Upload";
 import Architects from "@/pages/Architects";
+import Catalyst from "@/pages/Catalyst";
 import { AdminLock } from "@/components/AdminLock";
 
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ function Router() {
       <Route path="/films" component={Studio} />
       <Route path="/film/:id" component={FilmDetail} />
       <Route path="/architects" component={Architects} />
+      <Route path="/catalyst" component={Catalyst} />
       <Route path="/upload" component={Upload} />
       <Route component={NotFound} />
     </Switch>
