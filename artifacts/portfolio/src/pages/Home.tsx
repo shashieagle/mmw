@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useListVideos, useGetVideoStats } from "@workspace/api-client-react";
@@ -33,6 +33,119 @@ function RevealText({ children, className, delay = 0 }: { children: React.ReactN
     >
       {children}
     </motion.div>
+  );
+}
+
+const JAM_FORMS = {
+  business: "https://forms.gle/YOUR_BUSINESS_FORM_ID",
+  creator:  "https://forms.gle/YOUR_CREATOR_FORM_ID",
+};
+
+function JamSection() {
+  const [active, setActive] = useState<"business" | "creator">("business");
+
+  const content = {
+    business: {
+      tag: "For Business Owners",
+      headline: "Scale smarter.\nSpend less.\nLook elite.",
+      body: "Tell us about your business, your current content challenges, and where you want to be. We'll come back with a plan that uses AI to get you there — faster and cheaper than traditional routes.",
+      cta: "Start the Conversation",
+    },
+    creator: {
+      tag: "For Creators",
+      headline: "Your vision.\nOur tools.\nUnlimited output.",
+      body: "Whether you're building a brand, a series, or a signature visual world — we want to hear the idea. Share what you're making, what's missing, and what kind of collaboration excites you.",
+      cta: "Tell Us Your Vision",
+    },
+  };
+
+  const c = content[active];
+
+  return (
+    <section className="py-24 md:py-40 bg-zinc-950 border-t border-white/5 relative overflow-hidden">
+      {/* Subtle background texture */}
+      <div className="absolute inset-0 opacity-[0.025] pointer-events-none"
+        style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.75%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/%3E%3C/svg%3E")' }}
+      />
+
+      <div className="container mx-auto px-6 md:px-12 relative z-10">
+        {/* Header */}
+        <RevealText className="mb-14 md:mb-20">
+          <p className="text-[10px] uppercase tracking-[0.6em] text-gray-600 font-bold mb-6">
+            Let's Work Together
+          </p>
+          <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white font-display leading-[0.88] mb-6">
+            JAM<br />
+            <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)" }}>WITH US.</span>
+          </h2>
+          <p className="text-gray-500 text-lg max-w-md">
+            Tell us who you are and what you need. We'll take it from there.
+          </p>
+        </RevealText>
+
+        {/* Toggle */}
+        <RevealText delay={0.1}>
+          <div className="inline-flex border border-white/10 p-1 mb-14 md:mb-20">
+            {(["business", "creator"] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActive(tab)}
+                className={`px-8 py-3 text-xs uppercase tracking-[0.25em] font-bold transition-all duration-300 ${
+                  active === tab
+                    ? "bg-white text-black"
+                    : "text-gray-500 hover:text-white"
+                }`}
+              >
+                {tab === "business" ? "Business Owner" : "Creator"}
+              </button>
+            ))}
+          </div>
+        </RevealText>
+
+        {/* Content card */}
+        <motion.div
+          key={active}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-end"
+        >
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.5em] text-gray-600 font-bold mb-6">{c.tag}</p>
+            <h3 className="text-4xl md:text-5xl font-bold tracking-tighter text-white font-display leading-[1.0] mb-8 whitespace-pre-line">
+              {c.headline}
+            </h3>
+            <p className="text-gray-400 text-base leading-relaxed max-w-sm">
+              {c.body}
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-6 md:items-end">
+            <div className="grid grid-cols-1 gap-px bg-white/5 w-full md:max-w-xs">
+              {(active === "business"
+                ? ["Your industry & scale", "Current content setup", "Goals & timeline", "Budget range"]
+                : ["Your creative focus", "Platform & audience", "The project idea", "Collaboration style"]
+              ).map((q, i) => (
+                <div key={i} className="bg-zinc-950 px-5 py-4 flex items-center gap-4">
+                  <span className="text-white/15 font-mono text-xs font-bold">0{i + 1}</span>
+                  <span className="text-gray-400 text-sm">{q}</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-gray-600 text-xs uppercase tracking-widest">We ask these in the form ↓</p>
+            <a
+              href={JAM_FORMS[active]}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button className="bg-white text-black hover:bg-gray-100 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold w-full md:w-auto">
+                {c.cta} →
+              </Button>
+            </a>
+          </div>
+        </motion.div>
+      </div>
+    </section>
   );
 }
 
@@ -303,6 +416,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* JAM WITH US */}
+      <JamSection />
 
       {/* CTA */}
       <section className="py-32 md:py-48 bg-background">
