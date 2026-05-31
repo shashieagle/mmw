@@ -84,7 +84,7 @@ function JamSection() {
     business: {
       tag: "For Business Owners",
       headline: "Scale smarter.\nSpend less.\nLook elite.",
-      body: "Tell us about your business, your current content challenges, and where you want to be. We'll come back with a plan that uses AI to get you there — faster and cheaper than traditional routes.",
+      body: "Tell us about your business, your current challenges, and where you want to be. We'll come back with a plan that uses AI to get you there — faster and cheaper than traditional routes.",
       cta: "Start the Conversation",
     },
     creator: {
