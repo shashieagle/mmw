@@ -2,16 +2,16 @@ import { useEffect } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export function FireOrb() {
-  const mouseX = useMotionValue(-100);
-  const mouseY = useMotionValue(-100);
+  const mouseX = useMotionValue(-200);
+  const mouseY = useMotionValue(-200);
 
-  // Tight spring for the core — snaps close to cursor
-  const coreX = useSpring(mouseX, { stiffness: 400, damping: 28 });
-  const coreY = useSpring(mouseY, { stiffness: 400, damping: 28 });
+  // Core — tight follow
+  const coreX = useSpring(mouseX, { stiffness: 500, damping: 30 });
+  const coreY = useSpring(mouseY, { stiffness: 500, damping: 30 });
 
-  // Lazy spring for the outer glow — lags behind
-  const glowX = useSpring(mouseX, { stiffness: 80, damping: 18 });
-  const glowY = useSpring(mouseY, { stiffness: 80, damping: 18 });
+  // Outer glow — lazy trail
+  const glowX = useSpring(mouseX, { stiffness: 90, damping: 20 });
+  const glowY = useSpring(mouseY, { stiffness: 90, damping: 20 });
 
   useEffect(() => {
     const move = (e: MouseEvent) => {
@@ -19,87 +19,77 @@ export function FireOrb() {
       mouseY.set(e.clientY);
     };
     window.addEventListener("mousemove", move);
-    // Hide default cursor globally
     document.body.style.cursor = "none";
     return () => {
       window.removeEventListener("mousemove", move);
-      document.body.style.cursor = "auto";
+      document.body.style.cursor = "";
     };
   }, [mouseX, mouseY]);
 
   return (
     <>
-      {/* Outer glow — trails lazily */}
+      {/* Outer haze — lazy */}
       <motion.div
         className="fixed pointer-events-none"
         style={{
+          top: 0,
+          left: 0,
           x: glowX,
           y: glowY,
-          translateX: "-50%",
-          translateY: "-50%",
-          width: 120,
-          height: 120,
+          marginLeft: -80,
+          marginTop: -80,
+          width: 160,
+          height: 160,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(255,95,20,0.30) 0%, rgba(236,88,0,0.12) 50%, transparent 75%)",
+          filter: "blur(24px)",
+          zIndex: 9996,
+        }}
+      />
+
+      {/* Mid ring — medium follow */}
+      <motion.div
+        className="fixed pointer-events-none"
+        style={{
+          top: 0,
+          left: 0,
+          x: glowX,
+          y: glowY,
+          marginLeft: -20,
+          marginTop: -20,
+          width: 40,
+          height: 40,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(255,120,30,0.55) 0%, rgba(236,88,0,0.25) 55%, transparent 80%)",
+          filter: "blur(8px)",
           zIndex: 9997,
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle, rgba(255,100,20,0.20) 0%, rgba(236,88,0,0.08) 50%, transparent 70%)",
-          filter: "blur(20px)",
         }}
       />
 
-      {/* Mid ring — medium lag */}
+      {/* Bright core — snaps to cursor */}
       <motion.div
         className="fixed pointer-events-none"
         style={{
-          x: glowX,
-          y: glowY,
-          translateX: "-50%",
-          translateY: "-50%",
-          width: 36,
-          height: 36,
-          zIndex: 9998,
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle, rgba(255,130,30,0.5) 0%, rgba(236,88,0,0.2) 60%, transparent 80%)",
-          filter: "blur(6px)",
-          mixBlendMode: "screen",
-        }}
-      />
-
-      {/* Core — tight follow, bright centre */}
-      <motion.div
-        className="fixed pointer-events-none"
-        style={{
+          top: 0,
+          left: 0,
           x: coreX,
           y: coreY,
-          translateX: "-50%",
-          translateY: "-50%",
-          zIndex: 9999,
-          width: 14,
-          height: 14,
+          marginLeft: -8,
+          marginTop: -8,
+          width: 16,
+          height: 16,
           borderRadius: "50%",
-          mixBlendMode: "screen",
+          background: "radial-gradient(circle, #ffe0a0 0%, #ff7020 40%, #ec5800 75%)",
+          boxShadow: "0 0 10px 4px rgba(255,100,20,0.9), 0 0 24px 8px rgba(236,88,0,0.5)",
+          zIndex: 9999,
         }}
       >
         {/* Pulse ring */}
         <motion.div
-          className="absolute inset-0 rounded-full"
-          style={{
-            background: "rgba(255,120,30,0.25)",
-            border: "1px solid rgba(255,120,30,0.6)",
-          }}
-          animate={{ scale: [1, 1.8, 1], opacity: [0.7, 0, 0.7] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-        />
-        {/* Bright dot */}
-        <div
-          className="absolute inset-0 rounded-full"
-          style={{
-            background:
-              "radial-gradient(circle, #ffb060 0%, #ff6010 50%, #ec5800 100%)",
-            boxShadow:
-              "0 0 8px 3px rgba(255,100,20,0.8), 0 0 20px 6px rgba(236,88,0,0.4)",
-          }}
+          className="absolute rounded-full border border-orange-400/60"
+          style={{ inset: 0 }}
+          animate={{ scale: [1, 2.4, 1], opacity: [0.8, 0, 0.8] }}
+          transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
         />
       </motion.div>
     </>
