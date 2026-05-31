@@ -17,8 +17,8 @@ export function Navbar() {
 
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/studio", label: "Studio" },
     { href: "/architects", label: "Architects" },
+    { href: "/studio", label: "Studio" },
     ...(isAdmin ? [{ href: "/upload", label: "Upload" }] : []),
   ];
 
