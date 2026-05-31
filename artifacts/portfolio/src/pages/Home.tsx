@@ -108,8 +108,8 @@ function JamSection() {
         <RevealText className="mb-14 md:mb-20">
           <p className="text-[10px] uppercase tracking-[0.6em] text-gray-600 font-bold mb-6">Let's Work Together</p>
           <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white font-display leading-[0.88] mb-6">
-            JAM<br />
-            <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)" }}>WITH US.</span>
+            LET'S<br />
+            <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)" }}>GO.</span>
           </h2>
           <p className="text-gray-500 text-lg max-w-md">Tell us who you are and what you need. We'll take it from there.</p>
         </RevealText>
@@ -495,25 +495,6 @@ export default function Home() {
 
       {/* JAM WITH US */}
       <JamSection />
-
-      {/* CTA */}
-      <section className="py-32 md:py-48 bg-background">
-        <div className="container mx-auto px-6 md:px-12 text-center">
-          <RevealText>
-            <h2 className="text-5xl md:text-8xl font-bold tracking-tighter text-white mb-10 font-display leading-[0.9]">
-              BUILD<br />WITH US.
-            </h2>
-            <p className="text-gray-500 text-lg mb-10 max-w-xl mx-auto">
-              Creative work or business strategy — we're the call to make when you want AI to actually change something.
-            </p>
-            <Link href="/catalyst">
-              <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-12 py-8 uppercase tracking-[0.2em] text-sm font-bold hover:scale-105 transition-transform">
-                Catalyst
-              </Button>
-            </Link>
-          </RevealText>
-        </div>
-      </section>
 
       <Footer />
     </div>
