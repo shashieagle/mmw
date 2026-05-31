@@ -7,7 +7,13 @@ interface Particle {
   age: number;
 }
 
+const isTouchDevice = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(pointer: coarse)").matches;
+
 export function FireOrb() {
+  if (isTouchDevice()) return null;
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const trail = useRef<Particle[]>([]);
   const mouse = useRef({ x: -300, y: -300 });
