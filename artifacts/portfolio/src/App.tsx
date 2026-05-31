@@ -10,6 +10,7 @@ import Upload from "@/pages/Upload";
 import Architects from "@/pages/Architects";
 import Catalyst from "@/pages/Catalyst";
 import { AdminLock } from "@/components/AdminLock";
+import { FireOrb } from "@/components/FireOrb";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ function App() {
         </WouterRouter>
         <Toaster />
         <AdminLock />
+        <FireOrb />
       </TooltipProvider>
     </QueryClientProvider>
   );
