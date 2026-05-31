@@ -292,17 +292,17 @@ export default function Home() {
             transition={{ duration: 1, delay: 1.4 }}
             className="mt-10 flex flex-col sm:flex-row gap-4"
           >
-            <Link href="/studio">
+            <Link href="/architects">
               <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold">
-                Explore Studio
+                Business Architects
               </Button>
             </Link>
-            <Link href="/architects">
+            <Link href="/studio">
               <Button
                 variant="outline"
                 className="border-white/30 text-white hover:bg-white/10 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold bg-transparent"
               >
-                Business Architects
+                Explore Studio
               </Button>
             </Link>
           </motion.div>
