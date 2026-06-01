@@ -493,6 +493,48 @@ export default function Home() {
         </div>
       </section>
 
+      {/* CATALYST CTA */}
+      <section className="py-24 md:py-36 bg-black border-t border-white/5 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-950/10 via-transparent to-transparent" />
+        </div>
+        <div className="container mx-auto px-6 md:px-12 relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <RevealText>
+              <p className="text-[10px] uppercase tracking-[0.6em] text-orange-600/70 font-bold mb-6">Core Team · 50 Seats Only</p>
+              <h2 className="text-5xl md:text-7xl font-bold tracking-tighter text-white leading-[0.88] font-display mb-8">
+                BUILD<br />
+                <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)" }}>WITH US.</span>
+              </h2>
+              <p className="text-gray-400 text-lg leading-relaxed max-w-md mb-10">
+                We're assembling a 50-person core team — creatives and business minds who want to be on the inside of what AI makes possible. Not employees. Partners.
+              </p>
+              <Link href="/catalyst">
+                <Button className="bg-white text-black hover:bg-orange-50 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold inline-flex items-center gap-3 group">
+                  See the Catalyst Program <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-300" />
+                </Button>
+              </Link>
+            </RevealText>
+
+            <RevealText delay={0.15}>
+              <div className="grid grid-cols-2 gap-px bg-white/5">
+                {[
+                  { num: "50", label: "Total Seats" },
+                  { num: "2", label: "Disciplines" },
+                  { num: "AI", label: "First Execution" },
+                  { num: "∞", label: "Output Potential" },
+                ].map((stat, i) => (
+                  <div key={i} className="bg-black p-8 flex flex-col justify-between min-h-[130px]">
+                    <p className="text-4xl md:text-5xl font-bold text-white font-display tracking-tighter">{stat.num}</p>
+                    <p className="text-xs text-gray-600 uppercase tracking-[0.25em] font-bold">{stat.label}</p>
+                  </div>
+                ))}
+              </div>
+            </RevealText>
+          </div>
+        </div>
+      </section>
+
       {/* JAM WITH US */}
       <JamSection />
 

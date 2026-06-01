@@ -19,6 +19,7 @@ export function Navbar() {
     { href: "/", label: "Home" },
     { href: "/architects", label: "Architects" },
     { href: "/studio", label: "Studio" },
+    { href: "/catalyst", label: "Catalyst" },
     ...(isAdmin ? [{ href: "/upload", label: "Upload" }] : []),
   ];
 
