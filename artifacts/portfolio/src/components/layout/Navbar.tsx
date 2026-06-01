@@ -15,11 +15,13 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // CATALYST: set showCatalyst to true to make Catalyst visible in the nav
+  const showCatalyst = false;
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/architects", label: "Architects" },
     { href: "/studio", label: "Studio" },
-    { href: "/catalyst", label: "Catalyst" },
+    ...(showCatalyst ? [{ href: "/catalyst", label: "Catalyst" }] : []),
     ...(isAdmin ? [{ href: "/upload", label: "Upload" }] : []),
   ];
 

@@ -493,8 +493,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CATALYST CTA */}
-      <section className="py-24 md:py-36 bg-black border-t border-white/5 relative overflow-hidden">
+      {/* CATALYST CTA — hidden from public; set showCatalyst to true to re-enable */}
+      {false && <section className="py-24 md:py-36 bg-black border-t border-white/5 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute inset-0 bg-gradient-to-br from-orange-950/10 via-transparent to-transparent" />
         </div>
@@ -533,7 +533,7 @@ export default function Home() {
             </RevealText>
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* JAM WITH US */}
       <JamSection />
