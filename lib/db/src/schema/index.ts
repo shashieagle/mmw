@@ -22,3 +22,5 @@ export * from "./caseStudyMedia";
 export * from "./studioImages";
 export * from "./caseStudies";
 export * from "./settings";
+export * from "./conversations";
+export * from "./messages";

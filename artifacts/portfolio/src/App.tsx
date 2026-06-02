@@ -11,6 +11,7 @@ import Architects from "@/pages/Architects";
 import Catalyst from "@/pages/Catalyst";
 import { AdminLock } from "@/components/AdminLock";
 import { FireOrb } from "@/components/FireOrb";
+import { MonkChat } from "@/components/MonkChat";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ function App() {
         <Toaster />
         <AdminLock />
         <FireOrb />
+        <MonkChat />
       </TooltipProvider>
     </QueryClientProvider>
   );
