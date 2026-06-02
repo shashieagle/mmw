@@ -7,6 +7,26 @@ interface Message {
   content: string;
 }
 
+function MonkResponse({ content }: { content: string }) {
+  const lines = content.split("\n").filter((l) => l.trim() !== "");
+  return (
+    <div className="flex flex-col gap-1.5">
+      {lines.map((line, i) => {
+        const isBullet = line.trim().startsWith("•");
+        if (isBullet) {
+          return (
+            <div key={i} className="flex items-start gap-2.5">
+              <span className="text-white/40 mt-[2px] shrink-0">•</span>
+              <span>{line.trim().replace(/^•\s*/, "")}</span>
+            </div>
+          );
+        }
+        return <p key={i} className="text-gray-300 font-medium">{line}</p>;
+      })}
+    </div>
+  );
+}
+
 const FAQ_QUESTIONS = [
   "What does MMW do?",
   "What is the Creative Studio?",
@@ -235,7 +255,9 @@ export function MonkChat() {
                         : "bg-white/5 text-gray-200 border border-white/8"
                     }`}
                   >
-                    {msg.content}
+                    {msg.role === "assistant"
+                      ? <MonkResponse content={msg.content} />
+                      : msg.content}
                   </div>
                 </div>
               ))}
@@ -244,7 +266,7 @@ export function MonkChat() {
               {streamingContent && (
                 <div className="flex justify-start">
                   <div className="max-w-[88%] text-sm leading-relaxed px-4 py-3 bg-white/5 text-gray-200 border border-white/8">
-                    {streamingContent}
+                    <MonkResponse content={streamingContent} />
                     <span className="inline-block w-1 h-3 bg-white/40 ml-0.5 animate-pulse" />
                   </div>
                 </div>
