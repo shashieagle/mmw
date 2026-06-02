@@ -99,6 +99,38 @@ router.post("/openai/conversations/:id/messages", async (req, res) => {
   // Save assistant response
   await db.insert(messages).values({ conversationId: id, role: "assistant", content: fullResponse });
 
+  // Generate contextual follow-up questions that nudge toward a discovery call
+  try {
+    const suggestionResponse = await openai.chat.completions.create({
+      model: "gpt-5-mini",
+      max_completion_tokens: 200,
+      messages: [
+        {
+          role: "system",
+          content: `You generate follow-up questions for a visitor on the Monk Monkey Works website. 
+Based on the conversation, create exactly 3 short follow-up questions that:
+1. Feel natural and relevant to what was just discussed
+2. Progressively guide the visitor toward wanting to work with MMW or book a discovery call
+3. Are phrased from the visitor's perspective (e.g. "How would MMW help my business?")
+4. Are concise — max 10 words each
+
+Return ONLY a JSON array of 3 strings. No explanation, no markdown.
+Example: ["How does this work for small businesses?", "What happens in a discovery call?", "Can MMW help with our branding?"]`,
+        },
+        {
+          role: "user",
+          content: `Last question asked: "${userContent}"\nMonk's answer: "${fullResponse}"\n\nGenerate 3 follow-up questions.`,
+        },
+      ],
+    });
+
+    const raw = suggestionResponse.choices[0]?.message?.content ?? "[]";
+    const suggestions = JSON.parse(raw.trim());
+    res.write(`data: ${JSON.stringify({ suggestions })}\n\n`);
+  } catch {
+    // silently skip suggestions if generation fails
+  }
+
   res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
   res.end();
 });

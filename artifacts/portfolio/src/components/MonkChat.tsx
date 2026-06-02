@@ -18,49 +18,6 @@ const FAQ_QUESTIONS = [
   "What makes MMW different?",
 ];
 
-const FOLLOW_UPS: Record<string, string[]> = {
-  "What does MMW do?": [
-    "What is the Creative Studio?",
-    "What are Business Architects?",
-    "How do we start working together?",
-  ],
-  "What is the Creative Studio?": [
-    "What does MMW do?",
-    "What makes MMW different?",
-    "How do we start working together?",
-  ],
-  "What are Business Architects?": [
-    "What does MMW do?",
-    "Who is MMW for?",
-    "How do we start working together?",
-  ],
-  "What is the Creative Ecosystem Certification™?": [
-    "What makes MMW different?",
-    "What does MMW do?",
-    "How do we start working together?",
-  ],
-  "What is the Catalyst Program?": [
-    "Who is MMW for?",
-    "What does MMW do?",
-    "How do we start working together?",
-  ],
-  "How do we start working together?": [
-    "What does MMW do?",
-    "Who is MMW for?",
-    "What are Business Architects?",
-  ],
-  "Who is MMW for?": [
-    "What does MMW do?",
-    "What are Business Architects?",
-    "How do we start working together?",
-  ],
-  "What makes MMW different?": [
-    "What is the Creative Ecosystem Certification™?",
-    "What does MMW do?",
-    "How do we start working together?",
-  ],
-};
-
 export function MonkChat() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -68,7 +25,7 @@ export function MonkChat() {
   const [loading, setLoading] = useState(false);
   const [conversationId, setConversationId] = useState<number | null>(null);
   const [streamingContent, setStreamingContent] = useState("");
-  const [lastQuestion, setLastQuestion] = useState<string | null>(null);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showFAQ, setShowFAQ] = useState(true);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -98,7 +55,7 @@ export function MonkChat() {
     setInput("");
     setLoading(true);
     setShowFAQ(false);
-    setLastQuestion(text);
+    setSuggestions([]);
     setMessages((prev) => [...prev, { role: "user", content: text }]);
     setStreamingContent("");
 
@@ -126,6 +83,9 @@ export function MonkChat() {
             if (parsed.content) {
               full += parsed.content;
               setStreamingContent(full);
+            }
+            if (parsed.suggestions && Array.isArray(parsed.suggestions)) {
+              setSuggestions(parsed.suggestions);
             }
             if (parsed.done) {
               setMessages((prev) => [...prev, { role: "assistant", content: full }]);
@@ -156,8 +116,6 @@ export function MonkChat() {
     setOpen(true);
     setShowFAQ(true);
   };
-
-  const followUps = lastQuestion ? (FOLLOW_UPS[lastQuestion] ?? FAQ_QUESTIONS.slice(0, 3)) : [];
 
   return (
     <>
@@ -303,8 +261,8 @@ export function MonkChat() {
                 </div>
               )}
 
-              {/* Follow-up suggestions after answer */}
-              {!loading && !streamingContent && messages.length > 0 && followUps.length > 0 && (
+              {/* AI-generated follow-up suggestions */}
+              {!loading && !streamingContent && suggestions.length > 0 && (
                 <motion.div
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -312,15 +270,18 @@ export function MonkChat() {
                   className="flex flex-col gap-2 mt-1"
                 >
                   <p className="text-[10px] uppercase tracking-[0.25em] text-gray-600 font-bold">You might also ask</p>
-                  {followUps.map((q) => (
-                    <button
-                      key={q}
+                  {suggestions.map((q, i) => (
+                    <motion.button
+                      key={i}
+                      initial={{ opacity: 0, x: -6 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.07 }}
                       onClick={() => sendMessage(q)}
                       className="flex items-center justify-between text-left px-4 py-2.5 border border-white/8 text-gray-500 text-xs hover:border-white/25 hover:text-white transition-all duration-200 group"
                     >
                       <span>{q}</span>
                       <ChevronRight size={11} className="shrink-0 text-gray-700 group-hover:text-gray-400 transition-colors" />
-                    </button>
+                    </motion.button>
                   ))}
                 </motion.div>
               )}
