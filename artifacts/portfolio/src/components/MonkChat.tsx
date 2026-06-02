@@ -139,11 +139,37 @@ export function MonkChat() {
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
             onClick={handleOpen}
-            className="fixed bottom-6 right-6 z-[9990] w-14 h-14 bg-black border border-white/20 rounded-full flex items-center justify-center hover:border-white/50 transition-colors duration-300 group"
-            style={{ boxShadow: "0 0 20px rgba(255,255,255,0.05)" }}
+            className="fixed bottom-6 right-6 z-[9990] group"
+            style={{ width: 60, height: 60 }}
           >
-            <MonkIcon />
-            <span className="absolute -top-9 right-0 text-[10px] uppercase tracking-[0.2em] text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-bold">
+            {/* Outer breathe ring */}
+            <motion.span
+              className="absolute inset-0 rounded-full border border-white/30"
+              animate={{ scale: [1, 1.55, 1], opacity: [0.5, 0, 0.5] }}
+              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+            />
+            {/* Middle breathe ring */}
+            <motion.span
+              className="absolute inset-0 rounded-full border border-white/20"
+              animate={{ scale: [1, 1.28, 1], opacity: [0.6, 0, 0.6] }}
+              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
+            />
+            {/* Logo button core */}
+            <motion.span
+              className="absolute inset-0 rounded-full bg-black border border-white/25 flex items-center justify-center overflow-hidden"
+              animate={{ scale: [1, 1.04, 1] }}
+              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+              style={{ boxShadow: "0 0 18px rgba(255,255,255,0.12)" }}
+            >
+              <img
+                src="/logo-icon-transparent.png"
+                alt="Monk"
+                className="w-8 h-8 object-contain"
+                style={{ filter: "brightness(0) invert(1)" }}
+              />
+            </motion.span>
+            {/* Tooltip */}
+            <span className="absolute -top-9 right-0 text-[10px] uppercase tracking-[0.2em] text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-bold pointer-events-none">
               Ask Monk
             </span>
           </motion.button>
