@@ -175,6 +175,6 @@
 }
 
 .animate-ticker {
-  animation: ticker 55s linear infinite;
+  animation: ticker 90s linear infinite;
   width: max-content;
 }
