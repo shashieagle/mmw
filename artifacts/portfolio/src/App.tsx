@@ -39,7 +39,8 @@ function App() {
         </WouterRouter>
         <Toaster />
         <AdminLock />
-        <FireOrb />
+        {/* FireOrb disabled — say "bring back FireOrb" to re-enable */}
+      {false && <FireOrb />}
         <MonkChat />
       </TooltipProvider>
     </QueryClientProvider>

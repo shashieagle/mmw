@@ -1,0 +1,1 @@
+- [FireOrb cursor](fireorb.md) — comet tail cursor effect, currently disabled; user says "bring back FireOrb" to re-enable
