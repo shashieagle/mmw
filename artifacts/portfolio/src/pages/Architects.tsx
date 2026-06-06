@@ -386,8 +386,7 @@ function KnownForSection() {
   return (
     <section className="py-16 md:py-20 bg-background border-t border-white/5">
       <div className="container mx-auto px-6 md:px-12">
-        <div className="flex items-center justify-between">
-          <p className="text-xs uppercase tracking-[0.4em] text-gray-600 font-bold">Capabilities</p>
+        <div className="flex items-center justify-end">
           <button
             onClick={() => setRevealed(!revealed)}
             className="flex items-center gap-3 text-xs uppercase tracking-[0.25em] font-bold text-gray-500 hover:text-white border border-white/10 hover:border-white/30 px-6 py-3 transition-all duration-300 group"
