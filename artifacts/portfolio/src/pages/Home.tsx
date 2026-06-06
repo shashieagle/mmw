@@ -425,40 +425,22 @@ export default function Home() {
       {/* ARCHITECTS TEASER */}
       <section className="py-24 md:py-32 bg-zinc-950 border-t border-white/5">
         <div className="container mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-            <RevealText>
-              <p className="text-xs uppercase tracking-[0.4em] text-gray-500 font-bold mb-6">Business Architects</p>
-              <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white mb-8 font-display leading-[1]">
-                We don't just<br />create.
-                <br />
-                <span className="text-gray-500">We help companies<br />scale using it.</span>
-              </h2>
-              <p className="text-gray-400 text-lg leading-relaxed mb-10">
-                We architect the systems that let businesses move faster, look better, and spend smarter.
-              </p>
-              <Link href="/architects">
-                <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold inline-flex items-center gap-3">
-                  View Case Studies <ArrowRight size={14} />
-                </Button>
-              </Link>
-            </RevealText>
-
-            <div className="grid grid-cols-1 gap-px bg-white/5 lg:mt-16">
-              {[
-                { num: "01", headline: "Product & Brand Photography", sub: "Premium visuals without studio costs" },
-                { num: "02", headline: "Strategy & Roadmapping", sub: "End-to-end AI adoption plans" },
-                { num: "03", headline: "Visual Content Automation", sub: "Catalogues, campaigns, menus at scale" },
-              ].map((item, i) => (
-                <RevealText key={i} delay={i * 0.1}>
-                  <div className="bg-zinc-950 p-8 hover:bg-black transition-colors group border-b border-white/5 last:border-0">
-                    <p className="text-4xl font-bold text-white/5 font-mono mb-4 group-hover:text-white/10 transition-colors">{item.num}</p>
-                    <p className="text-white font-bold text-lg mb-1 tracking-tight">{item.headline}</p>
-                    <p className="text-gray-600 text-sm">{item.sub}</p>
-                  </div>
-                </RevealText>
-              ))}
-            </div>
-          </div>
+          <RevealText className="max-w-3xl">
+            <p className="text-xs uppercase tracking-[0.4em] text-gray-500 font-bold mb-6">Business Architects</p>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white mb-8 font-display leading-[1]">
+              We don't just<br />create.
+              <br />
+              <span className="text-gray-500">We help companies<br />scale using it.</span>
+            </h2>
+            <p className="text-gray-400 text-lg leading-relaxed mb-10">
+              We architect the systems that let businesses move faster, look better, and spend smarter.
+            </p>
+            <Link href="/architects">
+              <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold inline-flex items-center gap-3">
+                View Case Studies <ArrowRight size={14} />
+              </Button>
+            </Link>
+          </RevealText>
         </div>
       </section>
 
