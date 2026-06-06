@@ -527,9 +527,9 @@ export default function Home() {
             {[
               "You treat creative as a cost, not an investment",
               "You just need someone to execute your brief",
-              "You're not ready to be challenged on your assumptions",
-              "You measure success in likes and views",
-              "You need guaranteed outcomes and zero risk",
+              "Your assumptions aren't up for discussion",
+              "You see process as overhead, not an advantage",
+              "You track activity, not business impact",
             ].map((line, i) => (
               <RevealText key={i} delay={i * 0.08}>
                 <div className="flex items-center gap-5 py-5">
