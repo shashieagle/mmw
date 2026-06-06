@@ -6,7 +6,7 @@ export function Footer() {
       <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-start gap-12">
         <div className="max-w-sm">
           <Link href="/" className="inline-block mb-6">
-            <span className="text-2xl font-bold tracking-tighter" style={{ color: "#E8572A" }}>MONKMONKEYWORKS</span>
+            <span className="text-2xl font-bold tracking-tighter text-white">MONKMONKEYWORKS</span>
           </Link>
           <p className="text-gray-500 text-sm leading-relaxed">
             The world's first Business Architecture studio driven by narrative design and powered by AI.

@@ -39,7 +39,7 @@ export function Navbar() {
             className="h-8 w-8 object-contain"
             style={{ filter: "brightness(0) saturate(100%) invert(45%) sepia(90%) saturate(700%) hue-rotate(345deg) brightness(105%)" }}
           />
-          <span className="text-xl md:text-2xl font-bold tracking-tighter" style={{ color: "#E8572A" }}>
+          <span className="text-xl md:text-2xl font-bold tracking-tighter text-white">
             MONKMONKEYWORKS
           </span>
           <div className="h-1 w-1 bg-white rounded-full group-hover:scale-[3] transition-transform duration-300" />
