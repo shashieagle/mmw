@@ -547,10 +547,13 @@ export default function Home() {
       </section>
 
       {/* BRIDGE */}
-      <section className="py-16 md:py-20 bg-zinc-950 border-t border-white/5">
-        <RevealText className="container mx-auto px-6 md:px-12 max-w-3xl">
-          <p className="text-gray-600 text-sm uppercase tracking-[0.4em] font-bold">
-            Still here? That means something.
+      <section className="py-24 md:py-32 bg-zinc-950 border-t border-white/5">
+        <RevealText className="container mx-auto px-6 md:px-12">
+          <p className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-white font-display leading-[0.9]">
+            Still here?<br />
+            <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.25)" }}>
+              That means something.
+            </span>
           </p>
         </RevealText>
       </section>
