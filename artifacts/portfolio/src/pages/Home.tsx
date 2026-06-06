@@ -89,7 +89,7 @@ function JamSection() {
     },
     creator: {
       tag: "For Creators",
-      headline: "Your vision.\nOur tools.\nUnlimited output.",
+      headline: "Your idea.\nOur craft.\nSomething new.",
       body: "Tell us the idea. We'll figure out what's possible.",
       cta: "Tell Us Your Vision",
     },
