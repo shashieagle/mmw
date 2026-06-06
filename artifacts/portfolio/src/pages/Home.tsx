@@ -84,7 +84,7 @@ function JamSection() {
     business: {
       tag: "For Business Owners",
       headline: "Scale smarter.\nSpend less.\nLook elite.",
-      body: "Tell us who you are and what you need. We'll take it from there.",
+      body: "Tell us what's holding your business back. We'll build what gets you past it.",
       cta: "Start the Conversation",
     },
     creator: {
