@@ -84,13 +84,13 @@ function JamSection() {
     business: {
       tag: "For Business Owners",
       headline: "Scale smarter.\nSpend less.\nLook elite.",
-      body: "Tell us about your business, your current challenges, and where you want to be. We'll come back with a plan that uses AI to get you there — faster and cheaper than traditional routes.",
+      body: "Tell us who you are and what you need. We'll take it from there.",
       cta: "Start the Conversation",
     },
     creator: {
       tag: "For Creators",
       headline: "Your vision.\nOur tools.\nUnlimited output.",
-      body: "Whether you're building a brand, a series, or a signature visual world — we want to hear the idea. Share what you're making, what's missing, and what kind of collaboration excites you.",
+      body: "Tell us the idea. We'll figure out what's possible.",
       cta: "Tell Us Your Vision",
     },
   };

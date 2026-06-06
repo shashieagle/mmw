@@ -15,38 +15,32 @@ const services = [
   {
     icon: Brain,
     title: "AI Strategy & Roadmapping",
-    description:
-      "We audit your existing workflows and define a pragmatic AI adoption roadmap — from quick wins to long-term transformation. No buzzwords, just a clear path.",
+    description: "Audit → roadmap → adoption. Clear path, zero buzzwords.",
   },
   {
     icon: Layers,
     title: "Custom AI Integration",
-    description:
-      "We build and embed AI tools directly into your business operations — whether that's automating customer service, generating marketing content, or processing data at scale.",
+    description: "AI embedded directly into your operations — not bolted on.",
   },
   {
     icon: BarChart3,
     title: "Visual Content Automation",
-    description:
-      "Product shots, lifestyle imagery, menu cards, catalogue renders — we replace costly traditional shoots with AI pipelines that move at business speed.",
+    description: "Studio-quality visuals at business speed. No shoot required.",
   },
   {
     icon: Zap,
     title: "Rapid Prototyping",
-    description:
-      "We move fast. From concept to working prototype in days, not months. Test ideas, validate with your audience, and iterate without burning budget.",
+    description: "Concept to working prototype in days, not months.",
   },
   {
     icon: Users,
     title: "Team Training & Workshops",
-    description:
-      "We upskill your internal teams on AI tools relevant to their roles — designers, marketers, operators. Practical, hands-on, zero fluff.",
+    description: "Hands-on AI upskilling for your actual team. Zero fluff.",
   },
   {
     icon: Globe,
     title: "Brand & Campaign Generation",
-    description:
-      "Full campaign assets generated at scale — social content, ad creatives, video spots, look-books. Consistent brand voice, zero production bottlenecks.",
+    description: "Full campaign assets at scale. Consistent voice, no bottlenecks.",
   },
 ];
 
@@ -521,8 +515,8 @@ export default function Architects() {
               <br />
               <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.25)" }}>Architects</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-400 font-light max-w-2xl leading-relaxed mb-12">
-              We help businesses implement technology that actually works — and scales. Strategy, integration, and content automation from concept to deployment.
+            <p className="text-xl md:text-2xl text-gray-400 font-light max-w-xl leading-relaxed mb-12">
+              Strategy, integration, and automation — from concept to scale.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a href="mailto:hello@monkmonkeyworks.com">
