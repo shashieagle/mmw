@@ -676,11 +676,12 @@ export default function Architects() {
 
             {/* Admin: editable form URL */}
             {isAdmin && (
-              <div className="mb-6 w-full max-w-sm">
+              <div className="mb-8 w-full max-w-sm border border-amber-500/40 bg-amber-950/20 p-4">
+                <p className="text-[10px] uppercase tracking-[0.3em] text-amber-500/70 font-bold mb-3">Admin — Set Form Link</p>
                 {editingForm ? (
                   <div className="flex flex-col gap-2">
                     <input
-                      className="w-full bg-black border border-white/20 text-white text-xs px-3 py-2 outline-none focus:border-white/50 placeholder:text-gray-600"
+                      className="w-full bg-black border border-amber-500/40 text-white text-xs px-3 py-2 outline-none focus:border-amber-400 placeholder:text-gray-600"
                       placeholder="Paste Google Form link…"
                       value={draftForm}
                       onChange={(e) => setDraftForm(e.target.value)}
@@ -690,7 +691,7 @@ export default function Architects() {
                       <button
                         onClick={saveFormUrl}
                         disabled={savingForm}
-                        className="flex items-center gap-1 px-3 py-1.5 bg-white text-black text-xs font-bold uppercase tracking-wider hover:bg-gray-200 transition-colors disabled:opacity-50"
+                        className="flex items-center gap-1 px-3 py-1.5 bg-amber-500 text-black text-xs font-bold uppercase tracking-wider hover:bg-amber-400 transition-colors disabled:opacity-50"
                       >
                         <Check size={11} /> Save
                       </button>
@@ -705,13 +706,13 @@ export default function Architects() {
                 ) : (
                   <button
                     onClick={() => { setDraftForm(architectsFormUrl); setEditingForm(true); }}
-                    className="flex items-center gap-2 text-xs text-gray-600 hover:text-white transition-colors border border-white/10 px-3 py-2 w-full justify-center"
+                    className="flex items-center gap-2 text-xs text-amber-500/60 hover:text-amber-400 transition-colors w-full"
                   >
                     <Pencil size={11} />
                     {architectsFormUrl ? (
                       <span className="truncate">{architectsFormUrl}</span>
                     ) : (
-                      <span>Set form link…</span>
+                      <span>Click to set Google Form link…</span>
                     )}
                   </button>
                 )}
