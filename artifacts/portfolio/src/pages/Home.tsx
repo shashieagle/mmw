@@ -268,7 +268,7 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="text-xs uppercase tracking-[0.6em] text-gray-500 font-bold mb-6"
           >
-            AI Creative & Business Intelligence
+            Business Architecture · Narrative Design · AI
           </motion.p>
 
           <motion.h1
@@ -319,7 +319,7 @@ export default function Home() {
       </section>
 
       {/* TICKER */}
-      <Ticker text="Creative Studio — Business Intelligence Architects — We build what's next" />
+      <Ticker text="Business Architecture — Narrative Design — Powered by AI — We build what's next" />
 
       {/* TWO ARMS — full-bleed split */}
       <section className="relative z-20 bg-background">
@@ -389,8 +389,8 @@ export default function Home() {
           <RevealText className="max-w-5xl">
             <p className="text-xs uppercase tracking-[0.5em] text-gray-600 font-bold mb-8">About</p>
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-white leading-[1.05] mb-10">
-              A Creative Studio<br />and Business Intelligence<br />
-              <span className="text-gray-500">practice built on AI.</span>
+              The world's first<br />Business Architecture studio<br />
+              <span className="text-gray-500">driven by narrative design.</span>
             </h2>
             <p className="text-gray-400 text-xl font-light leading-relaxed max-w-2xl">
               One team. Both sides of the intelligence revolution.
