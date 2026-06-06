@@ -9,8 +9,7 @@ export function Footer() {
             <span className="text-2xl font-bold tracking-tighter text-white">MONKMONKEYWORKS</span>
           </Link>
           <p className="text-gray-500 text-sm leading-relaxed">
-            AI creative studio and business intelligence consultancy. We create with AI, we build
-            with AI, and we architect businesses around it.
+            The world's first Business Architecture studio driven by narrative design and powered by AI.
           </p>
         </div>
 
@@ -82,7 +81,7 @@ export function Footer() {
 
       <div className="container mx-auto px-6 md:px-12 mt-12 md:mt-24 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-600 uppercase tracking-widest">
         <p>&copy; {new Date().getFullYear()} MONKMONKEYWORKS. All rights reserved.</p>
-        <p>AI Creative & Business Architecture</p>
+        <p>Business Architecture · Narrative Design · AI</p>
       </div>
     </footer>
   );
