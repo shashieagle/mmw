@@ -523,19 +523,13 @@ export default function Home() {
             </h2>
           </RevealText>
 
-          <RevealText>
-            <p className="text-gray-500 text-lg font-light mb-12 max-w-xl">
-              If any of these reflect how you operate, we're probably not the right fit — and that's okay.
-            </p>
-          </RevealText>
-
           <div className="flex flex-col divide-y divide-white/5 border-t border-white/5">
             {[
-              "The logo just needs to be bigger.",
-              "My cousin does design too, actually.",
-              "We'll know what we want when we see it.",
-              "Can we just make it pop more?",
-              "Let's not overcomplicate this.",
+              "You treat creative as a cost, not an investment",
+              "You just need someone to execute your brief",
+              "Your assumptions aren't up for discussion",
+              "You see process as overhead, not an advantage",
+              "You track activity, not business impact",
             ].map((line, i) => (
               <RevealText key={i} delay={i * 0.08}>
                 <div className="flex items-center gap-5 py-5">
