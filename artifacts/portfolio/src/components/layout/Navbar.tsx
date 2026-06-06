@@ -42,7 +42,7 @@ export function Navbar() {
           <span className="text-xl md:text-2xl font-bold tracking-tighter text-white">
             MONKMONKEYWORKS
           </span>
-          <div className="h-1 w-1 bg-white rounded-full group-hover:scale-[3] transition-transform duration-300" />
+          <div className="h-1 w-1 rounded-full group-hover:scale-[3] transition-transform duration-300" style={{ backgroundColor: "#E8572A" }} />
         </Link>
 
         {/* Desktop Nav */}
@@ -57,9 +57,10 @@ export function Navbar() {
             >
               {link.label}
               <span
-                className={`absolute bottom-0 left-0 h-[1px] bg-white transition-all duration-300 ${
+                className={`absolute bottom-0 left-0 h-[1px] transition-all duration-300 ${
                   location === link.href ? "w-full" : "w-0 group-hover:w-full"
                 }`}
+                style={{ backgroundColor: "#E8572A" }}
               />
             </Link>
           ))}

@@ -192,7 +192,7 @@ export default function Studio() {
           transition={{ duration: 0.8 }}
           className="mb-16"
         >
-          <p className="text-xs uppercase tracking-[0.4em] text-gray-500 font-bold mb-4">Creative Division</p>
+          <p className="text-xs uppercase tracking-[0.4em] font-bold mb-4" style={{ color: "#E8572A" }}>Creative Division</p>
           <h1 className="text-4xl md:text-7xl font-bold tracking-tighter text-white mb-6 uppercase font-display">
             The Studio
           </h1>

@@ -266,7 +266,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-xs uppercase tracking-[0.6em] text-gray-500 font-bold mb-6"
+            className="text-xs uppercase tracking-[0.6em] font-bold mb-6" style={{ color: "#E8572A" }}
           >
             Business Architecture · Narrative Design · AI
           </motion.p>
@@ -333,7 +333,7 @@ export default function Home() {
               className="group relative overflow-hidden border-b md:border-b-0 md:border-r border-white/10 p-12 md:p-16 lg:p-24 flex flex-col justify-between min-h-[420px] hover:bg-white/[0.03] transition-all duration-700 cursor-pointer"
             >
               <div>
-                <p className="text-[10px] uppercase tracking-[0.6em] text-gray-600 font-bold mb-8">01 — Creative Division</p>
+                <p className="text-[10px] uppercase tracking-[0.6em] font-bold mb-8" style={{ color: "#E8572A" }}>01 — Creative Division</p>
                 <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-white mb-6 font-display leading-[0.88]">
                   The
                   <br />
@@ -362,7 +362,7 @@ export default function Home() {
               className="group relative overflow-hidden p-12 md:p-16 lg:p-24 flex flex-col justify-between min-h-[420px] bg-zinc-950 hover:bg-zinc-900 transition-all duration-700 cursor-pointer"
             >
               <div>
-                <p className="text-[10px] uppercase tracking-[0.6em] text-gray-600 font-bold mb-8">02 — Business Division</p>
+                <p className="text-[10px] uppercase tracking-[0.6em] font-bold mb-8" style={{ color: "#E8572A" }}>02 — Business Division</p>
                 <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-white mb-6 font-display leading-[0.88]">
                   Business
                   <br />
@@ -387,7 +387,7 @@ export default function Home() {
       <section className="py-32 md:py-48 bg-black border-t border-white/5">
         <div className="container mx-auto px-6 md:px-12">
           <RevealText className="max-w-5xl">
-            <p className="text-xs uppercase tracking-[0.5em] text-gray-600 font-bold mb-8">About</p>
+            <p className="text-xs uppercase tracking-[0.5em] font-bold mb-8" style={{ color: "#E8572A" }}>About</p>
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-white leading-[1.05] mb-10">
               The world's first<br />Business Architecture studio<br />
               <span className="text-gray-500">driven by narrative design.</span>
@@ -407,7 +407,7 @@ export default function Home() {
         <section className="py-24 md:py-32 bg-background border-t border-white/5">
           <div className="container mx-auto px-6 md:px-12 mb-16 flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
             <RevealText>
-              <p className="text-xs uppercase tracking-[0.3em] text-gray-500 font-bold mb-4">Studio Output</p>
+              <p className="text-xs uppercase tracking-[0.3em] font-bold mb-4" style={{ color: "#E8572A" }}>Studio Output</p>
               <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white font-display">Selected Works</h2>
             </RevealText>
             <Link href="/studio" className="border-b border-white pb-1 text-sm uppercase tracking-[0.2em] font-bold hover:text-gray-300 transition-colors">
@@ -426,7 +426,7 @@ export default function Home() {
       <section className="py-24 md:py-32 bg-zinc-950 border-t border-white/5">
         <div className="container mx-auto px-6 md:px-12">
           <RevealText className="max-w-3xl">
-            <p className="text-xs uppercase tracking-[0.4em] text-gray-500 font-bold mb-6">Business Architects</p>
+            <p className="text-xs uppercase tracking-[0.4em] font-bold mb-6" style={{ color: "#E8572A" }}>Business Architects</p>
             <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white mb-8 font-display leading-[1]">
               We don't just<br />create.
               <br />
@@ -516,7 +516,7 @@ export default function Home() {
       <section className="py-32 md:py-48 bg-zinc-950 border-t border-white/5 relative overflow-hidden">
         <div className="container mx-auto px-6 md:px-12 relative z-10">
           <RevealText>
-            <p className="text-[10px] uppercase tracking-[0.6em] text-gray-600 font-bold mb-8">Not For Everyone</p>
+            <p className="text-[10px] uppercase tracking-[0.6em] font-bold mb-8" style={{ color: "#E8572A" }}>Not For Everyone</p>
             <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white font-display leading-[0.88] mb-16">
               DON'T<br />
               <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.25)" }}>HIRE US.</span>

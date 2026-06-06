@@ -507,7 +507,7 @@ export default function Architects() {
         </div>
         <div className="relative z-10 container mx-auto px-6 md:px-12">
           <motion.div initial={{ opacity: 0, y: 60 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.1, ease: [0.21, 0.47, 0.32, 0.98] }}>
-            <p className="text-xs uppercase tracking-[0.6em] text-gray-600 font-bold mb-8">Monkmonkeyworks — Business Division</p>
+            <p className="text-xs uppercase tracking-[0.6em] font-bold mb-8" style={{ color: "#E8572A" }}>Monkmonkeyworks — Business Division</p>
             <h1 className="text-7xl md:text-[9rem] lg:text-[12rem] font-bold tracking-tighter leading-[0.83] mb-10">
               Business
               <br />
@@ -538,7 +538,7 @@ export default function Architects() {
         <div className="container mx-auto px-6 md:px-12">
           <div className="mb-16 md:mb-24 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
             <div>
-              <p className="text-xs uppercase tracking-[0.4em] text-gray-500 font-bold mb-4">Proof of Work</p>
+              <p className="text-xs uppercase tracking-[0.4em] font-bold mb-4" style={{ color: "#E8572A" }}>Proof of Work</p>
               <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white font-display">Case Studies</h2>
             </div>
             <div className="flex items-end gap-6">
@@ -635,7 +635,7 @@ export default function Architects() {
       <section className="py-24 md:py-32 bg-zinc-950 border-t border-white/5">
         <div className="container mx-auto px-6 md:px-12">
           <div className="mb-16">
-            <p className="text-xs uppercase tracking-[0.4em] text-gray-500 font-bold mb-4">How It Works</p>
+            <p className="text-xs uppercase tracking-[0.4em] font-bold mb-4" style={{ color: "#E8572A" }}>How It Works</p>
             <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white font-display">Our Process</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-px bg-white/5">
