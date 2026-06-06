@@ -516,13 +516,6 @@ export default function Architects() {
             <p className="text-xl md:text-2xl text-gray-400 font-light max-w-xl leading-relaxed mb-12">
               Strategy, integration, and automation — from concept to scale.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a href="#case-studies">
-                <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 rounded-none px-10 py-7 uppercase tracking-[0.2em] text-xs font-bold bg-transparent">
-                  See Case Studies
-                </Button>
-              </a>
-            </div>
           </motion.div>
         </div>
       </section>
