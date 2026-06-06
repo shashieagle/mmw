@@ -83,7 +83,7 @@ function JamSection() {
   const content = {
     business: {
       tag: "For Business Owners",
-      headline: "Scale smarter.\nSpend less.\nLook elite.",
+      headline: "Strategy.\nSystems.\nResults.",
       body: "Tell us what's holding your business back. We'll build what gets you past it.",
       cta: "Start the Conversation",
     },
