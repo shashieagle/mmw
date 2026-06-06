@@ -527,7 +527,7 @@ export default function Home() {
             {[
               "You treat creative as a cost, not an investment",
               "You just need someone to execute your brief",
-              "You already know what you want and just need it made",
+              "You're not ready to be challenged on your assumptions",
               "You measure success in likes and views",
               "You need guaranteed outcomes and zero risk",
             ].map((line, i) => (
