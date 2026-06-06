@@ -212,7 +212,13 @@ export default function FilmDetail() {
 
       <main className="flex-1">
         {/* Video Player Section */}
-        <section className="relative w-full h-[60vh] md:h-screen bg-black pt-20 md:pt-0 group">
+        <section className="relative w-full h-[60vh] md:h-[78vh] bg-black pt-20 md:pt-16 group">
+          {/* Always-visible back button */}
+          <div className="absolute top-24 md:top-20 left-6 md:left-10 z-30">
+            <Link href="/films" className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors text-xs uppercase tracking-widest font-bold bg-black/50 backdrop-blur-sm border border-white/10 px-4 py-2 hover:border-white/30">
+              <ArrowLeft size={14} /> Back
+            </Link>
+          </div>
           {video.videoPath && isYoutube(video.videoPath) ? (
             youtubeActive ? (
               <iframe
