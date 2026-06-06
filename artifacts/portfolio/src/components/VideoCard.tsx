@@ -68,7 +68,7 @@ export function VideoCard({ video, index = 0, featured = false, gridMode = false
             )}
           </div>
           
-          <h3 className={`${featured ? 'text-3xl md:text-5xl lg:text-6xl' : video.orientation === 'portrait' ? 'text-xl md:text-2xl' : 'text-2xl md:text-3xl'} font-bold text-white tracking-tight mb-2 md:mb-4 leading-tight line-clamp-3`}>
+          <h3 className={`${featured ? 'text-3xl md:text-5xl lg:text-6xl' : 'text-2xl md:text-3xl'} font-bold text-white tracking-tight mb-2 md:mb-4 leading-tight line-clamp-3`}>
             {video.title}
           </h3>
           
