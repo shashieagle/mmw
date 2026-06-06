@@ -514,71 +514,45 @@ export default function Home() {
 
       {/* NOT FOR EVERYONE */}
       <section className="py-32 md:py-48 bg-zinc-950 border-t border-white/5 relative overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.025] pointer-events-none"
-          style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.75%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/%3E%3C/svg%3E")' }}
-        />
-        <div className="container mx-auto px-6 md:px-12 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-20 md:gap-32 items-start">
+        <div className="container mx-auto px-6 md:px-12 relative z-10 max-w-3xl">
+          <RevealText>
+            <p className="text-[10px] uppercase tracking-[0.6em] text-gray-600 font-bold mb-8">Not For Everyone</p>
+            <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white font-display leading-[0.88] mb-16">
+              DON'T<br />
+              <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.25)" }}>HIRE US.</span>
+            </h2>
+          </RevealText>
 
-            {/* Left — the hard truth */}
-            <div>
-              <RevealText>
-                <p className="text-[10px] uppercase tracking-[0.6em] text-gray-600 font-bold mb-8">Not For Everyone</p>
-                <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white font-display leading-[0.88] mb-14">
-                  DON'T<br />
-                  <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.25)" }}>HIRE US.</span>
-                </h2>
+          <div className="flex flex-col divide-y divide-white/5 border-t border-white/5">
+            {[
+              "You want it done fast and cheap",
+              "You just need someone to execute your brief",
+              "You're not ready to question your brand",
+              "You measure success in likes and views",
+              "You're looking for safe, expected results",
+            ].map((line, i) => (
+              <RevealText key={i} delay={i * 0.08}>
+                <div className="flex items-center gap-5 py-5">
+                  <span className="text-white/15 text-xs font-bold tracking-widest shrink-0">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <p className="text-gray-500 text-base md:text-lg leading-snug line-through decoration-white/10">
+                    {line}
+                  </p>
+                </div>
               </RevealText>
-
-              <div className="flex flex-col divide-y divide-white/5">
-                {[
-                  "You want it done fast and cheap",
-                  "You just need someone to execute your brief",
-                  "You're not ready to question your brand",
-                  "You measure success in likes and views",
-                  "You're looking for safe, expected results",
-                ].map((line, i) => (
-                  <RevealText key={i} delay={i * 0.08}>
-                    <div className="flex items-start gap-5 py-5 group">
-                      <span className="text-white/15 text-xs font-bold tracking-widest mt-1 shrink-0 group-hover:text-white/30 transition-colors duration-300">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <p className="text-gray-500 text-base md:text-lg leading-snug group-hover:text-gray-300 transition-colors duration-300 line-through decoration-white/10">
-                        {line}
-                      </p>
-                    </div>
-                  </RevealText>
-                ))}
-              </div>
-            </div>
-
-            {/* Right — the flip */}
-            <RevealText delay={0.3}>
-              <div className="md:pt-32 flex flex-col gap-10">
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.6em] text-gray-600 font-bold mb-8">But if you are —</p>
-                  <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-white font-display leading-tight tracking-tight">
-                    Building something that needs to last.
-                  </p>
-                  <p className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight tracking-tight mt-2"
-                    style={{ color: "rgba(255,255,255,0.25)", WebkitTextStroke: "1px rgba(255,255,255,0.2)" } as React.CSSProperties}>
-                    Something that needs to be felt,<br />not just seen.
-                  </p>
-                </div>
-
-                <div className="border border-white/8 p-8">
-                  <p className="text-white/40 text-[10px] uppercase tracking-[0.4em] font-bold mb-3">The MMW standard</p>
-                  <p className="text-white text-lg font-bold tracking-tight leading-snug">
-                    Every client we've committed to has grown.<br />
-                    <span className="text-gray-500 font-normal">That's the process.</span>
-                  </p>
-                </div>
-              </div>
-            </RevealText>
-
+            ))}
           </div>
         </div>
+      </section>
+
+      {/* BRIDGE */}
+      <section className="py-16 md:py-20 bg-zinc-950 border-t border-white/5">
+        <RevealText className="container mx-auto px-6 md:px-12 max-w-3xl">
+          <p className="text-gray-600 text-sm uppercase tracking-[0.4em] font-bold">
+            Still here? That means something.
+          </p>
+        </RevealText>
       </section>
 
       {/* JAM WITH US */}
