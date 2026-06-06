@@ -489,9 +489,6 @@ export default function Architects() {
               Strategy, integration, and automation — from concept to scale.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <a href="mailto:hello@monkmonkeyworks.com">
-                <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-10 py-7 uppercase tracking-[0.2em] text-xs font-bold">Start a Project</Button>
-              </a>
               <a href="#case-studies">
                 <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 rounded-none px-10 py-7 uppercase tracking-[0.2em] text-xs font-bold bg-transparent">
                   See Case Studies
