@@ -1,9 +1,8 @@
 import { useEffect, useState, useRef } from "react";
-import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { ArrowRight, Upload, Trash2, X, Plus, Pencil } from "lucide-react";
+import { ArrowRight, Upload, Trash2, X, Plus, Pencil, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ObjectUploader } from "@workspace/object-storage-web";
 import { useRequestUploadUrl } from "@workspace/api-client-react";
@@ -359,7 +358,36 @@ export default function Architects() {
   const [editingStudy, setEditingStudy] = useState<CaseStudy | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<CaseStudy | null>(null);
 
+  const [architectsFormUrl, setArchitectsFormUrl] = useState("");
+  const [editingForm, setEditingForm] = useState(false);
+  const [draftForm, setDraftForm] = useState("");
+  const [savingForm, setSavingForm] = useState(false);
+
   useEffect(() => { window.scrollTo(0, 0); }, []);
+
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((r) => r.json())
+      .then((data: Record<string, string>) => {
+        setArchitectsFormUrl(data["architects_form"] ?? "");
+      })
+      .catch(() => {});
+  }, []);
+
+  const saveFormUrl = async () => {
+    setSavingForm(true);
+    try {
+      await fetch("/api/settings/architects_form", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ value: draftForm }),
+      });
+      setArchitectsFormUrl(draftForm);
+      setEditingForm(false);
+    } finally {
+      setSavingForm(false);
+    }
+  };
 
   const { data: caseStudies = [], isLoading: loadingStudies } = useQuery<CaseStudy[]>({
     queryKey: ["case-studies"],
@@ -640,16 +668,71 @@ export default function Architects() {
       {/* CTA */}
       <section className="py-32 md:py-48 bg-background border-t border-white/5">
         <div className="container mx-auto px-6 md:px-12 text-center">
-          <motion.div initial={{ opacity: 0, scale: 0.97 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
+          <motion.div initial={{ opacity: 0, scale: 0.97 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="flex flex-col items-center">
             <h2 className="text-5xl md:text-8xl font-bold tracking-tighter text-white mb-6 font-display leading-[0.88]">READY TO<br />BUILD?</h2>
             <p className="text-gray-500 text-lg mb-12 max-w-xl mx-auto">
-              Tell us what you're building — or what's not working. We'll be straight with you about how technology can fix it.
+              Tell us what you're building — or what's not working. We'll be straight with you about how we can fix it.
             </p>
-            <Link href="/catalyst">
-              <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-12 py-8 uppercase tracking-[0.2em] text-sm font-bold hover:scale-105 transition-transform inline-flex items-center gap-3">
-                Catalyst <ArrowRight size={16} />
+
+            {/* Admin: editable form URL */}
+            {isAdmin && (
+              <div className="mb-6 w-full max-w-sm">
+                {editingForm ? (
+                  <div className="flex flex-col gap-2">
+                    <input
+                      className="w-full bg-black border border-white/20 text-white text-xs px-3 py-2 outline-none focus:border-white/50 placeholder:text-gray-600"
+                      placeholder="Paste Google Form link…"
+                      value={draftForm}
+                      onChange={(e) => setDraftForm(e.target.value)}
+                      autoFocus
+                    />
+                    <div className="flex gap-2 justify-center">
+                      <button
+                        onClick={saveFormUrl}
+                        disabled={savingForm}
+                        className="flex items-center gap-1 px-3 py-1.5 bg-white text-black text-xs font-bold uppercase tracking-wider hover:bg-gray-200 transition-colors disabled:opacity-50"
+                      >
+                        <Check size={11} /> Save
+                      </button>
+                      <button
+                        onClick={() => setEditingForm(false)}
+                        className="flex items-center gap-1 px-3 py-1.5 border border-white/20 text-gray-400 text-xs hover:text-white transition-colors"
+                      >
+                        <X size={11} /> Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => { setDraftForm(architectsFormUrl); setEditingForm(true); }}
+                    className="flex items-center gap-2 text-xs text-gray-600 hover:text-white transition-colors border border-white/10 px-3 py-2 w-full justify-center"
+                  >
+                    <Pencil size={11} />
+                    {architectsFormUrl ? (
+                      <span className="truncate">{architectsFormUrl}</span>
+                    ) : (
+                      <span>Set form link…</span>
+                    )}
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* CTA button */}
+            {architectsFormUrl ? (
+              <a href={architectsFormUrl} target="_blank" rel="noopener noreferrer">
+                <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-12 py-8 uppercase tracking-[0.2em] text-sm font-bold hover:scale-105 transition-transform inline-flex items-center gap-3">
+                  Start a Project <ArrowRight size={16} />
+                </Button>
+              </a>
+            ) : (
+              <Button
+                disabled={!isAdmin}
+                className="bg-white text-black hover:bg-gray-200 rounded-none px-12 py-8 uppercase tracking-[0.2em] text-sm font-bold inline-flex items-center gap-3 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {isAdmin ? "Add form link above to activate" : <>Start a Project <ArrowRight size={16} /></>}
               </Button>
-            </Link>
+            )}
           </motion.div>
         </div>
       </section>
