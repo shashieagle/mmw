@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { ArrowRight, Brain, BarChart3, Layers, Zap, Users, Globe, Upload, Trash2, X, Plus, Pencil } from "lucide-react";
+import { ArrowRight, Upload, Trash2, X, Plus, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ObjectUploader } from "@workspace/object-storage-web";
 import { useRequestUploadUrl } from "@workspace/api-client-react";
@@ -11,38 +11,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useAdminMode } from "@/hooks/use-admin-mode";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-const services = [
-  {
-    icon: Brain,
-    title: "AI Strategy & Roadmapping",
-    description: "Audit → roadmap → adoption. Clear path, zero buzzwords.",
-  },
-  {
-    icon: Layers,
-    title: "Custom AI Integration",
-    description: "AI embedded directly into your operations — not bolted on.",
-  },
-  {
-    icon: BarChart3,
-    title: "Visual Content Automation",
-    description: "Studio-quality visuals at business speed. No shoot required.",
-  },
-  {
-    icon: Zap,
-    title: "Rapid Prototyping",
-    description: "Concept to working prototype in days, not months.",
-  },
-  {
-    icon: Users,
-    title: "Team Training & Workshops",
-    description: "Hands-on AI upskilling for your actual team. Zero fluff.",
-  },
-  {
-    icon: Globe,
-    title: "Brand & Campaign Generation",
-    description: "Full campaign assets at scale. Consistent voice, no bottlenecks.",
-  },
-];
 
 const GRADIENTS = [
   { label: "Default Dark", value: "from-zinc-900/40 via-zinc-950 to-black" },
@@ -380,55 +348,7 @@ function CaseStudyGallery({ slug, isAdmin }: { slug: string; isAdmin: boolean })
   );
 }
 
-function KnownForSection() {
-  const [revealed, setRevealed] = useState(false);
 
-  return (
-    <section className="py-16 md:py-20 bg-background border-t border-white/5">
-      <div className="container mx-auto px-6 md:px-12">
-        <div className="flex items-center justify-end">
-          <button
-            onClick={() => setRevealed(!revealed)}
-            className="flex items-center gap-3 text-xs uppercase tracking-[0.25em] font-bold text-gray-500 hover:text-white border border-white/10 hover:border-white/30 px-6 py-3 transition-all duration-300 group"
-          >
-            {revealed ? "Hide" : "What we're known for"}
-            <motion.span
-              animate={{ rotate: revealed ? 45 : 0 }}
-              transition={{ duration: 0.2 }}
-              className="text-base leading-none"
-            >
-              +
-            </motion.span>
-          </button>
-        </div>
-
-        <AnimatePresence>
-          {revealed && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.4, ease: [0.21, 0.47, 0.32, 0.98] }}
-              className="overflow-hidden"
-            >
-              <div className="divide-y divide-white/5 border-t border-white/5 mt-10">
-                {services.map((service, i) => (
-                  <div key={i} className="flex items-center gap-6 py-5">
-                    <span className="text-white/15 text-xs font-bold tracking-widest font-mono w-6 shrink-0">{String(i + 1).padStart(2, "0")}</span>
-                    <div>
-                      <p className="text-sm md:text-base font-bold text-white tracking-tight">{service.title}</p>
-                      <p className="text-gray-600 text-xs mt-1">{service.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </section>
-  );
-}
 
 export default function Architects() {
   const { isAdmin } = useAdminMode();
@@ -594,9 +514,6 @@ export default function Architects() {
           </motion.p>
         </div>
       </section>
-
-      {/* What We're Known For — accordion */}
-      <KnownForSection />
 
       {/* Case Studies */}
       <section id="case-studies" className="py-24 md:py-32 bg-black border-t border-white/5">
