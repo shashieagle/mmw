@@ -197,8 +197,7 @@ export default function Studio() {
             The Studio
           </h1>
           <p className="text-gray-400 max-w-2xl text-lg md:text-xl font-light">
-            AI films, real estate transformations, food photography, fashion catalogues — everything
-            we make lives here.
+            Visual work built to make what you sell impossible to ignore.
           </p>
         </motion.div>
 
