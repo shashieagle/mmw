@@ -266,7 +266,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-xs uppercase tracking-[0.6em] font-bold mb-6" style={{ color: "#E8572A" }}
+            className="text-xs uppercase tracking-[0.6em] text-gray-500 font-bold mb-6"
           >
             Business Architecture · Narrative Design · AI
           </motion.p>
