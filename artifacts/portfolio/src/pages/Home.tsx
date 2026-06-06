@@ -525,11 +525,11 @@ export default function Home() {
 
           <div className="flex flex-col divide-y divide-white/5 border-t border-white/5">
             {[
-              "You want it done fast and cheap",
+              "You treat creative as a cost, not an investment",
               "You just need someone to execute your brief",
-              "You're not ready to question your brand",
+              "You already know what you want and just need it made",
               "You measure success in likes and views",
-              "You're looking for safe, expected results",
+              "You need guaranteed outcomes and zero risk",
             ].map((line, i) => (
               <RevealText key={i} delay={i * 0.08}>
                 <div className="flex items-center gap-5 py-5">
