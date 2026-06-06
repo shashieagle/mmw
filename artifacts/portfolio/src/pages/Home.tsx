@@ -523,6 +523,12 @@ export default function Home() {
             </h2>
           </RevealText>
 
+          <RevealText>
+            <p className="text-gray-500 text-lg font-light mb-12 max-w-xl">
+              If any of these reflect how you operate, we're probably not the right fit — and that's okay.
+            </p>
+          </RevealText>
+
           <div className="flex flex-col divide-y divide-white/5 border-t border-white/5">
             {[
               "Creative is a cost line, not a growth engine",
