@@ -392,10 +392,7 @@ export default function Home() {
               A Creative Studio<br />and Business Intelligence<br />
               <span className="text-gray-500">practice built on AI.</span>
             </h2>
-            <p className="text-gray-400 text-xl font-light leading-relaxed max-w-3xl">
-              Monkmonkeyworks operates across two worlds. Our Creative Studio produces
-              AI-powered visuals and branded content. Our Business Architects division
-              helps companies implement and scale using the technology reshaping every industry.
+            <p className="text-gray-400 text-xl font-light leading-relaxed max-w-2xl">
               One team. Both sides of the intelligence revolution.
             </p>
           </RevealText>
@@ -437,9 +434,7 @@ export default function Home() {
                 <span className="text-gray-500">We help companies<br />scale using it.</span>
               </h2>
               <p className="text-gray-400 text-lg leading-relaxed mb-10">
-                From replacing costly production pipelines to building end-to-end AI content
-                operations — we architect the systems that let businesses move faster, look better,
-                and spend smarter.
+                We architect the systems that let businesses move faster, look better, and spend smarter.
               </p>
               <Link href="/architects">
                 <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold inline-flex items-center gap-3">
@@ -590,17 +585,11 @@ export default function Home() {
                   </p>
                 </div>
 
-                <div className="border-l-2 border-white/10 pl-8">
-                  <p className="text-gray-400 text-base leading-relaxed">
-                    We go deep. We challenge assumptions. We build systems and stories that compound over time — not campaigns that expire.
-                  </p>
-                </div>
-
                 <div className="border border-white/8 p-8">
                   <p className="text-white/40 text-[10px] uppercase tracking-[0.4em] font-bold mb-3">The MMW standard</p>
                   <p className="text-white text-lg font-bold tracking-tight leading-snug">
                     Every client we've committed to has grown.<br />
-                    <span className="text-gray-500 font-normal">That's not a promise. That's the process.</span>
+                    <span className="text-gray-500 font-normal">That's the process.</span>
                   </p>
                 </div>
               </div>
