@@ -381,60 +381,79 @@ function CaseStudyGallery({ slug, isAdmin }: { slug: string; isAdmin: boolean })
 }
 
 function KnownForSection() {
+  const [revealed, setRevealed] = useState(false);
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section className="py-24 md:py-32 bg-background border-t border-white/5">
+    <section className="py-16 md:py-20 bg-background border-t border-white/5">
       <div className="container mx-auto px-6 md:px-12">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
-          <div>
-            <p className="text-xs uppercase tracking-[0.4em] text-gray-500 font-bold mb-4">Capabilities</p>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white font-display">What We're Known For</h2>
-          </div>
-          <p className="text-gray-600 text-sm max-w-xs">Click any capability to learn more.</p>
+        <div className="flex items-center justify-between">
+          <p className="text-xs uppercase tracking-[0.4em] text-gray-600 font-bold">Capabilities</p>
+          <button
+            onClick={() => setRevealed(!revealed)}
+            className="flex items-center gap-3 text-xs uppercase tracking-[0.25em] font-bold text-gray-500 hover:text-white border border-white/10 hover:border-white/30 px-6 py-3 transition-all duration-300 group"
+          >
+            {revealed ? "Hide" : "What we're known for"}
+            <motion.span
+              animate={{ rotate: revealed ? 45 : 0 }}
+              transition={{ duration: 0.2 }}
+              className="text-base leading-none"
+            >
+              +
+            </motion.span>
+          </button>
         </div>
 
-        <div className="divide-y divide-white/5 border-t border-white/5">
-          {services.map((service, i) => (
-            <motion.div key={i} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.05 }}>
-              <button
-                onClick={() => setOpen(open === i ? null : i)}
-                className="w-full flex items-center justify-between py-6 md:py-7 group text-left"
-              >
-                <div className="flex items-center gap-6">
-                  <span className="text-white/15 text-xs font-bold tracking-widest font-mono w-6 shrink-0">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="text-base md:text-lg font-bold text-white tracking-tight group-hover:text-gray-300 transition-colors duration-200">
-                    {service.title}
-                  </span>
-                </div>
-                <motion.div
-                  animate={{ rotate: open === i ? 45 : 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="shrink-0 w-7 h-7 border border-white/10 flex items-center justify-center text-white/40 group-hover:border-white/30 group-hover:text-white/70 transition-colors duration-200"
-                >
-                  <span className="text-lg leading-none">+</span>
-                </motion.div>
-              </button>
+        <AnimatePresence>
+          {revealed && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.4, ease: [0.21, 0.47, 0.32, 0.98] }}
+              className="overflow-hidden"
+            >
+              <div className="divide-y divide-white/5 border-t border-white/5 mt-10">
+                {services.map((service, i) => (
+                  <div key={i}>
+                    <button
+                      onClick={() => setOpen(open === i ? null : i)}
+                      className="w-full flex items-center justify-between py-5 md:py-6 group text-left"
+                    >
+                      <div className="flex items-center gap-6">
+                        <span className="text-white/15 text-xs font-bold tracking-widest font-mono w-6 shrink-0">{String(i + 1).padStart(2, "0")}</span>
+                        <span className="text-sm md:text-base font-bold text-white tracking-tight group-hover:text-gray-300 transition-colors duration-200">
+                          {service.title}
+                        </span>
+                      </div>
+                      <motion.span
+                        animate={{ rotate: open === i ? 45 : 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="text-white/30 text-lg leading-none group-hover:text-white/60 transition-colors"
+                      >
+                        +
+                      </motion.span>
+                    </button>
 
-              <AnimatePresence>
-                {open === i && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
-                    className="overflow-hidden"
-                  >
-                    <div className="flex items-start gap-6 pb-8 pl-12">
-                      <service.icon className="w-5 h-5 text-white/20 mt-0.5 shrink-0" />
-                      <p className="text-gray-400 text-base leading-relaxed">{service.description}</p>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                    <AnimatePresence>
+                      {open === i && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                          className="overflow-hidden"
+                        >
+                          <p className="text-gray-500 text-sm leading-relaxed pb-5 pl-12">{service.description}</p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ))}
+              </div>
             </motion.div>
-          ))}
-        </div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );
