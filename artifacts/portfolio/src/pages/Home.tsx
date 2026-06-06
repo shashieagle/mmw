@@ -514,7 +514,7 @@ export default function Home() {
 
       {/* NOT FOR EVERYONE */}
       <section className="py-32 md:py-48 bg-zinc-950 border-t border-white/5 relative overflow-hidden">
-        <div className="container mx-auto px-6 md:px-12 relative z-10 max-w-3xl">
+        <div className="container mx-auto px-6 md:px-12 relative z-10">
           <RevealText>
             <p className="text-[10px] uppercase tracking-[0.6em] text-gray-600 font-bold mb-8">Not For Everyone</p>
             <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white font-display leading-[0.88] mb-16">
