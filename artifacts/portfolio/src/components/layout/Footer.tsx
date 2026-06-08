@@ -8,9 +8,7 @@ export function Footer() {
           <Link href="/" className="inline-block mb-6">
             <span className="text-2xl font-bold tracking-tighter text-white">MONKMONKEYWORKS</span>
           </Link>
-          <p className="text-gray-500 text-sm leading-relaxed">
-            The world's first Business Architecture studio driven by narrative design and powered by AI.
-          </p>
+          <p className="text-gray-500 text-sm leading-relaxed">The world's first Business Architecture studio driven by narrative design powered by AI.</p>
         </div>
 
         <div className="flex flex-col md:flex-row gap-12 md:gap-24">
@@ -78,7 +76,6 @@ export function Footer() {
           </div>
         </div>
       </div>
-
       <div className="container mx-auto px-6 md:px-12 mt-12 md:mt-24 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-600 uppercase tracking-widest">
         <p>&copy; {new Date().getFullYear()} MONKMONKEYWORKS. All rights reserved.</p>
         <p>Business Architecture · Narrative Design · AI</p>
