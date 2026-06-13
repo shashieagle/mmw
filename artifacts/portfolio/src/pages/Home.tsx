@@ -349,7 +349,7 @@ export default function Home() {
             <p className="text-xs uppercase tracking-[0.5em] font-bold mb-8" style={{ color: "#E8572A" }}>About</p>
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-white leading-[1.05] mb-10">
               We build the strategy,<br />the systems,<br />
-              <span className="text-gray-500">and the standard.</span>
+              <span className="text-gray-500">and Communication.</span>
             </h2>
             <p className="text-gray-400 text-xl font-light leading-relaxed max-w-2xl">
               One team. Both sides of the intelligence revolution.
