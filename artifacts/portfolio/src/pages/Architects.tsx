@@ -514,7 +514,7 @@ export default function Architects() {
               <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.25)" }}>Architects</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-400 font-light max-w-xl leading-relaxed mb-12">
-              Strategy, integration, and automation — from concept to scale.
+              Better strategy. Stronger systems. Higher standards.
             </p>
           </motion.div>
         </div>

@@ -287,7 +287,7 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 1.1 }}
             className="mt-8 text-gray-400 text-lg md:text-xl font-light max-w-lg leading-relaxed"
           >
-            We architect businesses through narrative design and media.
+            From strategy to execution — we build what works.
           </motion.p>
 
           <motion.div
@@ -393,8 +393,8 @@ export default function Home() {
           <RevealText className="max-w-5xl">
             <p className="text-xs uppercase tracking-[0.5em] font-bold mb-8" style={{ color: "#E8572A" }}>About</p>
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-white leading-[1.05] mb-10">
-              The world's first<br />Business Architecture studio<br />
-              <span className="text-gray-500">driven by narrative design.</span>
+              We build the strategy,<br />the systems,<br />
+              <span className="text-gray-500">and the standard.</span>
             </h2>
             <p className="text-gray-400 text-xl font-light leading-relaxed max-w-2xl">
               One team. Both sides of the intelligence revolution.
