@@ -182,9 +182,7 @@ export default function Studio() {
   return (
     <div className="min-h-screen bg-background flex flex-col pt-24">
       <Navbar />
-
       {lightbox && <ImageLightbox src={lightbox} onClose={() => setLightbox(null)} />}
-
       <main className="flex-1 container mx-auto px-6 md:px-12 py-12 md:py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -196,9 +194,7 @@ export default function Studio() {
           <h1 className="text-4xl md:text-7xl font-bold tracking-tighter text-white mb-6 uppercase font-display">
             The Studio
           </h1>
-          <p className="text-gray-400 max-w-2xl text-lg md:text-xl font-light">
-            Visual work built to make what you sell impossible to ignore.
-          </p>
+          <p className="text-gray-400 max-w-2xl text-lg md:text-xl font-light">Visual work built for emotional communcation.</p>
         </motion.div>
 
         {/* Video / Images toggle */}
@@ -370,7 +366,6 @@ export default function Studio() {
           )}
         </AnimatePresence>
       </main>
-
       <Footer />
     </div>
   );
