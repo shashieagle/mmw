@@ -522,16 +522,16 @@ export default function Architects() {
 
 
       {/* Quote */}
-      <section className="py-24 md:py-32 border-t border-white/5 bg-zinc-950">
-        <div className="container mx-auto px-6 md:px-12 max-w-4xl">
+      <section className="py-16 border-t border-white/5 bg-zinc-950">
+        <div className="container mx-auto px-6 md:px-12 max-w-2xl">
           <motion.blockquote
-            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
+            className="border-l border-white/10 pl-8"
           >
-            <p className="text-2xl md:text-4xl font-light tracking-tight leading-snug text-white italic mb-8">
-              "A great deal of strategy work is trying to figure out what is going on. Not just deciding what to do, but more fundamentally,{" "}
-              <span className="text-gray-500 not-italic font-bold">deciding what the challenge is.</span>"
+            <p className="text-base md:text-lg font-light leading-relaxed text-gray-400 italic mb-5">
+              "A great deal of strategy work is trying to figure out what is going on. Not just deciding what to do, but more fundamentally, deciding what the challenge is."
             </p>
-            <footer className="text-xs uppercase tracking-[0.4em] font-bold text-gray-600">— Richard Rumelt</footer>
+            <footer className="text-[10px] uppercase tracking-[0.5em] font-bold text-gray-600">Richard Rumelt</footer>
           </motion.blockquote>
         </div>
       </section>
