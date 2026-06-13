@@ -466,7 +466,6 @@ export default function Home() {
       <section className="py-32 md:py-48 bg-zinc-950 border-t border-white/5 relative overflow-hidden">
         <div className="container mx-auto px-6 md:px-12 relative z-10">
           <RevealText>
-            <p className="text-[10px] uppercase tracking-[0.6em] font-bold mb-8" style={{ color: "#E8572A" }}>Not For Everyone</p>
             <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white font-display leading-[0.88] mb-16">
               DON'T<br />
               <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.25)" }}>HIRE US.</span>
