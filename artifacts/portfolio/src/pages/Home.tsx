@@ -1,14 +1,12 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
-import { HeroAnimation } from "@/components/HeroAnimation";
 import { useListVideos, useGetVideoStats } from "@workspace/api-client-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { VideoCard } from "@/components/VideoCard";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Pencil, Check, X } from "lucide-react";
-import { useAdminMode } from "@/hooks/use-admin-mode";
+import { ArrowRight } from "lucide-react";
 
 function Ticker({ text }: { text: string }) {
   const repeated = Array(12).fill(text).join(" · ");
@@ -38,193 +36,6 @@ function RevealText({ children, className, delay = 0 }: { children: React.ReactN
   );
 }
 
-function JamSection() {
-  const { isAdmin } = useAdminMode();
-  const [active, setActive] = useState<"business" | "creator">("business");
-  const [forms, setForms] = useState({ business: "", creator: "" });
-  const [editing, setEditing] = useState<"business" | "creator" | null>(null);
-  const [draft, setDraft] = useState("");
-  const [saving, setSaving] = useState(false);
-
-  useEffect(() => {
-    fetch("/api/settings")
-      .then((r) => r.json())
-      .then((data: Record<string, string>) => {
-        setForms({
-          business: data["jam_form_business"] ?? "",
-          creator: data["jam_form_creator"] ?? "",
-        });
-      })
-      .catch(() => {});
-  }, []);
-
-  const startEdit = useCallback((key: "business" | "creator") => {
-    setEditing(key);
-    setDraft(forms[key]);
-  }, [forms]);
-
-  const cancelEdit = useCallback(() => { setEditing(null); setDraft(""); }, []);
-
-  const saveEdit = useCallback(async () => {
-    if (!editing) return;
-    setSaving(true);
-    try {
-      await fetch(`/api/settings/jam_form_${editing}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ value: draft }),
-      });
-      setForms((f) => ({ ...f, [editing]: draft }));
-      setEditing(null);
-    } finally {
-      setSaving(false);
-    }
-  }, [editing, draft]);
-
-  const content = {
-    business: {
-      tag: "For Business Owners",
-      headline: "Strategy.\nSystems.\nResults.",
-      body: "Tell us what's holding your business back. We'll build what gets you past it.",
-      cta: "Start the Conversation",
-    },
-    creator: {
-      tag: "For Creators",
-      headline: "Your idea.\nOur craft.\nSomething new.",
-      body: "Bring us the spark. We'll build the fire.",
-      cta: "Tell Us Your Vision",
-    },
-  };
-
-  const c = content[active];
-  const formUrl = forms[active];
-
-  return (
-    <section className="py-24 md:py-40 bg-zinc-950 border-t border-white/5 relative overflow-hidden">
-      <div className="absolute inset-0 opacity-[0.025] pointer-events-none"
-        style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.75%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/%3E%3C/svg%3E")' }}
-      />
-
-      <div className="container mx-auto px-6 md:px-12 relative z-10">
-        <RevealText className="mb-14 md:mb-20">
-          <p className="text-[10px] uppercase tracking-[0.6em] text-gray-600 font-bold mb-6">Let's Work Together</p>
-          <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white font-display leading-[0.88] mb-6">
-            LET'S<br />
-            <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)" }}>GO.</span>
-          </h2>
-          <p className="text-gray-500 text-lg max-w-md">Tell us who you are and what you need. We'll take it from there.</p>
-        </RevealText>
-
-        {/* Toggle */}
-        <RevealText delay={0.1}>
-          <div className="inline-flex border border-white/10 p-1 mb-14 md:mb-20">
-            {(["business", "creator"] as const).map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActive(tab)}
-                className={`px-8 py-3 text-xs uppercase tracking-[0.25em] font-bold transition-all duration-300 ${
-                  active === tab ? "bg-white text-black" : "text-gray-500 hover:text-white"
-                }`}
-              >
-                {tab === "business" ? "Business Owner" : "Creator"}
-              </button>
-            ))}
-          </div>
-        </RevealText>
-
-        {/* Content */}
-        <motion.div
-          key={active}
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-end"
-        >
-          <div>
-            <p className="text-[10px] uppercase tracking-[0.5em] text-gray-600 font-bold mb-6">{c.tag}</p>
-            <h3 className="text-4xl md:text-5xl font-bold tracking-tighter text-white font-display leading-[1.0] mb-8 whitespace-pre-line">
-              {c.headline}
-            </h3>
-            <p className="text-gray-400 text-base leading-relaxed max-w-sm">{c.body}</p>
-          </div>
-
-          <div className="flex flex-col gap-6 md:items-end">
-            <div className="grid grid-cols-1 gap-px bg-white/5 w-full md:max-w-xs">
-              {(active === "business"
-                ? ["Your industry & scale", "Current content setup", "Goals & timeline", "Budget range"]
-                : ["Your creative focus", "Platform & audience", "The project idea", "Collaboration style"]
-              ).map((q, i) => (
-                <div key={i} className="bg-zinc-950 px-5 py-4 flex items-center gap-4">
-                  <span className="text-white/15 font-mono text-xs font-bold">0{i + 1}</span>
-                  <span className="text-gray-400 text-sm">{q}</span>
-                </div>
-              ))}
-            </div>
-
-            <p className="text-gray-600 text-xs uppercase tracking-widest">We ask these in the form ↓</p>
-
-            {/* Admin: editable form URL */}
-            {isAdmin && (
-              <div className="w-full md:max-w-xs">
-                {editing === active ? (
-                  <div className="flex flex-col gap-2">
-                    <input
-                      className="w-full bg-black border border-white/20 text-white text-xs px-3 py-2 outline-none focus:border-white/50 placeholder:text-gray-600"
-                      placeholder="Paste Google Form link…"
-                      value={draft}
-                      onChange={(e) => setDraft(e.target.value)}
-                      autoFocus
-                    />
-                    <div className="flex gap-2">
-                      <button
-                        onClick={saveEdit}
-                        disabled={saving}
-                        className="flex items-center gap-1 px-3 py-1.5 bg-white text-black text-xs font-bold uppercase tracking-wider hover:bg-gray-200 transition-colors disabled:opacity-50"
-                      >
-                        <Check size={11} /> Save
-                      </button>
-                      <button
-                        onClick={cancelEdit}
-                        className="flex items-center gap-1 px-3 py-1.5 border border-white/20 text-gray-400 text-xs hover:text-white transition-colors"
-                      >
-                        <X size={11} /> Cancel
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => startEdit(active)}
-                    className="flex items-center gap-2 text-xs text-gray-600 hover:text-white transition-colors border border-white/10 px-3 py-2 w-full"
-                  >
-                    <Pencil size={11} />
-                    {formUrl ? (
-                      <span className="truncate">{formUrl}</span>
-                    ) : (
-                      <span className="text-gray-600">Set {active === "business" ? "Business Owner" : "Creator"} form link…</span>
-                    )}
-                  </button>
-                )}
-              </div>
-            )}
-
-            {/* CTA button */}
-            {formUrl ? (
-              <a href={formUrl} target="_blank" rel="noopener noreferrer" className="w-full md:w-auto">
-                <Button className="bg-white text-black hover:bg-gray-100 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold w-full md:w-auto">
-                  {c.cta} →
-                </Button>
-              </a>
-            ) : (
-              <Button disabled className="bg-white/10 text-gray-600 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold w-full md:w-auto cursor-not-allowed">
-                {isAdmin ? "Add form link above to activate" : c.cta + " →"}
-              </Button>
-            )}
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
@@ -497,16 +308,26 @@ export default function Home() {
       {/* BRIDGE */}
       <section className="py-24 md:py-32 bg-zinc-950 border-t border-white/5">
         <RevealText className="container mx-auto px-6 md:px-12">
-          <p className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-white font-display leading-[0.9]">
+          <p className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-white font-display leading-[0.9] mb-16">
             If none of that stopped you —<br />
             <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.25)" }}>
               you're exactly who we build for.
             </span>
           </p>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link href="/architects">
+              <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold">
+                Business Architects
+              </Button>
+            </Link>
+            <Link href="/studio">
+              <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold bg-transparent">
+                Explore Studio
+              </Button>
+            </Link>
+          </div>
         </RevealText>
       </section>
-      {/* JAM WITH US */}
-      <JamSection />
       <Footer />
     </div>
   );
