@@ -289,9 +289,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
             className="text-xs uppercase tracking-[0.6em] text-gray-500 font-bold mb-6"
-          >
-            Business Architecture · Narrative Design · AI
-          </motion.p>
+          >Business Architecture · Narrative Design ·</motion.p>
 
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
