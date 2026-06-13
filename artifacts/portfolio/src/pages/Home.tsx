@@ -360,10 +360,6 @@ export default function Home() {
                   <br />
                   Studio
                 </h2>
-                <p className="text-gray-500 text-base leading-relaxed max-w-xs">
-                  Visuals, films, and branded content crafted entirely through AI. We make what
-                  couldn't be made before.
-                </p>
               </div>
               <div className="mt-10 flex items-center gap-3 text-white text-sm uppercase tracking-widest font-bold group-hover:gap-6 transition-all duration-500">
                 View Work <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-300" />
@@ -389,10 +385,6 @@ export default function Home() {
                   <br />
                   Architects
                 </h2>
-                <p className="text-gray-500 text-base leading-relaxed max-w-xs">
-                  Strategy, implementation, and automation for businesses ready to scale with AI at
-                  the core.
-                </p>
               </div>
               <div className="mt-10 flex items-center gap-3 text-white text-sm uppercase tracking-widest font-bold group-hover:gap-6 transition-all duration-500">
                 Case Studies <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-300" />
@@ -449,9 +441,6 @@ export default function Home() {
               <br />
               <span className="text-gray-500">We help companies<br />scale using it.</span>
             </h2>
-            <p className="text-gray-400 text-lg leading-relaxed mb-10">
-              We architect the systems that let businesses move faster, look better, and spend smarter.
-            </p>
             <Link href="/architects">
               <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold inline-flex items-center gap-3">
                 View Case Studies <ArrowRight size={14} />
