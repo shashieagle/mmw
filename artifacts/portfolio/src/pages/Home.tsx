@@ -314,16 +314,16 @@ export default function Home() {
               you're exactly who we build for.
             </span>
           </p>
-          <div className="inline-flex border border-white/10 p-1">
+          <div className="flex flex-col sm:flex-row gap-4 mt-2">
             <Link href="/architects">
-              <button className="px-10 py-4 text-xs uppercase tracking-[0.25em] font-bold bg-white text-black transition-all duration-300 hover:bg-gray-200">
-                Business Owner
-              </button>
+              <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold">
+                Start the Conversation →
+              </Button>
             </Link>
             <Link href="/studio">
-              <button className="px-10 py-4 text-xs uppercase tracking-[0.25em] font-bold text-gray-400 hover:text-white transition-all duration-300">
-                Creator
-              </button>
+              <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold bg-transparent">
+                Tell Us Your Vision →
+              </Button>
             </Link>
           </div>
         </RevealText>
