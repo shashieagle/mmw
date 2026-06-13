@@ -275,15 +275,10 @@ export default function Home() {
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className="text-7xl md:text-[10rem] lg:text-[13rem] font-bold tracking-tighter text-white leading-[0.82] font-display"
+            className="font-bold tracking-tighter text-white leading-none font-display whitespace-nowrap"
+            style={{ fontSize: "clamp(1.8rem, 6.2vw, 9rem)" }}
           >
-            MONK
-            <br />
-            <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.35)" }}>
-              MONKEY
-            </span>
-            <br />
-            WORKS.
+            MONKMONKEYWORKS.
           </motion.h1>
 
           <motion.p
