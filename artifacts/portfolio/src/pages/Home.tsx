@@ -286,11 +286,20 @@ export default function Home() {
             WORKS.
           </motion.h1>
 
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.1 }}
+            className="mt-8 text-gray-400 text-lg md:text-xl font-light max-w-lg leading-relaxed"
+          >
+            We architect businesses through narrative design and media.
+          </motion.p>
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 1.4 }}
-            className="mt-10 flex flex-col sm:flex-row gap-4"
+            className="mt-8 flex flex-col sm:flex-row gap-4"
           >
             <Link href="/architects">
               <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold">
