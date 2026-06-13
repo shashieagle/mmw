@@ -397,7 +397,7 @@ export default function Home() {
             </span>
           </p>
           <div className="mt-2">
-            <Link href="/architects">
+            <Link href="/contact">
               <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold">
                 Start the Conversation →
               </Button>
