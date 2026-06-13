@@ -326,24 +326,6 @@ export default function Home() {
           </section>
         );
       })()}
-      {/* ARCHITECTS TEASER */}
-      <section className="py-24 md:py-32 bg-zinc-950 border-t border-white/5">
-        <div className="container mx-auto px-6 md:px-12">
-          <RevealText className="max-w-3xl">
-            <p className="text-xs uppercase tracking-[0.4em] font-bold mb-6" style={{ color: "#E8572A" }}>Business Architects</p>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white mb-8 font-display leading-[1]">
-              We don't just<br />create.
-              <br />
-              <span className="text-gray-500">We help companies<br />scale using it.</span>
-            </h2>
-            <Link href="/architects">
-              <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold inline-flex items-center gap-3">
-                View Case Studies <ArrowRight size={14} />
-              </Button>
-            </Link>
-          </RevealText>
-        </div>
-      </section>
       {/* STATS */}
       <section className="py-24 bg-black border-y border-white/10 relative overflow-hidden">
         <div
