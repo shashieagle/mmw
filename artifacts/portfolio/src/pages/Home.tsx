@@ -251,7 +251,6 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background flex flex-col overflow-x-hidden">
       <Navbar />
-
       {/* HERO — full screen cinematic */}
       <section className="relative h-screen w-full overflow-hidden bg-black flex items-end pb-20 md:pb-32">
         <motion.div className="absolute inset-0 z-0" style={{ y: heroY, scale: heroScale }}>
@@ -310,9 +309,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.0 }}
             className="text-gray-400 text-lg font-light max-w-md leading-relaxed mb-8"
-          >
-            From strategy to execution — we build what works.
-          </motion.p>
+          >Business Strategy & Visual Communication  — we build what works.</motion.p>
 
           <motion.div
             initial={{ opacity: 0 }}
@@ -345,10 +342,8 @@ export default function Home() {
           <div className="w-[1px] h-16 bg-gradient-to-b from-transparent via-gray-500 to-transparent animate-pulse" />
         </motion.div>
       </section>
-
       {/* TICKER */}
       <Ticker text="Business Architecture — Narrative Design — Powered by AI — We build what's next" />
-
       {/* TWO ARMS — full-bleed split */}
       <section className="relative z-20 bg-background">
         <div className="grid grid-cols-1 md:grid-cols-2 min-h-[70vh]">
@@ -410,7 +405,6 @@ export default function Home() {
           </Link>
         </div>
       </section>
-
       {/* WHO WE ARE */}
       <section className="py-32 md:py-48 bg-black border-t border-white/5">
         <div className="container mx-auto px-6 md:px-12">
@@ -426,10 +420,8 @@ export default function Home() {
           </RevealText>
         </div>
       </section>
-
       {/* TICKER 2 */}
       <Ticker text="Film · Product Photography · Catalogues · Brand Campaigns · AI Strategy · Implementation · Scale" />
-
       {/* FEATURED WORK */}
       {galleryVideos.length > 0 && (
         <section className="py-24 md:py-32 bg-background border-t border-white/5">
@@ -449,7 +441,6 @@ export default function Home() {
           </div>
         </section>
       )}
-
       {/* ARCHITECTS TEASER */}
       <section className="py-24 md:py-32 bg-zinc-950 border-t border-white/5">
         <div className="container mx-auto px-6 md:px-12">
@@ -471,7 +462,6 @@ export default function Home() {
           </RevealText>
         </div>
       </section>
-
       {/* STATS */}
       <section className="py-24 bg-black border-y border-white/10 relative overflow-hidden">
         <div
@@ -497,7 +487,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* CATALYST CTA — hidden from public; set showCatalyst to true to re-enable */}
       {false && <section className="py-24 md:py-36 bg-black border-t border-white/5 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
@@ -539,7 +528,6 @@ export default function Home() {
           </div>
         </div>
       </section>}
-
       {/* NOT FOR EVERYONE */}
       <section className="py-32 md:py-48 bg-zinc-950 border-t border-white/5 relative overflow-hidden">
         <div className="container mx-auto px-6 md:px-12 relative z-10">
@@ -573,7 +561,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* BRIDGE */}
       <section className="py-24 md:py-32 bg-zinc-950 border-t border-white/5">
         <RevealText className="container mx-auto px-6 md:px-12">
@@ -585,10 +572,8 @@ export default function Home() {
           </p>
         </RevealText>
       </section>
-
       {/* JAM WITH US */}
       <JamSection />
-
       <Footer />
     </div>
   );
