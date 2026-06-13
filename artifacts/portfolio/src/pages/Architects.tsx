@@ -517,44 +517,6 @@ export default function Architects() {
               Better strategy. Stronger systems. Higher standards.
             </p>
           </motion.div>
-
-          {/* Featured case study — hero callout */}
-          {caseStudies.length > 0 && (() => {
-            const s = caseStudies[0];
-            return (
-              <motion.a
-                href="#case-studies"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.9, delay: 0.8 }}
-                className="group mt-12 inline-flex flex-col gap-4 border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/20 transition-all duration-500 p-6 md:p-8 max-w-xl cursor-pointer"
-              >
-                <div className="flex items-center justify-between gap-6">
-                  <div className="flex items-center gap-3">
-                    <span className="text-[9px] uppercase tracking-[0.5em] font-bold text-gray-600 border border-white/10 px-2 py-1">{s.tag}</span>
-                    <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-bold">{s.client}</span>
-                  </div>
-                  <p className="text-[9px] uppercase tracking-[0.4em] text-gray-700 font-bold shrink-0">Featured</p>
-                </div>
-                <h3 className="text-xl md:text-2xl font-bold tracking-tight text-white leading-snug group-hover:text-gray-100 transition-colors">
-                  {s.headline}
-                </h3>
-                {s.stats.length > 0 && (
-                  <div className="flex gap-8 pt-2 border-t border-white/5">
-                    {s.stats.slice(0, 3).map((st, i) => (
-                      <div key={i}>
-                        <p className="text-2xl font-bold text-white font-mono tracking-tighter">{st.value}</p>
-                        <p className="text-[9px] uppercase tracking-widest text-gray-600 mt-0.5">{st.label}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-gray-600 group-hover:text-white transition-colors font-bold">
-                  View Case Study <ArrowRight size={10} className="group-hover:translate-x-1 transition-transform duration-300" />
-                </div>
-              </motion.a>
-            );
-          })()}
         </div>
       </section>
 

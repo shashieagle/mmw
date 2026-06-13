@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
 import { useListVideos, useGetVideoStats } from "@workspace/api-client-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -46,6 +47,10 @@ export default function Home() {
   const { data: featuredVideos } = useListVideos({ featured: true });
   const { data: recentVideos } = useListVideos();
   const { data: stats } = useGetVideoStats();
+  const { data: caseStudies = [] } = useQuery<{ id: number; tag: string; client: string; headline: string; result: string; stats: { value: string; label: string }[] }[]>({
+    queryKey: ["case-studies-home"],
+    queryFn: async () => { const r = await fetch("/api/case-studies"); if (!r.ok) throw new Error(); return r.json(); },
+  });
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -271,6 +276,56 @@ export default function Home() {
           </div>
         </section>
       )}
+      {/* FEATURED CASE STUDY */}
+      {caseStudies.length > 0 && (() => {
+        const s = caseStudies[0];
+        return (
+          <section className="py-24 md:py-32 bg-zinc-950 border-t border-white/5">
+            <div className="container mx-auto px-6 md:px-12 mb-16 flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+              <RevealText>
+                <p className="text-xs uppercase tracking-[0.3em] font-bold mb-4" style={{ color: "#E8572A" }}>Business Architects</p>
+                <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white font-display">Featured Case Study</h2>
+              </RevealText>
+              <Link href="/architects" className="border-b border-white pb-1 text-sm uppercase tracking-[0.2em] font-bold hover:text-gray-300 transition-colors">
+                View All
+              </Link>
+            </div>
+            <div className="container mx-auto px-6 md:px-12">
+              <RevealText>
+                <Link href="/architects#case-studies">
+                  <div className="group relative border border-white/10 bg-gradient-to-br from-zinc-900/40 via-zinc-950 to-black hover:border-white/20 transition-all duration-500 cursor-pointer">
+                    <div className="p-8 md:p-12">
+                      <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-10">
+                        <div className="flex-1">
+                          <span className="inline-block text-[10px] uppercase tracking-[0.4em] font-bold text-gray-500 border border-white/10 px-3 py-1 mb-4">{s.tag}</span>
+                          <p className="text-gray-500 text-sm mb-2">{s.client}</p>
+                          <h3 className="text-2xl md:text-4xl font-bold tracking-tighter text-white leading-tight">{s.headline}</h3>
+                        </div>
+                        {s.stats.length > 0 && (
+                          <div className="flex gap-8 shrink-0">
+                            {s.stats.slice(0, 3).map((st, si) => (
+                              <div key={si} className="text-center">
+                                <p className="text-2xl md:text-3xl font-bold text-white font-mono">{st.value}</p>
+                                <p className="text-[10px] uppercase tracking-widest text-gray-600 mt-1 max-w-[80px]">{st.label}</p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      <div className="border-l-2 border-white/15 pl-6">
+                        <p className="text-white text-sm font-mono leading-relaxed">{s.result}</p>
+                      </div>
+                      <div className="mt-8 flex items-center gap-3 text-white text-xs uppercase tracking-widest font-bold group-hover:gap-5 transition-all duration-300">
+                        View Case Study <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform duration-300" />
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </RevealText>
+            </div>
+          </section>
+        );
+      })()}
       {/* ARCHITECTS TEASER */}
       <section className="py-24 md:py-32 bg-zinc-950 border-t border-white/5">
         <div className="container mx-auto px-6 md:px-12">
