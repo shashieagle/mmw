@@ -520,18 +520,6 @@ export default function Architects() {
         </div>
       </section>
 
-      {/* Statement */}
-      <section className="py-24 md:py-32 border-t border-white/5 bg-zinc-950">
-        <div className="container mx-auto px-6 md:px-12 max-w-5xl">
-          <motion.p
-            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
-            className="text-3xl md:text-5xl font-bold tracking-tighter leading-tight text-white"
-          >
-            AI isn't coming. It's already here — and your competitors are already using it.{" "}
-            <span className="text-gray-500">We make sure you're not just keeping up, but pulling ahead.</span>
-          </motion.p>
-        </div>
-      </section>
 
       {/* Case Studies */}
       <section id="case-studies" className="py-24 md:py-32 bg-black border-t border-white/5">
