@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { Link } from "wouter";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { HeroAnimation } from "@/components/HeroAnimation";
 import { useListVideos, useGetVideoStats } from "@workspace/api-client-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -271,15 +272,7 @@ export default function Home() {
             Business Architecture · Narrative Design · AI
           </motion.p>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 60 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className="font-bold tracking-tighter text-white leading-none font-display whitespace-nowrap"
-            style={{ fontSize: "clamp(1.8rem, 6.2vw, 9rem)" }}
-          >
-            MONKMONKEYWORKS.
-          </motion.h1>
+          <HeroAnimation />
 
           <motion.p
             initial={{ opacity: 0, y: 10 }}
