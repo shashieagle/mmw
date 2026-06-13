@@ -342,59 +342,6 @@ export default function Home() {
       </section>
       {/* TICKER */}
       <Ticker text="Business Architecture — Narrative Design — Powered by AI — We build what's next" />
-      {/* TWO ARMS — full-bleed split */}
-      <section className="relative z-20 bg-background">
-        <div className="grid grid-cols-1 md:grid-cols-2 min-h-[70vh]">
-          <Link href="/studio">
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
-              className="group relative overflow-hidden border-b md:border-b-0 md:border-r border-white/10 p-12 md:p-16 lg:p-24 flex flex-col justify-between min-h-[420px] hover:bg-white/[0.03] transition-all duration-700 cursor-pointer"
-            >
-              <div>
-                <p className="text-[10px] uppercase tracking-[0.6em] font-bold mb-8" style={{ color: "#E8572A" }}>01 — Creative Division</p>
-                <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-white mb-6 font-display leading-[0.88]">
-                  The
-                  <br />
-                  Studio
-                </h2>
-              </div>
-              <div className="mt-10 flex items-center gap-3 text-white text-sm uppercase tracking-widest font-bold group-hover:gap-6 transition-all duration-500">
-                View Work <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-300" />
-              </div>
-
-              {/* Corner accent */}
-              <div className="absolute bottom-0 right-0 w-24 h-24 border-r border-b border-white/5 group-hover:border-white/20 transition-colors duration-700" />
-            </motion.div>
-          </Link>
-
-          <Link href="/architects">
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.15 }}
-              className="group relative overflow-hidden p-12 md:p-16 lg:p-24 flex flex-col justify-between min-h-[420px] bg-zinc-950 hover:bg-zinc-900 transition-all duration-700 cursor-pointer"
-            >
-              <div>
-                <p className="text-[10px] uppercase tracking-[0.6em] font-bold mb-8" style={{ color: "#E8572A" }}>02 — Business Division</p>
-                <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-white mb-6 font-display leading-[0.88]">
-                  Business
-                  <br />
-                  Architects
-                </h2>
-              </div>
-              <div className="mt-10 flex items-center gap-3 text-white text-sm uppercase tracking-widest font-bold group-hover:gap-6 transition-all duration-500">
-                Case Studies <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-300" />
-              </div>
-
-              <div className="absolute bottom-0 right-0 w-24 h-24 border-r border-b border-white/5 group-hover:border-white/20 transition-colors duration-700" />
-            </motion.div>
-          </Link>
-        </div>
-      </section>
       {/* WHO WE ARE */}
       <section className="py-32 md:py-48 bg-black border-t border-white/5">
         <div className="container mx-auto px-6 md:px-12">
