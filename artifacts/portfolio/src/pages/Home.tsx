@@ -259,8 +259,30 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/20" />
         </motion.div>
 
+        {/* Monk image — right side */}
         <motion.div
-          className="relative z-10 container mx-auto px-6 md:px-12"
+          className="absolute right-0 bottom-0 z-10 w-[45vw] max-w-[640px] pointer-events-none"
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1.2, delay: 0.4, ease: [0.21, 0.47, 0.32, 0.98] }}
+        >
+          <div className="relative">
+            <img
+              src="/monk-hero.png"
+              alt="Monk — Business Architect & Storyteller"
+              className="w-full h-auto object-contain"
+              style={{ filter: "drop-shadow(0 0 60px rgba(232,87,42,0.15))" }}
+            />
+            {/* Fade out at bottom to blend with page */}
+            <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black to-transparent" />
+            {/* Fade on left edge */}
+            <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-black to-transparent" />
+          </div>
+        </motion.div>
+
+        {/* Text — left side */}
+        <motion.div
+          className="relative z-20 container mx-auto px-6 md:px-12 max-w-2xl"
           style={{ opacity: heroOpacity }}
         >
           <motion.p
@@ -272,13 +294,22 @@ export default function Home() {
             Business Architecture · Narrative Design · AI
           </motion.p>
 
-          <HeroAnimation />
+          <motion.h1
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
+            className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter text-white leading-none font-display mb-6"
+          >
+            MONK<br />
+            <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)" }}>MONKEY</span><br />
+            WORKS.
+          </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.1 }}
-            className="mt-8 text-gray-400 text-lg md:text-xl font-light max-w-lg leading-relaxed"
+            transition={{ duration: 0.8, delay: 1.0 }}
+            className="text-gray-400 text-lg font-light max-w-md leading-relaxed mb-8"
           >
             From strategy to execution — we build what works.
           </motion.p>
@@ -286,8 +317,8 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1.4 }}
-            className="mt-8 flex flex-col sm:flex-row gap-4"
+            transition={{ duration: 1, delay: 1.3 }}
+            className="flex flex-col sm:flex-row gap-4"
           >
             <Link href="/architects">
               <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold">
