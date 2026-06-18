@@ -354,6 +354,12 @@ export default function Architects() {
   const { toast } = useToast();
   const qc = useQueryClient();
 
+  const { data: submissions = [] } = useQuery<{ id: number; name: string; email: string; inquiry: string; message: string; createdAt: string }[]>({
+    queryKey: ["contact-submissions"],
+    queryFn: async () => { const r = await fetch("/api/contact/submissions"); if (!r.ok) throw new Error(); return r.json(); },
+    enabled: isAdmin,
+  });
+
   const [showForm, setShowForm] = useState(false);
   const [editingStudy, setEditingStudy] = useState<CaseStudy | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<CaseStudy | null>(null);
@@ -733,6 +739,35 @@ export default function Architects() {
           </motion.div>
         </div>
       </section>
+
+      {/* CONTACT SUBMISSIONS INBOX — admin only */}
+      {isAdmin && (
+        <section className="py-16 bg-zinc-950 border-t border-amber-500/20">
+          <div className="container mx-auto px-6 md:px-12">
+            <div className="flex items-center gap-4 mb-8">
+              <p className="text-[10px] uppercase tracking-[0.5em] font-bold text-amber-500">Admin — Contact Inbox</p>
+              <span className="text-xs text-gray-600 font-mono">{submissions.length} submission{submissions.length !== 1 ? "s" : ""}</span>
+            </div>
+            {submissions.length === 0 ? (
+              <p className="text-gray-700 text-sm uppercase tracking-widest">No submissions yet.</p>
+            ) : (
+              <div className="space-y-4">
+                {submissions.map((s) => (
+                  <div key={s.id} className="border border-white/8 bg-black/40 p-6 grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-6">
+                    <div className="space-y-2">
+                      <p className="text-white font-bold text-sm">{s.name}</p>
+                      <p className="text-gray-400 text-xs">{s.email}</p>
+                      <span className="inline-block text-[9px] uppercase tracking-[0.4em] font-bold border border-white/10 px-2 py-1 text-gray-500">{s.inquiry}</span>
+                      <p className="text-gray-700 text-[10px] font-mono pt-1">{new Date(s.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" })}</p>
+                    </div>
+                    <p className="text-gray-300 text-sm leading-relaxed border-l border-white/8 pl-6">{s.message}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       <Footer />
 
