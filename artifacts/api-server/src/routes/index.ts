@@ -6,6 +6,7 @@ import caseStudyMediaRouter from "./caseStudyMedia";
 import studioImagesRouter from "./studioImages";
 import caseStudiesRouter from "./caseStudies";
 import settingsRouter from "./settings";
+import contactRouter from "./contact";
 
 const router: IRouter = Router();
 
@@ -16,5 +17,6 @@ router.use(caseStudyMediaRouter);
 router.use(studioImagesRouter);
 router.use(caseStudiesRouter);
 router.use(settingsRouter);
+router.use(contactRouter);
 
 export default router;
