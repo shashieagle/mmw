@@ -93,7 +93,7 @@ export default function Home() {
             className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter text-white leading-none font-display mb-6"
           >
             We help you<br />
-            <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)" }}>scale</span><br />
+            <span className="text-gray-500">scale</span><br />
             faster.
           </motion.h1>
 
