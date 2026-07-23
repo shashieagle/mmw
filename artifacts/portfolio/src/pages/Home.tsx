@@ -92,9 +92,9 @@ export default function Home() {
             transition={{ duration: 1.2, delay: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
             className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter text-white leading-none font-display mb-6"
           >
-            MONK<br />
-            <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)" }}>MONKEY</span><br />
-            WORKS.
+            We help you<br />
+            <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)" }}>scale</span><br />
+            faster.
           </motion.h1>
 
           <motion.p
