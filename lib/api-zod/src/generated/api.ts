@@ -292,11 +292,18 @@ export const ListCategoriesResponse = zod.array(ListCategoriesResponseItem);
  */
 export const ListStudioImagesQueryParams = zod.object({
   category: zod.coerce.string().optional().describe("Filter by category"),
+  productionType: zod
+    .enum(["irl", "ai"])
+    .optional()
+    .describe("Filter by production type"),
 });
 
 export const ListStudioImagesResponseItem = zod.object({
   id: zod.number(),
   imagePath: zod.string(),
+  productionType: zod
+    .enum(["irl", "ai"])
+    .describe("Whether the image is a real-shot project or AI-generated work"),
   category: zod.string(),
   caption: zod.string().nullish(),
   createdAt: zod.coerce.date(),
@@ -308,6 +315,9 @@ export const ListStudioImagesResponse = zod.array(ListStudioImagesResponseItem);
  */
 export const CreateStudioImageBody = zod.object({
   imagePath: zod.string(),
+  productionType: zod
+    .enum(["irl", "ai"])
+    .describe("Whether the image is a real-shot project or AI-generated work"),
   category: zod.string(),
   caption: zod.string().nullish(),
 });

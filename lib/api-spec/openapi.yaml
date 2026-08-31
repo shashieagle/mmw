@@ -298,6 +298,13 @@ paths:
           schema:
             type: string
           description: Filter by category
+        - name: productionType
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [irl, ai]
+          description: Filter by production type
       responses:
         "200":
           description: List of images
@@ -627,12 +634,16 @@ components:
 
     StudioImage:
       type: object
-      required: [id, imagePath, category, createdAt]
+      required: [id, imagePath, productionType, category, createdAt]
       properties:
         id:
           type: integer
         imagePath:
           type: string
+        productionType:
+          type: string
+          enum: [irl, ai]
+          description: Whether the image is a real-shot project or AI-generated work
         category:
           type: string
         caption:
@@ -643,10 +654,14 @@ components:
 
     CreateStudioImageBody:
       type: object
-      required: [imagePath, category]
+      required: [imagePath, productionType, category]
       properties:
         imagePath:
           type: string
+        productionType:
+          type: string
+          enum: [irl, ai]
+          description: Whether the image is a real-shot project or AI-generated work
         category:
           type: string
         caption:

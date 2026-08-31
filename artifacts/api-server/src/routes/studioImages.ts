@@ -1,5 +1,5 @@
 import { Router, type IRouter } from "express";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db, studioImagesTable } from "@workspace/db";
 import {
   ListStudioImagesQueryParams,
@@ -20,8 +20,17 @@ router.get("/images", async (req, res): Promise<void> => {
   }
 
   let dbQuery = db.select().from(studioImagesTable).$dynamic();
-  if (query.data.category) {
+  if (query.data.category && query.data.productionType) {
+    dbQuery = dbQuery.where(
+      and(
+        eq(studioImagesTable.category, query.data.category),
+        eq(studioImagesTable.productionType, query.data.productionType),
+      ),
+    );
+  } else if (query.data.category) {
     dbQuery = dbQuery.where(eq(studioImagesTable.category, query.data.category));
+  } else if (query.data.productionType) {
+    dbQuery = dbQuery.where(eq(studioImagesTable.productionType, query.data.productionType));
   }
 
   const images = await dbQuery.orderBy(studioImagesTable.createdAt);

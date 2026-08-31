@@ -47,7 +47,13 @@ function ImageLightbox({ src, onClose }: { src: string; onClose: () => void }) {
   );
 }
 
-function AdminImageUpload({ onUploaded }: { onUploaded: () => void }) {
+function AdminImageUpload({
+  onUploaded,
+  productionType,
+}: {
+  onUploaded: () => void;
+  productionType: FilmDestination;
+}) {
   const { toast } = useToast();
   const requestUrl = useRequestUploadUrl();
   const createImage = useCreateStudioImage();
@@ -78,7 +84,12 @@ function AdminImageUpload({ onUploaded }: { onUploaded: () => void }) {
           headers: { "Content-Type": file.type || "image/jpeg" },
         });
         await createImage.mutateAsync({
-          data: { imagePath: objectPath, category: category.trim(), caption: caption.trim() || null },
+          data: {
+            imagePath: objectPath,
+            productionType,
+            category: category.trim(),
+            caption: caption.trim() || null,
+          },
         });
         succeeded++;
       } catch {
@@ -143,6 +154,7 @@ function AdminImageUpload({ onUploaded }: { onUploaded: () => void }) {
 export default function Studio() {
   const [tab, setTab] = useState<Tab>("video");
   const [filmDestination, setFilmDestination] = useState<FilmDestination>("ai");
+  const [imageDestination, setImageDestination] = useState<FilmDestination>("ai");
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined);
   const [lightbox, setLightbox] = useState<string | null>(null);
   const { isAdmin } = useAdminMode();
@@ -162,7 +174,16 @@ export default function Studio() {
     : [];
 
   const { data: imageCategories } = useListImageCategories();
-  const { data: images, isLoading: isLoadingImages, refetch: refetchImages } = useListStudioImages({ category: selectedCategory });
+  const { data: images, isLoading: isLoadingImages, refetch: refetchImages } = useListStudioImages({
+    category: tab === "images" && imageDestination === "ai" ? selectedCategory : undefined,
+    productionType: imageDestination,
+  });
+  const irlImageSections = images
+    ? Array.from(new Set(images.map((image) => image.category))).map((category) => ({
+        category,
+        images: images.filter((image) => image.category === category),
+      }))
+    : [];
 
   const deleteImage = useDeleteStudioImage();
 
@@ -189,6 +210,53 @@ export default function Studio() {
       toast({ title: "Delete failed", variant: "destructive" });
     }
   };
+
+  const renderImageTile = (
+    image: NonNullable<typeof images>[number],
+    idx: number,
+  ) => (
+    <motion.div
+      key={image.id}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: idx * 0.05 }}
+      className="relative group mb-4 break-inside-avoid overflow-hidden bg-zinc-900"
+    >
+      <img
+        src={getImageUrl(image.imagePath)}
+        alt={image.caption || image.category}
+        className="w-full block object-cover group-hover:opacity-80 transition-opacity duration-300"
+      />
+      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100">
+        <button
+          onClick={() => setLightbox(getImageUrl(image.imagePath))}
+          className="w-9 h-9 bg-white flex items-center justify-center text-black hover:bg-gray-200 transition-colors"
+          aria-label="View image"
+        >
+          <ZoomIn size={16} />
+        </button>
+        {isAdmin && (
+          <button
+            onClick={() => handleDeleteImage(image.id)}
+            className="w-9 h-9 bg-red-600 flex items-center justify-center text-white hover:bg-red-700 transition-colors"
+            aria-label="Delete image"
+          >
+            <Trash2 size={14} />
+          </button>
+        )}
+      </div>
+      {image.caption && (
+        <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-3 py-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+          <p className="text-xs text-white/80">{image.caption}</p>
+        </div>
+      )}
+      <div className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <span className="text-[10px] uppercase tracking-widest bg-black/70 text-white/70 px-2 py-1">
+          {image.category}
+        </span>
+      </div>
+    </motion.div>
+  );
 
   return (
     <div className="min-h-screen bg-background flex flex-col pt-24">
@@ -267,10 +335,56 @@ export default function Studio() {
           </div>
         )}
 
+        {/* Real-shot / AI image destinations */}
+        {tab === "images" && (
+          <div className="grid grid-cols-2 gap-3 md:gap-4 mb-10 max-w-3xl">
+            {([
+              {
+                value: "irl",
+                label: "IRL Images",
+                description: "Real-shot photography",
+              },
+              {
+                value: "ai",
+                label: "AI Images",
+                description: "AI-generated imagery",
+              },
+            ] as const).map((destination) => (
+              <button
+                key={destination.value}
+                type="button"
+                onClick={() => {
+                  setImageDestination(destination.value);
+                  setSelectedCategory(undefined);
+                }}
+                aria-pressed={imageDestination === destination.value}
+                className={`group relative overflow-hidden border p-5 md:p-7 text-left transition-all duration-300 ${
+                  imageDestination === destination.value
+                    ? "border-white bg-white text-black"
+                    : "border-white/15 bg-white/[0.03] text-white hover:border-white/45 hover:bg-white/[0.06]"
+                }`}
+              >
+                <span className="block text-lg md:text-2xl uppercase tracking-tight font-display font-bold">
+                  {destination.label}
+                </span>
+                <span
+                  className={`mt-2 block text-[10px] md:text-xs uppercase tracking-[0.2em] ${
+                    imageDestination === destination.value ? "text-black/55" : "text-gray-500 group-hover:text-gray-300"
+                  }`}
+                >
+                  {destination.description}
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
+
         {/* AI archive filters + image admin upload */}
-        {(tab === "images" || (tab === "video" && filmDestination === "ai")) && (
+        {((tab === "video" && filmDestination === "ai") ||
+          (tab === "images" && (imageDestination === "ai" || isAdmin))) && (
           <div className="flex flex-wrap items-center gap-6 mb-16 border-b border-white/10 pb-8">
-            {tab === "video" && (
+            {((tab === "video" && filmDestination === "ai") ||
+              (tab === "images" && imageDestination === "ai")) && (
               <>
                 <button
                   onClick={() => setSelectedCategory(undefined)}
@@ -280,7 +394,7 @@ export default function Studio() {
                       : "text-gray-500 border-transparent hover:text-gray-300"
                   }`}
                 >
-                  All Work
+                  {tab === "video" ? "All Work" : "All Images"}
                 </button>
                 {categories?.map((category) => (
                   <button
@@ -300,7 +414,7 @@ export default function Studio() {
 
             {isAdmin && tab === "images" && (
               <div className="ml-auto">
-                <AdminImageUpload onUploaded={refetchImages} />
+                <AdminImageUpload onUploaded={refetchImages} productionType={imageDestination} />
               </div>
             )}
           </div>
@@ -413,58 +527,50 @@ export default function Studio() {
                     <div key={i} className="mb-4 bg-white/5 animate-pulse" style={{ height: `${180 + (i % 3) * 60}px` }} />
                   ))}
                 </div>
+              ) : imageDestination === "irl" ? (
+                irlImageSections.length > 0 ? (
+                  <div className="space-y-20">
+                    {irlImageSections.map((section, sectionIndex) => (
+                      <section key={section.category} aria-labelledby={`irl-image-section-${sectionIndex}`}>
+                        <div className="flex items-end justify-between gap-6 mb-7 border-b border-white/10 pb-4">
+                          <div>
+                            <p className="text-[10px] uppercase tracking-[0.35em] text-gray-600 mb-2">
+                              IRL Images / {String(sectionIndex + 1).padStart(2, "0")}
+                            </p>
+                            <h2
+                              id={`irl-image-section-${sectionIndex}`}
+                              className="text-2xl md:text-4xl uppercase tracking-tight text-white font-display"
+                            >
+                              {section.category}
+                            </h2>
+                          </div>
+                          <span className="text-[10px] uppercase tracking-[0.25em] text-gray-600">
+                            {section.images.length} {section.images.length === 1 ? "image" : "images"}
+                          </span>
+                        </div>
+                        <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
+                          {section.images.map(renderImageTile)}
+                        </div>
+                      </section>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="py-32 text-center border border-white/5 bg-white/5">
+                    <h3 className="text-2xl text-white mb-4 tracking-tight">No IRL images yet</h3>
+                    <p className="text-gray-500 uppercase tracking-widest text-sm">
+                      {isAdmin ? "Use Add Image above to upload your first real-shot image" : "Real-shot images will appear here"}
+                    </p>
+                  </div>
+                )
               ) : images && images.length > 0 ? (
                 <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
-                  {images.map((image, idx) => (
-                    <motion.div
-                      key={image.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: idx * 0.05 }}
-                      className="relative group mb-4 break-inside-avoid overflow-hidden bg-zinc-900"
-                    >
-                      <img
-                        src={getImageUrl(image.imagePath)}
-                        alt={image.caption || image.category}
-                        className="w-full block object-cover group-hover:opacity-80 transition-opacity duration-300"
-                      />
-                      {/* Overlay */}
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100">
-                        <button
-                          onClick={() => setLightbox(getImageUrl(image.imagePath))}
-                          className="w-9 h-9 bg-white flex items-center justify-center text-black hover:bg-gray-200 transition-colors"
-                        >
-                          <ZoomIn size={16} />
-                        </button>
-                        {isAdmin && (
-                          <button
-                            onClick={() => handleDeleteImage(image.id)}
-                            className="w-9 h-9 bg-red-600 flex items-center justify-center text-white hover:bg-red-700 transition-colors"
-                          >
-                            <Trash2 size={14} />
-                          </button>
-                        )}
-                      </div>
-                      {/* Caption */}
-                      {image.caption && (
-                        <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-3 py-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                          <p className="text-xs text-white/80">{image.caption}</p>
-                        </div>
-                      )}
-                      {/* Category badge */}
-                      <div className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <span className="text-[10px] uppercase tracking-widest bg-black/70 text-white/70 px-2 py-1">
-                          {image.category}
-                        </span>
-                      </div>
-                    </motion.div>
-                  ))}
+                  {images.map(renderImageTile)}
                 </div>
               ) : (
                 <div className="py-32 text-center border border-white/5 bg-white/5">
                   <h3 className="text-2xl text-white mb-4 tracking-tight">No images yet</h3>
                   <p className="text-gray-500 uppercase tracking-widest text-sm">
-                    {isAdmin ? "Use the Add Image button above to upload your first AI image" : "Check back soon"}
+                    {isAdmin ? "Use Add Image above to upload your first AI image" : "Check back soon"}
                   </p>
                 </div>
               )}

@@ -174,17 +174,43 @@ export interface UploadUrlResponse {
   objectPath: string;
 }
 
+/**
+ * Whether the image is a real-shot project or AI-generated work
+ */
+export type StudioImageProductionType =
+  (typeof StudioImageProductionType)[keyof typeof StudioImageProductionType];
+
+export const StudioImageProductionType = {
+  irl: "irl",
+  ai: "ai",
+} as const;
+
 export interface StudioImage {
   id: number;
   imagePath: string;
+  /** Whether the image is a real-shot project or AI-generated work */
+  productionType: StudioImageProductionType;
   category: string;
   /** @nullable */
   caption?: string | null;
   createdAt: string;
 }
 
+/**
+ * Whether the image is a real-shot project or AI-generated work
+ */
+export type CreateStudioImageBodyProductionType =
+  (typeof CreateStudioImageBodyProductionType)[keyof typeof CreateStudioImageBodyProductionType];
+
+export const CreateStudioImageBodyProductionType = {
+  irl: "irl",
+  ai: "ai",
+} as const;
+
 export interface CreateStudioImageBody {
   imagePath: string;
+  /** Whether the image is a real-shot project or AI-generated work */
+  productionType: CreateStudioImageBodyProductionType;
   category: string;
   /** @nullable */
   caption?: string | null;
@@ -255,4 +281,16 @@ export type ListStudioImagesParams = {
    * Filter by category
    */
   category?: string;
+  /**
+   * Filter by production type
+   */
+  productionType?: ListStudioImagesProductionType;
 };
+
+export type ListStudioImagesProductionType =
+  (typeof ListStudioImagesProductionType)[keyof typeof ListStudioImagesProductionType];
+
+export const ListStudioImagesProductionType = {
+  irl: "irl",
+  ai: "ai",
+} as const;

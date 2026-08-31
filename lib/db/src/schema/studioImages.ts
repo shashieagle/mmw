@@ -5,6 +5,7 @@ import { z } from "zod/v4";
 export const studioImagesTable = pgTable("studio_images", {
   id: serial("id").primaryKey(),
   imagePath: text("image_path").notNull(),
+  productionType: text("production_type").notNull().default("ai"),
   category: text("category").notNull(),
   caption: text("caption"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
