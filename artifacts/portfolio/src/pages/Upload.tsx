@@ -53,6 +53,13 @@ const formSchema = z.object({
 });
 
 type FormValues = z.infer<typeof formSchema>;
+const IRL_FILM_SECTIONS = [
+  "Architecture",
+  "Corporate",
+  "Music Videos",
+  "Short Film",
+  "Documentaries",
+] as const;
 
 export default function Upload() {
   const [, setLocation] = useLocation();
@@ -86,6 +93,7 @@ export default function Upload() {
       tags: "",
     },
   });
+  const productionType = form.watch("productionType");
 
   useEffect(() => {
     if (checked && !isAdmin) setLocation("/");
@@ -338,7 +346,10 @@ export default function Upload() {
                                 <button
                                   key={option.value}
                                   type="button"
-                                  onClick={() => field.onChange(option.value)}
+                                  onClick={() => {
+                                    field.onChange(option.value);
+                                    form.setValue("category", "");
+                                  }}
                                   className={`p-4 text-left border transition-all ${
                                     field.value === option.value
                                       ? "bg-white text-black border-white"
@@ -366,9 +377,26 @@ export default function Upload() {
                         <FormItem>
                           <FormLabel className="uppercase tracking-widest text-xs text-gray-400 font-bold">Industry Category</FormLabel>
                           <FormControl>
-                            <Input placeholder="E.g. Fashion, Film, Food & Beverage" className="bg-black border-white/20 text-white" {...field} />
+                            {productionType === "irl" ? (
+                              <select
+                                value={field.value}
+                                onChange={field.onChange}
+                                className="flex h-10 w-full border border-white/20 bg-black px-3 py-2 text-sm text-white outline-none focus:border-white/50"
+                              >
+                                <option value="">Select an IRL film section</option>
+                                {IRL_FILM_SECTIONS.map((section) => (
+                                  <option key={section} value={section}>{section}</option>
+                                ))}
+                              </select>
+                            ) : (
+                              <Input placeholder="E.g. Fashion, Film, Food & Beverage" className="bg-black border-white/20 text-white" {...field} />
+                            )}
                           </FormControl>
-                          <FormDescription className="text-gray-600 text-xs">Used as the main filter on the Studio page</FormDescription>
+                          <FormDescription className="text-gray-600 text-xs">
+                            {productionType === "irl"
+                              ? "Choose one of the five IRL Films sections."
+                              : "Used as the main filter on the Studio page."}
+                          </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}

@@ -18,6 +18,13 @@ import { useToast } from "@/hooks/use-toast";
 
 type Tab = "video" | "images";
 type FilmDestination = "irl" | "ai";
+const IRL_FILM_SECTIONS = [
+  "Architecture",
+  "Corporate",
+  "Music Videos",
+  "Short Film",
+  "Documentaries",
+] as const;
 
 function ImageLightbox({ src, onClose }: { src: string; onClose: () => void }) {
   useEffect(() => {
@@ -166,12 +173,10 @@ export default function Studio() {
     productionType: filmDestination,
   });
   const videos = rawVideos ? [...rawVideos].reverse() : rawVideos;
-  const irlSections = videos
-    ? Array.from(new Set(videos.map((video) => video.category))).map((category) => ({
+  const irlSections = IRL_FILM_SECTIONS.map((category) => ({
         category,
-        videos: videos.filter((video) => video.category === category),
-      }))
-    : [];
+        videos: videos?.filter((video) => video.category === category) ?? [],
+      }));
 
   const { data: imageCategories } = useListImageCategories();
   const { data: images, isLoading: isLoadingImages, refetch: refetchImages } = useListStudioImages({
@@ -439,8 +444,7 @@ export default function Studio() {
                   ))}
                 </div>
               ) : filmDestination === "irl" ? (
-                irlSections.length > 0 ? (
-                  <div className="space-y-20">
+                <div className="space-y-20">
                     {irlSections.map((section, sectionIndex) => (
                       <section key={section.category} aria-labelledby={`irl-section-${sectionIndex}`}>
                         <div className="flex items-end justify-between gap-6 mb-7 border-b border-white/10 pb-4">
@@ -459,28 +463,28 @@ export default function Studio() {
                             {section.videos.length} {section.videos.length === 1 ? "project" : "projects"}
                           </span>
                         </div>
-                        <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-                          {section.videos.map((video, idx) => (
-                            <motion.div
-                              key={video.id}
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.4, delay: idx * 0.05 }}
-                              className="min-w-0"
-                            >
-                              <VideoCard video={video} index={idx} gridMode />
-                            </motion.div>
-                          ))}
-                        </div>
+                        {section.videos.length > 0 ? (
+                          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+                            {section.videos.map((video, idx) => (
+                              <motion.div
+                                key={video.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.4, delay: idx * 0.05 }}
+                                className="min-w-0"
+                              >
+                                <VideoCard video={video} index={idx} gridMode />
+                              </motion.div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="border border-dashed border-white/10 px-5 py-8 text-xs uppercase tracking-[0.25em] text-gray-700">
+                            Projects coming soon
+                          </p>
+                        )}
                       </section>
                     ))}
                   </div>
-                ) : (
-                  <div className="py-32 text-center border border-white/5 bg-white/5">
-                    <h3 className="text-2xl text-white mb-4 tracking-tight">Nothing here yet</h3>
-                    <p className="text-gray-500 uppercase tracking-widest text-sm">Real-shot projects will appear here</p>
-                  </div>
-                )
               ) : videos && videos.length > 0 ? (
                 <div
                   className="grid gap-3 md:gap-4 grid-cols-1 md:grid-cols-3 [grid-auto-flow:dense] [grid-auto-rows:280px] md:[grid-auto-rows:440px]"
