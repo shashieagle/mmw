@@ -26,8 +26,14 @@ router.get("/videos", async (req, res): Promise<void> => {
 
   let dbQuery = db.select().from(videosTable).$dynamic();
 
-  if (query.data.category) {
+  if (query.data.category && query.data.productionType) {
+    dbQuery = dbQuery.where(
+      sql`${videosTable.category} = ${query.data.category} AND ${videosTable.productionType} = ${query.data.productionType}`,
+    );
+  } else if (query.data.category) {
     dbQuery = dbQuery.where(eq(videosTable.category, query.data.category));
+  } else if (query.data.productionType) {
+    dbQuery = dbQuery.where(eq(videosTable.productionType, query.data.productionType));
   }
 
   if (query.data.featured !== undefined) {

@@ -41,6 +41,7 @@ function extractYoutubeId(url: string): string | null {
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
+  productionType: z.enum(["irl", "ai"]),
   category: z.string().min(1, "Category is required"),
   format: z.string().optional(),
   orientation: z.enum(["landscape", "portrait"]).default("landscape"),
@@ -74,6 +75,7 @@ export default function Upload() {
     defaultValues: {
       title: "",
       description: "",
+      productionType: "ai" as const,
       category: "",
       format: "",
       orientation: "landscape" as const,
@@ -150,6 +152,7 @@ export default function Upload() {
         data: {
           title: data.title,
           description: data.description,
+          productionType: data.productionType,
           category: data.category,
           format: data.format || null,
           orientation: data.orientation,
@@ -320,6 +323,42 @@ export default function Upload() {
                   />
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <FormField
+                      control={form.control}
+                      name="productionType"
+                      render={({ field }) => (
+                        <FormItem className="md:col-span-2">
+                          <FormLabel className="uppercase tracking-widest text-xs text-gray-400 font-bold">Studio Destination</FormLabel>
+                          <FormControl>
+                            <div className="grid grid-cols-2 gap-2">
+                              {([
+                                { value: "irl", label: "IRL", detail: "Real-shot project" },
+                                { value: "ai", label: "AI Films", detail: "AI-generated project" },
+                              ] as const).map((option) => (
+                                <button
+                                  key={option.value}
+                                  type="button"
+                                  onClick={() => field.onChange(option.value)}
+                                  className={`p-4 text-left border transition-all ${
+                                    field.value === option.value
+                                      ? "bg-white text-black border-white"
+                                      : "bg-transparent text-gray-400 border-white/20 hover:border-white/50 hover:text-white"
+                                  }`}
+                                >
+                                  <span className="block text-sm uppercase tracking-widest font-bold">{option.label}</span>
+                                  <span className={`block mt-1 text-xs ${field.value === option.value ? "text-black/60" : "text-gray-600"}`}>
+                                    {option.detail}
+                                  </span>
+                                </button>
+                              ))}
+                            </div>
+                          </FormControl>
+                          <FormDescription className="text-gray-600 text-xs">Controls which Studio section displays this film.</FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
                     <FormField
                       control={form.control}
                       name="category"

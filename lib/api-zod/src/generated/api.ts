@@ -79,6 +79,10 @@ export const HealthCheckResponse = zod.object({
  */
 export const ListVideosQueryParams = zod.object({
   category: zod.coerce.string().optional().describe("Filter by category"),
+  productionType: zod
+    .enum(["irl", "ai"])
+    .optional()
+    .describe("Filter by production type"),
   featured: zod.coerce
     .boolean()
     .optional()
@@ -96,6 +100,9 @@ export const ListVideosResponseItem = zod.object({
     .string()
     .nullable()
     .describe("Object path for the thumbnail image"),
+  productionType: zod
+    .enum(["irl", "ai"])
+    .describe("Whether the film is a real-shot project or AI-generated work"),
   category: zod.string(),
   format: zod
     .string()
@@ -129,6 +136,9 @@ export const CreateVideoBody = zod.object({
   title: zod.string(),
   description: zod.string(),
   videoPath: zod.string(),
+  productionType: zod
+    .enum(["irl", "ai"])
+    .describe("Whether the film is a real-shot project or AI-generated work"),
   thumbnailPath: zod.string().nullish(),
   category: zod.string(),
   format: zod.string().nullish(),
@@ -160,6 +170,9 @@ export const GetVideoResponse = zod.object({
     .string()
     .nullable()
     .describe("Object path for the thumbnail image"),
+  productionType: zod
+    .enum(["irl", "ai"])
+    .describe("Whether the film is a real-shot project or AI-generated work"),
   category: zod.string(),
   format: zod
     .string()
@@ -193,6 +206,10 @@ export const UpdateVideoBody = zod.object({
   title: zod.string().optional(),
   description: zod.string().optional(),
   videoPath: zod.string().optional(),
+  productionType: zod
+    .enum(["irl", "ai"])
+    .optional()
+    .describe("Whether the film is a real-shot project or AI-generated work"),
   thumbnailPath: zod.string().nullish(),
   category: zod.string().optional(),
   format: zod.string().nullish(),
@@ -215,6 +232,9 @@ export const UpdateVideoResponse = zod.object({
     .string()
     .nullable()
     .describe("Object path for the thumbnail image"),
+  productionType: zod
+    .enum(["irl", "ai"])
+    .describe("Whether the film is a real-shot project or AI-generated work"),
   category: zod.string(),
   format: zod
     .string()

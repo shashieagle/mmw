@@ -14,7 +14,11 @@ router.post("/contact", async (req, res): Promise<void> => {
     message?: string;
   };
 
-  if (!name || !email || !message || !INQUIRY_OPTIONS.includes(inquiry as typeof INQUIRY_OPTIONS[number])) {
+  const hasValidInquiry =
+    typeof inquiry === "string" &&
+    (INQUIRY_OPTIONS as readonly string[]).includes(inquiry);
+
+  if (!name || !email || !message || !hasValidInquiry) {
     res.status(400).json({ error: "Invalid submission" });
     return;
   }

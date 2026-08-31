@@ -8,6 +8,7 @@ export const videosTable = pgTable("videos", {
   description: text("description").notNull(),
   videoPath: text("video_path").notNull(),
   thumbnailPath: text("thumbnail_path"),
+  productionType: text("production_type").notNull().default("ai"),
   category: text("category").notNull(),
   featured: boolean("featured").notNull().default(false),
   duration: text("duration"),

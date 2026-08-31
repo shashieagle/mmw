@@ -17,6 +17,7 @@ import { Plus, X, Trash2, ZoomIn } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 type Tab = "video" | "images";
+type FilmDestination = "irl" | "ai";
 
 function ImageLightbox({ src, onClose }: { src: string; onClose: () => void }) {
   useEffect(() => {
@@ -141,13 +142,17 @@ function AdminImageUpload({ onUploaded }: { onUploaded: () => void }) {
 
 export default function Studio() {
   const [tab, setTab] = useState<Tab>("video");
+  const [filmDestination, setFilmDestination] = useState<FilmDestination>("ai");
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined);
   const [lightbox, setLightbox] = useState<string | null>(null);
   const { isAdmin } = useAdminMode();
   const { toast } = useToast();
 
   const { data: videoCategories } = useListCategories();
-  const { data: rawVideos, isLoading: isLoadingVideos } = useListVideos({ category: selectedCategory });
+  const { data: rawVideos, isLoading: isLoadingVideos } = useListVideos({
+    category: selectedCategory,
+    productionType: filmDestination,
+  });
   const videos = rawVideos ? [...rawVideos].reverse() : rawVideos;
 
   const { data: imageCategories } = useListImageCategories();
@@ -197,7 +202,7 @@ export default function Studio() {
           <p className="text-gray-400 max-w-2xl text-lg md:text-xl font-light">Visual work built for emotional communcation.</p>
         </motion.div>
 
-        {/* Video / Images toggle */}
+        {/* Films / Images toggle */}
         <div className="flex items-center gap-8 mb-10">
           {(["video", "images"] as Tab[]).map((t) => (
             <button
@@ -207,10 +212,54 @@ export default function Studio() {
                 tab === t ? "text-white border-white" : "text-gray-500 border-transparent hover:text-gray-300"
               }`}
             >
-              {t === "video" ? "Video" : "Images"}
+              {t === "video" ? "Films" : "Images"}
             </button>
           ))}
         </div>
+
+        {/* Real-shot / AI film destinations */}
+        {tab === "video" && (
+          <div className="grid grid-cols-2 gap-3 md:gap-4 mb-10 max-w-3xl">
+            {([
+              {
+                value: "irl",
+                label: "IRL",
+                description: "Real-shot projects",
+              },
+              {
+                value: "ai",
+                label: "AI Films",
+                description: "AI-generated projects",
+              },
+            ] as const).map((destination) => (
+              <button
+                key={destination.value}
+                type="button"
+                onClick={() => {
+                  setFilmDestination(destination.value);
+                  setSelectedCategory(undefined);
+                }}
+                aria-pressed={filmDestination === destination.value}
+                className={`group relative overflow-hidden border p-5 md:p-7 text-left transition-all duration-300 ${
+                  filmDestination === destination.value
+                    ? "border-white bg-white text-black"
+                    : "border-white/15 bg-white/[0.03] text-white hover:border-white/45 hover:bg-white/[0.06]"
+                }`}
+              >
+                <span className="block text-xl md:text-3xl uppercase tracking-tight font-display font-bold">
+                  {destination.label}
+                </span>
+                <span
+                  className={`mt-2 block text-[10px] md:text-xs uppercase tracking-[0.2em] ${
+                    filmDestination === destination.value ? "text-black/55" : "text-gray-500 group-hover:text-gray-300"
+                  }`}
+                >
+                  {destination.description}
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Category filters + admin upload button */}
         <div className="flex flex-wrap items-center gap-6 mb-16 border-b border-white/10 pb-8">
@@ -286,7 +335,11 @@ export default function Studio() {
               ) : (
                 <div className="py-32 text-center border border-white/5 bg-white/5">
                   <h3 className="text-2xl text-white mb-4 tracking-tight">Nothing here yet</h3>
-                  <p className="text-gray-500 uppercase tracking-widest text-sm">Upload your first film to get started</p>
+                  <p className="text-gray-500 uppercase tracking-widest text-sm">
+                    {filmDestination === "irl"
+                      ? "Real-shot projects will appear here"
+                      : "Upload your first AI film to get started"}
+                  </p>
                 </div>
               )}
             </motion.div>

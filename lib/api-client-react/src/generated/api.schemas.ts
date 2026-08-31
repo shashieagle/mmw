@@ -10,6 +10,17 @@ export interface HealthStatus {
 }
 
 /**
+ * Whether the film is a real-shot project or AI-generated work
+ */
+export type VideoProductionType =
+  (typeof VideoProductionType)[keyof typeof VideoProductionType];
+
+export const VideoProductionType = {
+  irl: "irl",
+  ai: "ai",
+} as const;
+
+/**
  * Card aspect ratio — landscape (16:9) or portrait (9:16)
  */
 export type VideoOrientation =
@@ -31,6 +42,8 @@ export interface Video {
    * @nullable
    */
   thumbnailPath: string | null;
+  /** Whether the film is a real-shot project or AI-generated work */
+  productionType: VideoProductionType;
   category: string;
   /**
    * Primary format label shown on cards and filter bar (e.g. "Commercial Ad")
@@ -53,6 +66,17 @@ export interface Video {
   createdAt: string;
 }
 
+/**
+ * Whether the film is a real-shot project or AI-generated work
+ */
+export type CreateVideoBodyProductionType =
+  (typeof CreateVideoBodyProductionType)[keyof typeof CreateVideoBodyProductionType];
+
+export const CreateVideoBodyProductionType = {
+  irl: "irl",
+  ai: "ai",
+} as const;
+
 export type CreateVideoBodyOrientation =
   (typeof CreateVideoBodyOrientation)[keyof typeof CreateVideoBodyOrientation];
 
@@ -65,6 +89,8 @@ export interface CreateVideoBody {
   title: string;
   description: string;
   videoPath: string;
+  /** Whether the film is a real-shot project or AI-generated work */
+  productionType: CreateVideoBodyProductionType;
   /** @nullable */
   thumbnailPath?: string | null;
   category: string;
@@ -81,6 +107,17 @@ export interface CreateVideoBody {
   tags?: string[];
 }
 
+/**
+ * Whether the film is a real-shot project or AI-generated work
+ */
+export type UpdateVideoBodyProductionType =
+  (typeof UpdateVideoBodyProductionType)[keyof typeof UpdateVideoBodyProductionType];
+
+export const UpdateVideoBodyProductionType = {
+  irl: "irl",
+  ai: "ai",
+} as const;
+
 export type UpdateVideoBodyOrientation =
   (typeof UpdateVideoBodyOrientation)[keyof typeof UpdateVideoBodyOrientation];
 
@@ -93,6 +130,8 @@ export interface UpdateVideoBody {
   title?: string;
   description?: string;
   videoPath?: string;
+  /** Whether the film is a real-shot project or AI-generated work */
+  productionType?: UpdateVideoBodyProductionType;
   /** @nullable */
   thumbnailPath?: string | null;
   category?: string;
@@ -194,10 +233,22 @@ export type ListVideosParams = {
    */
   category?: string;
   /**
+   * Filter by production type
+   */
+  productionType?: ListVideosProductionType;
+  /**
    * Filter featured videos only
    */
   featured?: boolean;
 };
+
+export type ListVideosProductionType =
+  (typeof ListVideosProductionType)[keyof typeof ListVideosProductionType];
+
+export const ListVideosProductionType = {
+  irl: "irl",
+  ai: "ai",
+} as const;
 
 export type ListStudioImagesParams = {
   /**

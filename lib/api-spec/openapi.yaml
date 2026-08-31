@@ -139,6 +139,13 @@ paths:
           schema:
             type: string
           description: Filter by category
+        - name: productionType
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [irl, ai]
+          description: Filter by production type
         - name: featured
           in: query
           required: false
@@ -455,7 +462,7 @@ components:
 
     Video:
       type: object
-      required: [id, title, description, videoPath, thumbnailPath, category, featured, createdAt]
+      required: [id, title, description, videoPath, thumbnailPath, productionType, category, featured, createdAt]
       properties:
         id:
           type: integer
@@ -469,6 +476,10 @@ components:
         thumbnailPath:
           type: ["string", "null"]
           description: Object path for the thumbnail image
+        productionType:
+          type: string
+          enum: [irl, ai]
+          description: Whether the film is a real-shot project or AI-generated work
         category:
           type: string
         format:
@@ -498,7 +509,7 @@ components:
 
     CreateVideoBody:
       type: object
-      required: [title, description, videoPath, category]
+      required: [title, description, videoPath, productionType, category]
       properties:
         title:
           type: string
@@ -506,6 +517,10 @@ components:
           type: string
         videoPath:
           type: string
+        productionType:
+          type: string
+          enum: [irl, ai]
+          description: Whether the film is a real-shot project or AI-generated work
         thumbnailPath:
           type: ["string", "null"]
         category:
@@ -539,6 +554,10 @@ components:
           type: string
         videoPath:
           type: string
+        productionType:
+          type: string
+          enum: [irl, ai]
+          description: Whether the film is a real-shot project or AI-generated work
         thumbnailPath:
           type: ["string", "null"]
         category:
