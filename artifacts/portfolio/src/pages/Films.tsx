@@ -25,6 +25,11 @@ const IRL_FILM_SECTIONS = [
   "Short Film",
   "Documentaries",
 ] as const;
+const IRL_IMAGE_SECTIONS = [
+  "Architecture",
+  "Portraits",
+  "Product Shoots",
+] as const;
 
 function ImageLightbox({ src, onClose }: { src: string; onClose: () => void }) {
   useEffect(() => {
@@ -136,13 +141,26 @@ function AdminImageUpload({
         <span className="text-xs uppercase tracking-widest text-gray-400 font-bold">Upload Image</span>
         <button onClick={() => setOpen(false)} className="text-gray-500 hover:text-white"><X size={14} /></button>
       </div>
-      <input
-        type="text"
-        placeholder="Category (e.g. Fashion, Product)"
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-        className="bg-black border border-white/20 text-white text-sm px-3 py-2 w-full outline-none focus:border-white/50"
-      />
+       {productionType === "irl" ? (
+         <select
+           value={category}
+           onChange={(e) => setCategory(e.target.value)}
+           className="bg-black border border-white/20 text-white text-sm px-3 py-2 w-full outline-none focus:border-white/50"
+         >
+           <option value="">Select IRL image section</option>
+           {IRL_IMAGE_SECTIONS.map((section) => (
+             <option key={section} value={section}>{section}</option>
+           ))}
+         </select>
+       ) : (
+         <input
+           type="text"
+           placeholder="Category (e.g. Fashion, Product)"
+           value={category}
+           onChange={(e) => setCategory(e.target.value)}
+           className="bg-black border border-white/20 text-white text-sm px-3 py-2 w-full outline-none focus:border-white/50"
+         />
+       )}
       <input
         type="text"
         placeholder="Caption (optional)"
@@ -183,12 +201,10 @@ export default function Studio() {
     category: tab === "images" && imageDestination === "ai" ? selectedCategory : undefined,
     productionType: imageDestination,
   });
-  const irlImageSections = images
-    ? Array.from(new Set(images.map((image) => image.category))).map((category) => ({
+  const irlImageSections = IRL_IMAGE_SECTIONS.map((category) => ({
         category,
-        images: images.filter((image) => image.category === category),
-      }))
-    : [];
+        images: images?.filter((image) => image.category === category) ?? [],
+      }));
 
   const deleteImage = useDeleteStudioImage();
 
@@ -552,9 +568,15 @@ export default function Studio() {
                             {section.images.length} {section.images.length === 1 ? "image" : "images"}
                           </span>
                         </div>
-                        <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
-                          {section.images.map(renderImageTile)}
-                        </div>
+                        {section.images.length > 0 ? (
+                          <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
+                            {section.images.map(renderImageTile)}
+                          </div>
+                        ) : (
+                          <p className="border border-dashed border-white/10 px-5 py-8 text-xs uppercase tracking-[0.25em] text-gray-700">
+                            Projects coming soon
+                          </p>
+                        )}
                       </section>
                     ))}
                   </div>
