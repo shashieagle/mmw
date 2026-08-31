@@ -150,10 +150,16 @@ export default function Studio() {
 
   const { data: videoCategories } = useListCategories();
   const { data: rawVideos, isLoading: isLoadingVideos } = useListVideos({
-    category: selectedCategory,
+    category: filmDestination === "ai" ? selectedCategory : undefined,
     productionType: filmDestination,
   });
   const videos = rawVideos ? [...rawVideos].reverse() : rawVideos;
+  const irlSections = videos
+    ? Array.from(new Set(videos.map((video) => video.category))).map((category) => ({
+        category,
+        videos: videos.filter((video) => video.category === category),
+      }))
+    : [];
 
   const { data: imageCategories } = useListImageCategories();
   const { data: images, isLoading: isLoadingImages, refetch: refetchImages } = useListStudioImages({ category: selectedCategory });
@@ -261,38 +267,44 @@ export default function Studio() {
           </div>
         )}
 
-        {/* Category filters + admin upload button */}
-        <div className="flex flex-wrap items-center gap-6 mb-16 border-b border-white/10 pb-8">
-          <button
-            onClick={() => setSelectedCategory(undefined)}
-            className={`text-sm uppercase tracking-widest font-bold transition-all duration-300 pb-1 border-b-2 ${
-              selectedCategory === undefined
-                ? "text-white border-white"
-                : "text-gray-500 border-transparent hover:text-gray-300"
-            }`}
-          >
-            All Work
-          </button>
-          {categories?.map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`text-sm uppercase tracking-widest font-bold transition-all duration-300 pb-1 border-b-2 ${
-                selectedCategory === category
-                  ? "text-white border-white"
-                  : "text-gray-500 border-transparent hover:text-gray-300"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
+        {/* AI archive filters + image admin upload */}
+        {(tab === "images" || (tab === "video" && filmDestination === "ai")) && (
+          <div className="flex flex-wrap items-center gap-6 mb-16 border-b border-white/10 pb-8">
+            {tab === "video" && (
+              <>
+                <button
+                  onClick={() => setSelectedCategory(undefined)}
+                  className={`text-sm uppercase tracking-widest font-bold transition-all duration-300 pb-1 border-b-2 ${
+                    selectedCategory === undefined
+                      ? "text-white border-white"
+                      : "text-gray-500 border-transparent hover:text-gray-300"
+                  }`}
+                >
+                  All Work
+                </button>
+                {categories?.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`text-sm uppercase tracking-widest font-bold transition-all duration-300 pb-1 border-b-2 ${
+                      selectedCategory === category
+                        ? "text-white border-white"
+                        : "text-gray-500 border-transparent hover:text-gray-300"
+                    }`}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </>
+            )}
 
-          {isAdmin && tab === "images" && (
-            <div className="ml-auto">
-              <AdminImageUpload onUploaded={refetchImages} />
-            </div>
-          )}
-        </div>
+            {isAdmin && tab === "images" && (
+              <div className="ml-auto">
+                <AdminImageUpload onUploaded={refetchImages} />
+              </div>
+            )}
+          </div>
+        )}
 
         {/* VIDEO GRID */}
         <AnimatePresence mode="wait">
@@ -312,6 +324,49 @@ export default function Studio() {
                     <div key={i} className="bg-white/5 animate-pulse" />
                   ))}
                 </div>
+              ) : filmDestination === "irl" ? (
+                irlSections.length > 0 ? (
+                  <div className="space-y-20">
+                    {irlSections.map((section, sectionIndex) => (
+                      <section key={section.category} aria-labelledby={`irl-section-${sectionIndex}`}>
+                        <div className="flex items-end justify-between gap-6 mb-7 border-b border-white/10 pb-4">
+                          <div>
+                            <p className="text-[10px] uppercase tracking-[0.35em] text-gray-600 mb-2">
+                              IRL / {String(sectionIndex + 1).padStart(2, "0")}
+                            </p>
+                            <h2
+                              id={`irl-section-${sectionIndex}`}
+                              className="text-2xl md:text-4xl uppercase tracking-tight text-white font-display"
+                            >
+                              {section.category}
+                            </h2>
+                          </div>
+                          <span className="text-[10px] uppercase tracking-[0.25em] text-gray-600">
+                            {section.videos.length} {section.videos.length === 1 ? "project" : "projects"}
+                          </span>
+                        </div>
+                        <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+                          {section.videos.map((video, idx) => (
+                            <motion.div
+                              key={video.id}
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.4, delay: idx * 0.05 }}
+                              className="min-w-0"
+                            >
+                              <VideoCard video={video} index={idx} gridMode />
+                            </motion.div>
+                          ))}
+                        </div>
+                      </section>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="py-32 text-center border border-white/5 bg-white/5">
+                    <h3 className="text-2xl text-white mb-4 tracking-tight">Nothing here yet</h3>
+                    <p className="text-gray-500 uppercase tracking-widest text-sm">Real-shot projects will appear here</p>
+                  </div>
+                )
               ) : videos && videos.length > 0 ? (
                 <div
                   className="grid gap-3 md:gap-4 grid-cols-1 md:grid-cols-3 [grid-auto-flow:dense] [grid-auto-rows:280px] md:[grid-auto-rows:440px]"
@@ -336,9 +391,7 @@ export default function Studio() {
                 <div className="py-32 text-center border border-white/5 bg-white/5">
                   <h3 className="text-2xl text-white mb-4 tracking-tight">Nothing here yet</h3>
                   <p className="text-gray-500 uppercase tracking-widest text-sm">
-                    {filmDestination === "irl"
-                      ? "Real-shot projects will appear here"
-                      : "Upload your first AI film to get started"}
+                    Upload your first AI film to get started
                   </p>
                 </div>
               )}
