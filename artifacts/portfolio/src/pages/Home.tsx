@@ -39,12 +39,17 @@ function RevealText({ children, className, delay = 0 }: { children: React.ReactN
 
 
 export default function Home() {
+  const HOME_VIDEO_TITLES = [
+    "Dubai in 30 seconds",
+    "Neeve - Dance musical video",
+    "Pizza 4P's | Interior Film",
+    "Trelleborg Sealing Solutions — Corporate Film",
+  ];
   const { scrollYProgress } = useScroll();
   const heroY = useTransform(scrollYProgress, [0, 0.4], ["0%", "25%"]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.35], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 0.3], [1, 1.06]);
 
-  const { data: featuredVideos } = useListVideos({ featured: true });
   const { data: recentVideos } = useListVideos();
   const { data: stats } = useGetVideoStats();
   const { data: caseStudies = [] } = useQuery<{ id: number; tag: string; client: string; headline: string; result: string; stats: { value: string; label: string }[] }[]>({
@@ -56,13 +61,9 @@ export default function Home() {
     window.scrollTo(0, 0);
   }, []);
 
-  const galleryVideos = (featuredVideos || [])
-    .concat((recentVideos || []).filter((v) => !featuredVideos?.find((f) => f.id === v.id)))
-    .sort((a, b) => {
-      if (a.orientation === b.orientation) return 0;
-      return a.orientation === "landscape" ? -1 : 1;
-    })
-    .slice(0, 4);
+  const galleryVideos = HOME_VIDEO_TITLES
+    .map((title) => recentVideos?.find((video) => video.title === title))
+    .filter((video): video is NonNullable<typeof video> => Boolean(video));
 
   return (
     <div className="min-h-screen bg-background flex flex-col overflow-x-hidden">
