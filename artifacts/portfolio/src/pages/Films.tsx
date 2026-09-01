@@ -188,14 +188,10 @@ export default function Studio() {
 
   const { data: videoCategories } = useListCategories();
   const { data: rawVideos, isLoading: isLoadingVideos } = useListVideos({
-    category: filmDestination === "ai" ? selectedCategory : undefined,
+    category: selectedCategory,
     productionType: filmDestination,
   });
   const videos = rawVideos ? [...rawVideos].reverse() : rawVideos;
-  const irlSections = IRL_FILM_SECTIONS.map((category) => ({
-        category,
-        videos: videos?.filter((video) => video.category === category) ?? [],
-      }));
 
   const { data: imageCategories } = useListImageCategories();
   const { data: images, isLoading: isLoadingImages, refetch: refetchImages } = useListStudioImages({
@@ -219,7 +215,12 @@ export default function Studio() {
     setSelectedCategory(undefined);
   };
 
-  const categories = tab === "video" ? videoCategories : imageCategories;
+  const categories =
+    tab === "video"
+      ? filmDestination === "irl"
+        ? IRL_FILM_SECTIONS
+        : videoCategories
+      : imageCategories;
 
   const getImageUrl = (path: string) =>
     path.startsWith("/objects/") ? `/api/storage${path}` : path;
@@ -401,11 +402,11 @@ export default function Studio() {
           </div>
         )}
 
-        {/* AI archive filters + image admin upload */}
-        {((tab === "video" && (filmDestination === "ai" || isAdmin)) ||
+        {/* Archive filters + admin upload */}
+        {((tab === "video") ||
           (tab === "images" && (imageDestination === "ai" || isAdmin))) && (
           <div className="flex flex-wrap items-center gap-6 mb-16 border-b border-white/10 pb-8">
-            {((tab === "video" && filmDestination === "ai") ||
+            {((tab === "video") ||
               (tab === "images" && imageDestination === "ai")) && (
               <>
                 <button
@@ -468,48 +469,6 @@ export default function Studio() {
                     <div key={i} className="bg-white/5 animate-pulse" />
                   ))}
                 </div>
-              ) : filmDestination === "irl" ? (
-                <div className="space-y-20">
-                    {irlSections.map((section, sectionIndex) => (
-                      <section key={section.category} aria-labelledby={`irl-section-${sectionIndex}`}>
-                        <div className="flex items-end justify-between gap-6 mb-7 border-b border-white/10 pb-4">
-                          <div>
-                            <p className="text-[10px] uppercase tracking-[0.35em] text-gray-600 mb-2">
-                              IRL / {String(sectionIndex + 1).padStart(2, "0")}
-                            </p>
-                            <h2
-                              id={`irl-section-${sectionIndex}`}
-                              className="text-2xl md:text-4xl uppercase tracking-tight text-white font-display"
-                            >
-                              {section.category}
-                            </h2>
-                          </div>
-                          <span className="text-[10px] uppercase tracking-[0.25em] text-gray-600">
-                            {section.videos.length} {section.videos.length === 1 ? "project" : "projects"}
-                          </span>
-                        </div>
-                        {section.videos.length > 0 ? (
-                          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-                            {section.videos.map((video, idx) => (
-                              <motion.div
-                                key={video.id}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.4, delay: idx * 0.05 }}
-                                className="min-w-0"
-                              >
-                                <VideoCard video={video} index={idx} gridMode />
-                              </motion.div>
-                            ))}
-                          </div>
-                        ) : (
-                          <p className="border border-dashed border-white/10 px-5 py-8 text-xs uppercase tracking-[0.25em] text-gray-700">
-                            Projects coming soon
-                          </p>
-                        )}
-                      </section>
-                    ))}
-                  </div>
               ) : videos && videos.length > 0 ? (
                 <div
                   className="grid gap-3 md:gap-4 grid-cols-1 md:grid-cols-3 [grid-auto-flow:dense] [grid-auto-rows:280px] md:[grid-auto-rows:440px]"
@@ -534,7 +493,11 @@ export default function Studio() {
                 <div className="py-32 text-center border border-white/5 bg-white/5">
                   <h3 className="text-2xl text-white mb-4 tracking-tight">Nothing here yet</h3>
                   <p className="text-gray-500 uppercase tracking-widest text-sm">
-                    Upload your first AI film to get started
+                    {filmDestination === "irl"
+                      ? isAdmin
+                        ? "Use Add IRL Film above to get started"
+                        : "Real-shot films will appear here"
+                      : "Upload your first AI film to get started"}
                   </p>
                 </div>
               )}
