@@ -405,7 +405,7 @@ export default function Studio() {
         {/* Archive filters + admin upload */}
         {((tab === "video") ||
           (tab === "images" && (imageDestination === "ai" || isAdmin))) && (
-          <div className="flex flex-wrap items-center gap-6 mb-16 border-b border-white/10 pb-8">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-3 mb-10 md:gap-6 md:mb-16 border-b border-white/10 pb-5 md:pb-8">
             {((tab === "video") ||
               (tab === "images" && imageDestination === "ai")) && (
               <>
