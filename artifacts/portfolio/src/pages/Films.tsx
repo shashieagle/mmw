@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Link } from "wouter";
 import {
   useListVideos,
   useListCategories,
@@ -401,7 +402,7 @@ export default function Studio() {
         )}
 
         {/* AI archive filters + image admin upload */}
-        {((tab === "video" && filmDestination === "ai") ||
+        {((tab === "video" && (filmDestination === "ai" || isAdmin)) ||
           (tab === "images" && (imageDestination === "ai" || isAdmin))) && (
           <div className="flex flex-wrap items-center gap-6 mb-16 border-b border-white/10 pb-8">
             {((tab === "video" && filmDestination === "ai") ||
@@ -437,6 +438,14 @@ export default function Studio() {
               <div className="ml-auto">
                 <AdminImageUpload onUploaded={refetchImages} productionType={imageDestination} />
               </div>
+            )}
+            {isAdmin && tab === "video" && (
+              <Link
+                href="/upload"
+                className="ml-auto flex items-center gap-2 border border-white/20 px-4 py-2 text-xs uppercase tracking-widest text-white/70 hover:border-white/50 hover:text-white transition-all"
+              >
+                <Plus size={14} /> {filmDestination === "irl" ? "Add IRL Film" : "Add Film"}
+              </Link>
             )}
           </div>
         )}
