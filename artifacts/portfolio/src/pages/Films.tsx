@@ -405,13 +405,19 @@ export default function Studio() {
         {/* Archive filters + admin upload */}
         {((tab === "video") ||
           (tab === "images" && (imageDestination === "ai" || isAdmin))) && (
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-3 mb-10 md:gap-6 md:mb-16 border-b border-white/10 pb-5 md:pb-8">
+          <div
+            className={`flex items-center gap-5 mb-8 md:gap-6 md:mb-16 border-b border-white/10 pb-4 md:pb-8 ${
+              tab === "video" && filmDestination === "irl"
+                ? "flex-nowrap overflow-x-auto md:flex-wrap md:overflow-visible"
+                : "flex-wrap gap-y-3"
+            }`}
+          >
             {((tab === "video") ||
               (tab === "images" && imageDestination === "ai")) && (
               <>
                 <button
                   onClick={() => setSelectedCategory(undefined)}
-                  className={`text-sm uppercase tracking-widest font-bold transition-all duration-300 pb-1 border-b-2 ${
+                  className={`shrink-0 text-sm uppercase tracking-widest font-bold transition-all duration-300 pb-1 border-b-2 ${
                     selectedCategory === undefined
                       ? "text-white border-white"
                       : "text-gray-500 border-transparent hover:text-gray-300"
@@ -423,7 +429,7 @@ export default function Studio() {
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
-                    className={`text-sm uppercase tracking-widest font-bold transition-all duration-300 pb-1 border-b-2 ${
+                    className={`shrink-0 text-sm uppercase tracking-widest font-bold transition-all duration-300 pb-1 border-b-2 ${
                       selectedCategory === category
                         ? "text-white border-white"
                         : "text-gray-500 border-transparent hover:text-gray-300"
