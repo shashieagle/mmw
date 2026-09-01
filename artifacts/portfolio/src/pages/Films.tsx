@@ -217,7 +217,9 @@ export default function Studio() {
 
   const categories =
     tab === "video"
-      ? videoCategories
+      ? filmDestination === "irl"
+        ? IRL_FILM_SECTIONS
+        : videoCategories
       : imageCategories;
 
   const getImageUrl = (path: string) =>
@@ -403,13 +405,7 @@ export default function Studio() {
         {/* Archive filters + admin upload */}
         {((tab === "video") ||
           (tab === "images" && (imageDestination === "ai" || isAdmin))) && (
-          <div
-            className={`flex items-center gap-5 mb-8 md:gap-6 md:mb-16 border-b border-white/10 pb-4 md:pb-8 ${
-              tab === "video" && filmDestination === "irl"
-                ? "flex-nowrap overflow-x-auto md:flex-wrap md:overflow-visible"
-                : "flex-wrap gap-y-3"
-            }`}
-          >
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-3 mb-8 md:gap-6 md:mb-16 border-b border-white/10 pb-4 md:pb-8">
             {((tab === "video") ||
               (tab === "images" && imageDestination === "ai")) && (
               <>
