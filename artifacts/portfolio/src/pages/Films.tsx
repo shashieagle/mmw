@@ -217,9 +217,7 @@ export default function Studio() {
 
   const categories =
     tab === "video"
-      ? filmDestination === "irl"
-        ? IRL_FILM_SECTIONS
-        : videoCategories
+      ? videoCategories
       : imageCategories;
 
   const getImageUrl = (path: string) =>
