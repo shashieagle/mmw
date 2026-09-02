@@ -18,6 +18,10 @@ export function getPublicFormUrl(value: string) {
   }
 }
 
+export function getProjectFormSetting(settings: Record<string, string>) {
+  return settings["architects_form"] ?? settings["jam_form_business"] ?? "";
+}
+
 export function useProjectFormUrl() {
   const [formUrl, setFormUrl] = useState("");
 
@@ -25,7 +29,7 @@ export function useProjectFormUrl() {
     fetch("/api/settings")
       .then((response) => response.json())
       .then((settings: Record<string, string>) => {
-        setFormUrl(getPublicFormUrl(settings["architects_form"] ?? ""));
+        setFormUrl(getPublicFormUrl(getProjectFormSetting(settings)));
       })
       .catch(() => {});
   }, []);

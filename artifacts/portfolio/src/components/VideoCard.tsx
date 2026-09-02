@@ -12,6 +12,10 @@ interface VideoCardProps {
 export function VideoCard({ video, index = 0, featured = false, gridMode = false }: VideoCardProps) {
   const isYoutube = (path: string | null | undefined) => !!path?.startsWith("youtube:");
   const getYoutubeId = (path: string) => path.replace("youtube:", "");
+  const getYoutubeThumbnail = () =>
+    isYoutube(video.videoPath)
+      ? `https://img.youtube.com/vi/${getYoutubeId(video.videoPath!)}/hqdefault.jpg`
+      : null;
 
   const getThumbnail = () => {
     if (video.thumbnailPath) {
@@ -20,7 +24,7 @@ export function VideoCard({ video, index = 0, featured = false, gridMode = false
         : video.thumbnailPath;
     }
     if (isYoutube(video.videoPath)) {
-      return `https://img.youtube.com/vi/${getYoutubeId(video.videoPath!)}/maxresdefault.jpg`;
+      return getYoutubeThumbnail()!;
     }
     return "/images/thumb-abstract.png";
   };
@@ -43,8 +47,12 @@ export function VideoCard({ video, index = 0, featured = false, gridMode = false
           src={getThumbnail()}
           alt={video.title}
           onError={(e) => {
-            if (isYoutube(video.videoPath) && (e.currentTarget as HTMLImageElement).src.includes("maxresdefault")) {
-              (e.currentTarget as HTMLImageElement).src = `https://img.youtube.com/vi/${getYoutubeId(video.videoPath!)}/hqdefault.jpg`;
+            const image = e.currentTarget;
+            const youtubeThumbnail = getYoutubeThumbnail();
+            if (youtubeThumbnail && !image.src.includes("/hqdefault.jpg")) {
+              image.src = youtubeThumbnail;
+            } else if (!image.src.endsWith("/images/thumb-abstract.png")) {
+              image.src = "/images/thumb-abstract.png";
             }
           }}
           className="w-full h-full object-cover opacity-70 group-hover:opacity-40 transition-opacity duration-700"
