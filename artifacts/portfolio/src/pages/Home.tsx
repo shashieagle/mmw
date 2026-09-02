@@ -2,10 +2,9 @@ import { useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
-import { useListVideos, useGetVideoStats } from "@workspace/api-client-react";
+import { useGetVideoStats } from "@workspace/api-client-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { VideoCard } from "@/components/VideoCard";
 import { ProjectFormCta, useProjectFormUrl } from "@/components/ProjectFormCta";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -40,18 +39,11 @@ function RevealText({ children, className, delay = 0 }: { children: React.ReactN
 
 
 export default function Home() {
-  const HOME_VIDEO_TITLES = [
-    "Dubai in 30 seconds",
-    "Neeve - Dance musical video",
-    "Halloween at 4P's",
-    "Trelleborg Sealing Solutions — Corporate Film",
-  ];
   const { scrollYProgress } = useScroll();
   const heroY = useTransform(scrollYProgress, [0, 0.4], ["0%", "25%"]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.35], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 0.3], [1, 1.06]);
 
-  const { data: recentVideos } = useListVideos();
   const { data: stats } = useGetVideoStats();
   const { data: caseStudies = [] } = useQuery<{ id: number; tag: string; client: string; headline: string; result: string; stats: { value: string; label: string }[] }[]>({
     queryKey: ["case-studies-home"],
@@ -62,10 +54,6 @@ export default function Home() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  const galleryVideos = HOME_VIDEO_TITLES
-    .map((title) => recentVideos?.find((video) => video.title === title))
-    .filter((video): video is NonNullable<typeof video> => Boolean(video));
 
   return (
     <div className="min-h-screen bg-background flex flex-col overflow-x-hidden">
@@ -157,25 +145,6 @@ export default function Home() {
       </section>
       {/* TICKER 2 */}
       <Ticker text="Film · Product Photography · Catalogues · Brand Campaigns · AI Strategy · Implementation · Scale" />
-      {/* FEATURED WORK */}
-      {galleryVideos.length > 0 && (
-        <section className="py-24 md:py-32 bg-background border-t border-white/5">
-          <div className="container mx-auto px-6 md:px-12 mb-16 flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
-            <RevealText>
-              <p className="text-xs uppercase tracking-[0.3em] font-bold mb-4" style={{ color: "#E8572A" }}>Studio Output</p>
-              <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white font-display">Selected Works</h2>
-            </RevealText>
-            <Link href="/studio" className="border-b border-white pb-1 text-sm uppercase tracking-[0.2em] font-bold hover:text-gray-300 transition-colors">
-              View All
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 px-4 md:px-8 max-w-[2000px] mx-auto">
-            {galleryVideos.map((video, idx) => (
-              <VideoCard key={video.id} video={video} index={idx} featured={idx === 0 || idx === 3} />
-            ))}
-          </div>
-        </section>
-      )}
       {/* FEATURED CASE STUDY */}
       {caseStudies.length > 0 && (() => {
         const s = caseStudies[0];
