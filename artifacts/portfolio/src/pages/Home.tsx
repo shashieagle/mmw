@@ -118,14 +118,6 @@ export default function Home() {
                 Business Architects
               </Button>
             </Link>
-            <Link href="/studio">
-              <Button
-                variant="outline"
-                className="border-white/30 text-white hover:bg-white/10 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold bg-transparent"
-              >
-                Explore Studio
-              </Button>
-            </Link>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 8 }}
@@ -300,36 +292,19 @@ export default function Home() {
           </div>
         </div>
       </section>}
-      {/* NOT FOR EVERYONE */}
+      {/* STUDIO CTA */}
       <section className="py-32 md:py-48 bg-zinc-950 border-t border-white/5 relative overflow-hidden">
         <div className="container mx-auto px-6 md:px-12 relative z-10">
-          <RevealText>
-            <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white font-display leading-[0.88] mb-16">
-              DON'T<br />
-              <span className="text-gray-500">HIRE US.</span>
-            </h2>
+          <RevealText className="flex justify-center">
+            <Link href="/studio">
+              <Button
+                variant="outline"
+                className="border-white/30 text-white hover:bg-white/10 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold bg-transparent"
+              >
+                Explore Studio
+              </Button>
+            </Link>
           </RevealText>
-
-          <div className="flex flex-col divide-y divide-white/5 border-t border-white/5">
-            {[
-              "You treat creative as a cost, not an investment",
-              "You just need someone to execute your brief",
-              "Your assumptions aren't up for discussion",
-              "You see process as overhead, not an advantage",
-              "You track activity, not business impact",
-            ].map((line, i) => (
-              <RevealText key={i} delay={i * 0.08}>
-                <div className="flex items-center gap-5 py-5">
-                  <span className="text-white/15 text-xs font-bold tracking-widest shrink-0">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <p className="text-gray-500 text-base md:text-lg leading-snug line-through decoration-white/10">
-                    {line}
-                  </p>
-                </div>
-              </RevealText>
-            ))}
-          </div>
         </div>
       </section>
       {/* BRIDGE */}
