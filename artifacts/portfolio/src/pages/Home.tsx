@@ -6,6 +6,7 @@ import { useListVideos, useGetVideoStats } from "@workspace/api-client-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { VideoCard } from "@/components/VideoCard";
+import { ProjectFormCta, useProjectFormUrl } from "@/components/ProjectFormCta";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
@@ -56,6 +57,7 @@ export default function Home() {
     queryKey: ["case-studies-home"],
     queryFn: async () => { const r = await fetch("/api/case-studies"); if (!r.ok) throw new Error(); return r.json(); },
   });
+  const projectFormUrl = useProjectFormUrl();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -332,11 +334,7 @@ export default function Home() {
             </span>
           </p>
           <div className="mt-2">
-            <Link href="/contact">
-              <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold">
-                Start the Conversation →
-              </Button>
-            </Link>
+            <ProjectFormCta formUrl={projectFormUrl} />
           </div>
         </RevealText>
       </section>

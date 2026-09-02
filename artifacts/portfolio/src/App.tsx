@@ -9,7 +9,6 @@ import FilmDetail from "@/pages/FilmDetail";
 import Upload from "@/pages/Upload";
 import Architects from "@/pages/Architects";
 import Catalyst from "@/pages/Catalyst";
-import Contact from "@/pages/Contact";
 import { AdminLock } from "@/components/AdminLock";
 import { FireOrb } from "@/components/FireOrb";
 
@@ -24,7 +23,6 @@ function Router() {
       <Route path="/film/:id" component={FilmDetail} />
       <Route path="/architects" component={Architects} />
       <Route path="/catalyst" component={Catalyst} />
-      <Route path="/contact" component={Contact} />
       <Route path="/upload" component={Upload} />
       <Route component={NotFound} />
     </Switch>
