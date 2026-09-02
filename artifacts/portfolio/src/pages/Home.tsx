@@ -43,7 +43,7 @@ export default function Home() {
   const HOME_VIDEO_TITLES = [
     "Dubai in 30 seconds",
     "Neeve - Dance musical video",
-    "Pizza 4P’s — Visual Film",
+    "Halloween at 4P's",
     "Trelleborg Sealing Solutions — Corporate Film",
   ];
   const { scrollYProgress } = useScroll();
