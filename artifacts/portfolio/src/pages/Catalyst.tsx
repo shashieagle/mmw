@@ -109,7 +109,7 @@ export default function Catalyst() {
               <p className="text-[10px] uppercase tracking-[0.6em] text-gray-600 font-bold mb-6">What This Is</p>
               <h2 className="text-5xl md:text-6xl font-bold tracking-tighter font-display leading-[0.9] text-white">
                 NOT A<br />
-                <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.25)" }}>COMMUNITY.</span><br />
+                <span className="text-gray-500">COMMUNITY.</span><br />
                 A CREW.
               </h2>
             </RevealText>
@@ -167,7 +167,7 @@ export default function Catalyst() {
             <p className="text-[10px] uppercase tracking-[0.6em] text-gray-600 font-bold mb-6">Ready?</p>
             <h2 className="text-5xl md:text-7xl font-bold tracking-tighter font-display leading-[0.88] text-white mb-6">
               SEE WHAT<br />
-              <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.25)" }}>YOU'RE</span><br />
+              <span className="text-gray-500">YOU'RE</span><br />
               JOINING.
             </h2>
             <p className="text-gray-500 text-lg max-w-md leading-relaxed">

@@ -260,7 +260,7 @@ export default function Home() {
               <p className="text-[10px] uppercase tracking-[0.6em] text-orange-600/70 font-bold mb-6">Core Team · 50 Seats Only</p>
               <h2 className="text-5xl md:text-7xl font-bold tracking-tighter text-white leading-[0.88] font-display mb-8">
                 BUILD<br />
-                <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.3)" }}>WITH US.</span>
+                <span className="text-gray-500">WITH US.</span>
               </h2>
               <p className="text-gray-400 text-lg leading-relaxed max-w-md mb-10">
                 We're assembling a 50-person core team — creatives and business minds who want to be on the inside of what AI makes possible. Not employees. Partners.
@@ -296,7 +296,7 @@ export default function Home() {
           <RevealText>
             <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white font-display leading-[0.88] mb-16">
               DON'T<br />
-              <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.25)" }}>HIRE US.</span>
+              <span className="text-gray-500">HIRE US.</span>
             </h2>
           </RevealText>
 
@@ -327,7 +327,7 @@ export default function Home() {
         <RevealText className="container mx-auto px-6 md:px-12">
           <p className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-white font-display leading-[0.9] mb-16">
             If none of that stopped you —<br />
-            <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.25)" }}>
+            <span className="text-gray-500">
               you're exactly who we build for.
             </span>
           </p>

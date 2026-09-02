@@ -47,7 +47,7 @@ export default function Contact() {
             <p className="text-[10px] uppercase tracking-[0.6em] text-gray-600 font-bold mb-8">Contact</p>
             <h1 className="text-5xl md:text-8xl font-bold tracking-tighter text-white font-display leading-[0.88]">
               LET'S<br />
-              <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.25)" }}>TALK.</span>
+              <span className="text-gray-500">TALK.</span>
             </h1>
           </motion.div>
 

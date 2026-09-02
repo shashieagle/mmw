@@ -517,7 +517,7 @@ export default function Architects() {
             <h1 className="text-7xl md:text-[9rem] lg:text-[12rem] font-bold tracking-tighter leading-[0.83] mb-10">
               Business
               <br />
-              <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.25)" }}>Architects</span>
+              <span className="text-gray-500">Architects</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-400 font-light max-w-xl leading-relaxed mb-12">
               Better strategy. Stronger systems. Higher standards.
