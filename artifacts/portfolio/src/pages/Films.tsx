@@ -16,6 +16,7 @@ import { useAdminMode } from "@/hooks/use-admin-mode";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, X, Trash2, ZoomIn } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { ProjectFormCta, useProjectFormUrl } from "@/components/ProjectFormCta";
 
 type Tab = "video" | "images";
 type FilmDestination = "irl" | "ai";
@@ -185,6 +186,7 @@ export default function Studio() {
   const [lightbox, setLightbox] = useState<string | null>(null);
   const { isAdmin } = useAdminMode();
   const { toast } = useToast();
+  const projectFormUrl = useProjectFormUrl();
 
   const { data: videoCategories } = useListCategories();
   const { data: rawVideos, isLoading: isLoadingVideos } = useListVideos({
@@ -297,6 +299,9 @@ export default function Studio() {
             The Studio
           </h1>
           <p className="text-gray-400 max-w-2xl text-lg md:text-xl font-light">Visual work built for emotional communcation.</p>
+          <div className="mt-8">
+            <ProjectFormCta formUrl={projectFormUrl} />
+          </div>
         </motion.div>
 
         {/* Films / Images toggle */}

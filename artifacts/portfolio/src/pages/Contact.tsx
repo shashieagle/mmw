@@ -3,12 +3,14 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { motion } from "framer-motion";
 import { ArrowRight, Loader2 } from "lucide-react";
+import { ProjectFormCta, useProjectFormUrl } from "@/components/ProjectFormCta";
 
 type Inquiry = "Creative Studio" | "Business Architects" | "General";
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", inquiry: "" as Inquiry | "", message: "" });
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const projectFormUrl = useProjectFormUrl();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,6 +52,14 @@ export default function Contact() {
               <span className="text-gray-500">TALK.</span>
             </h1>
           </motion.div>
+
+          <div className="mb-16 border border-white/10 bg-white/[0.03] p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div>
+              <p className="text-xs uppercase tracking-[0.35em] text-gray-500 font-bold mb-2">Ready to start?</p>
+              <p className="text-gray-400 text-sm">Share your project brief through our project form.</p>
+            </div>
+            <ProjectFormCta formUrl={projectFormUrl} className="shrink-0" />
+          </div>
 
           {/* Success state */}
           {status === "success" ? (

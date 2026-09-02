@@ -4,6 +4,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ArrowRight, Upload, Trash2, X, Plus, Pencil, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getPublicFormUrl } from "@/components/ProjectFormCta";
 import { ObjectUploader } from "@workspace/object-storage-web";
 import { useRequestUploadUrl } from "@workspace/api-client-react";
 import { useToast } from "@/hooks/use-toast";
@@ -368,6 +369,7 @@ export default function Architects() {
   const [editingForm, setEditingForm] = useState(false);
   const [draftForm, setDraftForm] = useState("");
   const [savingForm, setSavingForm] = useState(false);
+  const publicFormUrl = getPublicFormUrl(architectsFormUrl);
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
@@ -722,8 +724,8 @@ export default function Architects() {
             )}
 
             {/* CTA button */}
-            {architectsFormUrl ? (
-              <a href={architectsFormUrl} target="_blank" rel="noopener noreferrer">
+            {publicFormUrl ? (
+              <a href={publicFormUrl} target="_blank" rel="noopener noreferrer">
                 <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-12 py-8 uppercase tracking-[0.2em] text-sm font-bold hover:scale-105 transition-transform inline-flex items-center gap-3">
                   Start a Project <ArrowRight size={16} />
                 </Button>
