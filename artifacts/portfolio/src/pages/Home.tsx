@@ -264,7 +264,15 @@ export default function Home() {
       {/* STUDIO CTA */}
       <section className="py-32 md:py-48 bg-zinc-950 border-t border-white/5 relative overflow-hidden">
         <div className="container mx-auto px-6 md:px-12 relative z-10">
-          <RevealText className="flex justify-center">
+          <RevealText className="max-w-3xl mx-auto text-center">
+            <p className="text-xs uppercase tracking-[0.4em] font-bold mb-6" style={{ color: "#E8572A" }}>Studio</p>
+            <h2 className="text-5xl md:text-7xl font-bold tracking-tighter text-white font-display leading-[0.9] mb-8">
+              Ideas, made<br />
+              <span className="text-gray-500">visible.</span>
+            </h2>
+            <p className="text-gray-400 text-lg md:text-xl font-light leading-relaxed max-w-2xl mx-auto mb-10">
+              Films, images, and visual worlds built to make your story impossible to ignore — shaped by craft, sharpened by strategy, and brought to life with the right technology.
+            </p>
             <Link href="/studio">
               <Button
                 variant="outline"
