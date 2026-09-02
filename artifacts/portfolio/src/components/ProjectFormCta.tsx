@@ -36,14 +36,21 @@ export function useProjectFormUrl() {
 export function ProjectFormCta({
   formUrl,
   className = "",
+  variant = "solid",
 }: {
   formUrl: string;
   className?: string;
+  variant?: "solid" | "subtle";
 }) {
+  const buttonClass =
+    variant === "subtle"
+      ? "bg-transparent text-white/55 hover:bg-transparent hover:text-white border-b border-white/20 hover:border-white/60 rounded-none px-0 py-2 uppercase tracking-[0.25em] text-[10px] font-bold inline-flex items-center gap-2 transition-colors"
+      : "bg-white text-black hover:bg-gray-200 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold inline-flex items-center gap-3";
+
   const button = (
     <Button
       disabled={!formUrl}
-      className={`bg-white text-black hover:bg-gray-200 rounded-none px-10 py-6 uppercase tracking-[0.2em] text-xs font-bold inline-flex items-center gap-3 disabled:opacity-40 disabled:cursor-not-allowed ${className}`}
+      className={`${buttonClass} disabled:opacity-40 disabled:cursor-not-allowed ${className}`}
     >
       Start a Project <ArrowRight size={14} />
     </Button>

@@ -127,6 +127,14 @@ export default function Home() {
               </Button>
             </Link>
           </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.55 }}
+            className="mt-4"
+          >
+            <ProjectFormCta formUrl={projectFormUrl} variant="subtle" />
+          </motion.div>
         </motion.div>
 
         <motion.div
