@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { ArrowRight, Upload, Trash2, X, Plus, Pencil, Check } from "lucide-react";
+import { ArrowRight, Upload, Trash2, X, Plus, Pencil, Check, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getPublicFormUrl } from "@/components/ProjectFormCta";
 import { ObjectUploader } from "@workspace/object-storage-web";
@@ -11,12 +11,11 @@ import { useToast } from "@/hooks/use-toast";
 import { useAdminMode } from "@/hooks/use-admin-mode";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-
 const GRADIENTS = [
   { label: "Default Dark", value: "from-zinc-900/40 via-zinc-950 to-black" },
   { label: "Warm Amber", value: "from-amber-950/40 via-zinc-950 to-black" },
   { label: "Stone", value: "from-stone-900/40 via-zinc-950 to-black" },
-  { label: "Orange", value: "from-orange-950/40 via-zinc-950 to-black" },
+  { label: "Ember (Brand)", value: "from-orange-950/40 via-zinc-950 to-black" },
   { label: "Purple", value: "from-purple-950/40 via-zinc-950 to-black" },
   { label: "Blue", value: "from-blue-950/40 via-zinc-950 to-black" },
   { label: "Emerald", value: "from-emerald-950/40 via-zinc-950 to-black" },
@@ -255,10 +254,10 @@ function CaseStudyGallery({ slug, isAdmin }: { slug: string; isAdmin: boolean })
   if (!isLoading && media.length === 0 && !isAdmin) return null;
 
   return (
-    <div className="mt-10 border-t border-white/10 pt-8">
+    <div className="mt-12 border-t border-white/10 pt-8">
       <div className="flex items-center justify-between mb-6">
         <h4 className="text-xs uppercase tracking-[0.4em] text-gray-500 font-bold">
-          Gallery {media.length > 0 && <span className="text-gray-700 ml-2">({media.length})</span>}
+          Visual Evidence {media.length > 0 && <span className="text-gray-700 ml-2">({media.length})</span>}
         </h4>
         {isAdmin && (
           <button
@@ -282,45 +281,46 @@ function CaseStudyGallery({ slug, isAdmin }: { slug: string; isAdmin: boolean })
       )}
 
       {isLoading ? (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[...Array(4)].map((_, i) => <div key={i} className="aspect-square bg-white/5 animate-pulse" />)}
         </div>
       ) : media.length === 0 ? (
-        <div className="border border-dashed border-white/10 py-10 text-center">
+        <div className="border border-dashed border-white/10 py-12 text-center">
           <Upload className="mx-auto mb-3 text-gray-700" size={20} />
           <p className="text-gray-700 text-xs uppercase tracking-widest">No media yet — use Add Media above</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {media.map((item) => (
             <div
               key={item.id}
-              className="relative group aspect-square overflow-hidden bg-zinc-900 cursor-pointer"
+              className="relative group aspect-square overflow-hidden bg-zinc-900 cursor-pointer border border-white/5"
               onClick={() => !isAdmin && setLightbox(item)}
+              data-testid={`gallery-item-${item.id}`}
             >
               {item.mediaType === "video" ? (
                 <video
                   src={getMediaDisplayUrl(item.mediaPath)}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
                   muted playsInline
                   onMouseOver={(e) => (e.currentTarget as HTMLVideoElement).play()}
                   onMouseOut={(e) => { (e.currentTarget as HTMLVideoElement).pause(); (e.currentTarget as HTMLVideoElement).currentTime = 0; }}
                 />
               ) : (
-                <img src={getMediaDisplayUrl(item.mediaPath)} alt={item.caption || "Gallery"} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                <img src={getMediaDisplayUrl(item.mediaPath)} alt={item.caption || "Gallery"} className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105" />
               )}
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex items-center justify-center gap-2">
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center gap-2">
                 {isAdmin ? (
                   <button
                     onClick={(e) => { e.stopPropagation(); deleteMutation.mutate(item.id); }}
                     disabled={deleteMutation.isPending}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity text-red-400 hover:text-red-300 bg-black/80 p-2"
+                    className="opacity-0 group-hover:opacity-100 transition-opacity text-red-400 hover:text-red-300 bg-black/80 p-2 border border-red-500/20"
                   >
                     <Trash2 size={15} />
                   </button>
                 ) : (
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity w-8 h-8 border border-white flex items-center justify-center">
-                    <span className="text-white text-[10px]">↗</span>
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity w-10 h-10 bg-white/10 backdrop-blur-sm border border-white/30 flex items-center justify-center rounded-full">
+                    <span className="text-white text-xs"><ZoomIn size={14} /></span>
                   </div>
                 )}
               </div>
@@ -334,8 +334,8 @@ function CaseStudyGallery({ slug, isAdmin }: { slug: string; isAdmin: boolean })
 
       {lightbox && (
         <div className="fixed inset-0 z-[200] bg-black/95 flex items-center justify-center p-4" onClick={() => setLightbox(null)}>
-          <button onClick={() => setLightbox(null)} className="absolute top-6 right-6 text-white/60 hover:text-white transition-colors"><X size={24} /></button>
-          <div className="max-w-4xl max-h-[90vh] w-full" onClick={(e) => e.stopPropagation()}>
+          <button onClick={() => setLightbox(null)} className="absolute top-6 right-6 text-white/60 hover:text-white transition-colors"><X size={28} /></button>
+          <div className="max-w-5xl max-h-[90vh] w-full" onClick={(e) => e.stopPropagation()}>
             {lightbox.mediaType === "video" ? (
               <video src={getMediaDisplayUrl(lightbox.mediaPath)} className="w-full max-h-[85vh] object-contain" controls autoPlay />
             ) : (
@@ -347,8 +347,6 @@ function CaseStudyGallery({ slug, isAdmin }: { slug: string; isAdmin: boolean })
     </div>
   );
 }
-
-
 
 export default function Architects() {
   const { isAdmin } = useAdminMode();
@@ -484,7 +482,7 @@ export default function Architects() {
       )}
       {confirmDelete && (
         <div className="fixed inset-0 z-[300] bg-black/90 flex items-center justify-center p-4">
-          <div className="bg-zinc-950 border border-white/10 p-8 max-w-sm w-full text-center">
+          <div className="bg-zinc-950 border border-white/10 p-8 max-w-sm w-full text-center shadow-2xl">
             <p className="text-white font-bold mb-2">Delete this case study?</p>
             <p className="text-gray-500 text-sm mb-6">"{confirmDelete.client}" will be permanently removed.</p>
             <div className="flex gap-3 justify-center">
@@ -502,44 +500,43 @@ export default function Architects() {
       )}
 
       {/* Hero */}
-      <section className="relative min-h-screen flex items-end pb-24 overflow-hidden pt-24">
+      <section className="relative min-h-[85vh] flex items-end pb-24 overflow-hidden pt-32">
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] via-black to-black" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-zinc-950 to-black opacity-80" />
           <div
-            className="absolute inset-0 opacity-[0.03]"
+            className="absolute inset-0 opacity-[0.05]"
             style={{
               backgroundImage: "linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)",
-              backgroundSize: "80px 80px",
+              backgroundSize: "60px 60px",
             }}
           />
         </div>
         <div className="relative z-10 container mx-auto px-6 md:px-12">
-          <motion.div initial={{ opacity: 0, y: 60 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.1, ease: [0.21, 0.47, 0.32, 0.98] }}>
-            <p className="text-xs uppercase tracking-[0.6em] font-bold mb-8" style={{ color: "#E8572A" }}>Monkmonkeyworks — Business Division</p>
-            <h1 className="text-7xl md:text-[9rem] lg:text-[12rem] font-bold tracking-tighter leading-[0.83] mb-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: [0.21, 0.47, 0.32, 0.98] }}>
+            <p className="text-xs uppercase tracking-[0.5em] font-bold mb-6 text-primary" data-testid="text-arch-hero-label">Monkmonkeyworks — Architecture</p>
+            <h1 className="text-6xl md:text-[8rem] lg:text-[10rem] font-bold tracking-tighter leading-[0.85] mb-8 font-display" data-testid="text-arch-hero-heading">
               Business
               <br />
-              <span className="text-gray-500">Architects</span>
+              <span className="text-gray-600">Architects</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-400 font-light max-w-xl leading-relaxed mb-12">
-              Better strategy. Stronger systems. Higher standards.
+            <p className="text-xl md:text-2xl text-gray-400 font-light max-w-xl leading-relaxed mb-12" data-testid="text-arch-hero-subheading">
+              We diagnose, blueprint, and build the systems that allow creative and commercial businesses to scale.
             </p>
           </motion.div>
         </div>
       </section>
 
-
       {/* Quote */}
-      <section className="py-16 border-t border-white/5 bg-zinc-950">
-        <div className="container mx-auto px-6 md:px-12 max-w-2xl">
+      <section className="py-20 border-t border-white/5 bg-zinc-950">
+        <div className="container mx-auto px-6 md:px-12 max-w-3xl">
           <motion.blockquote
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
-            className="border-l border-white/10 pl-8"
+            className="border-l-2 border-primary/50 pl-8"
           >
-            <p className="text-base md:text-lg font-light leading-relaxed text-gray-400 italic mb-5">
+            <p className="text-xl md:text-2xl font-light leading-relaxed text-gray-300 italic mb-6">
               "A great deal of strategy work is trying to figure out what is going on. Not just deciding what to do, but more fundamentally, deciding what the challenge is."
             </p>
-            <footer className="text-[10px] uppercase tracking-[0.5em] font-bold text-gray-600">Richard Rumelt</footer>
+            <footer className="text-[10px] uppercase tracking-[0.4em] font-bold text-gray-500">Richard Rumelt</footer>
           </motion.blockquote>
         </div>
       </section>
@@ -549,15 +546,16 @@ export default function Architects() {
         <div className="container mx-auto px-6 md:px-12">
           <div className="mb-16 md:mb-24 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
             <div>
-              <p className="text-xs uppercase tracking-[0.4em] font-bold mb-4" style={{ color: "#E8572A" }}>Proof of Work</p>
-              <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white font-display">Case Studies</h2>
+              <p className="text-xs uppercase tracking-[0.4em] font-bold mb-4 text-primary" data-testid="text-cases-label">Proof of Work</p>
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white font-display" data-testid="text-cases-heading">Case Studies</h2>
             </div>
-            <div className="flex items-end gap-6">
-              <p className="text-gray-600 max-w-xs text-sm leading-relaxed">Real projects. Real results. No vanity metrics — just business impact.</p>
+            <div className="flex flex-col md:flex-row md:items-end gap-6">
+              <p className="text-gray-500 max-w-sm text-sm leading-relaxed font-light">Real projects. Real results. No vanity metrics — just measurable business impact.</p>
               {isAdmin && (
                 <button
                   onClick={() => setShowForm(true)}
-                  className="shrink-0 flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-gray-400 hover:text-white border border-white/20 hover:border-white/40 px-5 py-3 transition-colors"
+                  className="shrink-0 flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-gray-400 hover:text-white border border-white/20 hover:border-white/50 bg-white/5 hover:bg-white/10 px-5 py-3 transition-colors"
+                  data-testid="button-add-case"
                 >
                   <Plus size={12} /> Add Case Study
                 </button>
@@ -566,9 +564,9 @@ export default function Architects() {
           </div>
 
           {loadingStudies ? (
-            <div className="space-y-6">
+            <div className="space-y-12">
               {[...Array(2)].map((_, i) => (
-                <div key={i} className="h-64 bg-white/5 animate-pulse border border-white/5" />
+                <div key={i} className="h-96 bg-white/5 animate-pulse border border-white/5" />
               ))}
             </div>
           ) : caseStudies.length === 0 ? (
@@ -581,55 +579,58 @@ export default function Architects() {
               )}
             </div>
           ) : (
-            <div className="space-y-6">
+            <div className="space-y-12">
               {caseStudies.map((study, i) => (
                 <motion.div
                   key={study.id}
                   initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: i * 0.05 }}
-                  className={`relative overflow-hidden border border-white/10 bg-gradient-to-br ${study.gradient} hover:border-white/20 transition-all duration-500`}
+                  className={`relative overflow-hidden bg-zinc-950 border border-white/5 hover:border-white/15 transition-all duration-500 group`}
+                  data-testid={`case-study-card-${study.id}`}
                 >
+                  <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-primary/80 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+                  
                   {isAdmin && (
                     <div className="absolute top-4 right-4 flex gap-2 z-10">
                       <button
                         onClick={() => setEditingStudy(study)}
-                        className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-400 hover:text-white bg-black/60 hover:bg-black/80 border border-white/10 hover:border-white/30 px-3 py-1.5 transition-all"
+                        className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-400 hover:text-white bg-black/80 border border-white/10 hover:border-white/30 px-3 py-1.5 transition-all"
                       >
                         <Pencil size={10} /> Edit
                       </button>
                       <button
                         onClick={() => setConfirmDelete(study)}
-                        className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-bold text-red-500 hover:text-red-400 bg-black/60 hover:bg-black/80 border border-red-500/20 hover:border-red-400/40 px-3 py-1.5 transition-all"
+                        className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-bold text-red-500 hover:text-red-400 bg-black/80 border border-red-500/20 hover:border-red-400/40 px-3 py-1.5 transition-all"
                       >
                         <Trash2 size={10} /> Delete
                       </button>
                     </div>
                   )}
 
-                  <div className="p-8 md:p-12">
-                    <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-10">
+                  <div className="p-8 md:p-14">
+                    <div className="flex flex-col xl:flex-row xl:items-start justify-between gap-10 mb-12">
                       <div className="flex-1">
-                        <span className="inline-block text-[10px] uppercase tracking-[0.4em] font-bold text-gray-500 border border-white/10 px-3 py-1 mb-4">{study.tag}</span>
-                        <p className="text-gray-500 text-sm mb-2">{study.client}</p>
-                        <h3 className="text-2xl md:text-4xl font-bold tracking-tighter text-white leading-tight">{study.headline}</h3>
+                        <span className="inline-block text-[10px] uppercase tracking-[0.4em] font-bold text-primary border border-primary/20 bg-primary/5 px-3 py-1 mb-5">{study.tag}</span>
+                        <p className="text-gray-500 text-sm uppercase tracking-widest font-bold mb-3">{study.client}</p>
+                        <h3 className="text-3xl md:text-5xl font-bold tracking-tighter text-white leading-tight font-display">{study.headline}</h3>
                       </div>
                       {study.stats.length > 0 && (
-                        <div className="flex gap-8 shrink-0">
+                        <div className="flex flex-wrap gap-8 xl:gap-12 shrink-0">
                           {study.stats.map((s, si) => (
-                            <div key={si} className="text-center">
-                              <p className="text-2xl md:text-3xl font-bold text-white font-mono">{s.value}</p>
-                              <p className="text-[10px] uppercase tracking-widest text-gray-600 mt-1 max-w-[80px]">{s.label}</p>
+                            <div key={si} className="text-left">
+                              <p className="text-3xl md:text-4xl font-bold text-white font-mono mb-2">{s.value}</p>
+                              <p className="text-[10px] uppercase tracking-widest text-gray-500 max-w-[120px] leading-snug">{s.label}</p>
                             </div>
                           ))}
                         </div>
                       )}
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                      <div className="lg:col-span-4 border-l-2 border-white/15 pl-6">
-                        <p className="text-white text-sm font-mono leading-relaxed">{study.result}</p>
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                      <div className="lg:col-span-4 border-l-2 border-white/10 pl-6">
+                        <p className="text-gray-300 text-base font-mono leading-relaxed">{study.result}</p>
                       </div>
-                      <div className="lg:col-span-8 lg:border-l border-white/10 lg:pl-10">
-                        <p className="text-gray-400 text-base leading-relaxed">{study.detail}</p>
+                      <div className="lg:col-span-8 lg:border-l border-white/5 lg:pl-10">
+                        <p className="text-gray-400 text-lg leading-relaxed font-light">{study.detail}</p>
                       </div>
                     </div>
 
@@ -643,13 +644,14 @@ export default function Architects() {
       </section>
 
       {/* Process */}
-      <section className="py-24 md:py-32 bg-zinc-950 border-t border-white/5">
+      <section className="py-24 md:py-40 bg-zinc-950 border-t border-white/5">
         <div className="container mx-auto px-6 md:px-12">
-          <div className="mb-16">
-            <p className="text-xs uppercase tracking-[0.4em] font-bold mb-4" style={{ color: "#E8572A" }}>How It Works</p>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white font-display">Our Process</h2>
+          <div className="mb-16 max-w-2xl">
+            <p className="text-xs uppercase tracking-[0.4em] font-bold mb-4 text-primary" data-testid="text-process-label">Methodology</p>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-white font-display mb-6" data-testid="text-process-heading">Our Process</h2>
+            <p className="text-gray-400 text-lg font-light leading-relaxed">A systematic approach to diagnosing friction and building scalable architecture.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-px bg-white/5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/5">
             {[
               { num: "01", title: "Discovery", desc: "We audit your current operations, understand your market, and identify where technology creates the most leverage." },
               { num: "02", title: "Blueprint", desc: "We design a precise implementation plan — tools, timelines, costs, and expected ROI. No ambiguity." },
@@ -658,11 +660,12 @@ export default function Architects() {
             ].map((step, i) => (
               <motion.div
                 key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="bg-zinc-950 p-8 md:p-10"
+                className="bg-black p-8 md:p-10 border-t-2 border-transparent hover:border-primary transition-colors group"
+                data-testid={`process-step-${i}`}
               >
-                <p className="text-6xl font-bold text-white/5 font-mono mb-6">{step.num}</p>
-                <h3 className="text-base font-bold text-white mb-3 uppercase tracking-widest">{step.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{step.desc}</p>
+                <p className="text-6xl font-bold text-white/5 font-mono mb-8 group-hover:text-white/10 transition-colors">{step.num}</p>
+                <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-widest">{step.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{step.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -670,22 +673,23 @@ export default function Architects() {
       </section>
 
       {/* CTA */}
-      <section className="py-32 md:py-48 bg-background border-t border-white/5">
-        <div className="container mx-auto px-6 md:px-12 text-center">
+      <section className="py-32 md:py-48 bg-black border-t border-white/5 relative">
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent pointer-events-none" />
+        <div className="container mx-auto px-6 md:px-12 text-center relative z-10">
           <motion.div initial={{ opacity: 0, scale: 0.97 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="flex flex-col items-center">
-            <h2 className="text-5xl md:text-8xl font-bold tracking-tighter text-white mb-6 font-display leading-[0.88]">READY TO<br />BUILD?</h2>
-            <p className="text-gray-500 text-lg mb-12 max-w-xl mx-auto">
+            <h2 className="text-5xl md:text-8xl font-bold tracking-tighter text-white mb-6 font-display leading-[0.88]" data-testid="text-arch-cta-heading">READY TO<br />BUILD?</h2>
+            <p className="text-gray-400 text-lg mb-12 max-w-xl mx-auto font-light leading-relaxed">
               Tell us what you're building — or what's not working. We'll be straight with you about how we can fix it.
             </p>
 
             {/* Admin: editable form URL */}
             {isAdmin && (
-              <div className="mb-8 w-full max-w-sm border border-amber-500/40 bg-amber-950/20 p-4">
-                <p className="text-[10px] uppercase tracking-[0.3em] text-amber-500/70 font-bold mb-3">Admin — Set Form Link</p>
+              <div className="mb-8 w-full max-w-sm border border-primary/30 bg-primary/5 p-5">
+                <p className="text-[10px] uppercase tracking-[0.4em] text-primary font-bold mb-4">Admin — Set Form Link</p>
                 {editingForm ? (
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-3">
                     <input
-                      className="w-full bg-black border border-amber-500/40 text-white text-xs px-3 py-2 outline-none focus:border-amber-400 placeholder:text-gray-600"
+                      className="w-full bg-black border border-primary/40 text-white text-xs px-4 py-3 outline-none focus:border-primary placeholder:text-gray-600"
                       placeholder="Paste Google Form link…"
                       value={draftForm}
                       onChange={(e) => setDraftForm(e.target.value)}
@@ -695,13 +699,13 @@ export default function Architects() {
                       <button
                         onClick={saveFormUrl}
                         disabled={savingForm}
-                        className="flex items-center gap-1 px-3 py-1.5 bg-amber-500 text-black text-xs font-bold uppercase tracking-wider hover:bg-amber-400 transition-colors disabled:opacity-50"
+                        className="flex items-center gap-1 px-4 py-2 bg-primary text-primary-foreground text-xs font-bold uppercase tracking-wider hover:bg-primary/90 transition-colors disabled:opacity-50"
                       >
                         <Check size={11} /> Save
                       </button>
                       <button
                         onClick={() => setEditingForm(false)}
-                        className="flex items-center gap-1 px-3 py-1.5 border border-white/20 text-gray-400 text-xs hover:text-white transition-colors"
+                        className="flex items-center gap-1 px-4 py-2 border border-white/20 text-gray-400 text-xs hover:text-white transition-colors"
                       >
                         <X size={11} /> Cancel
                       </button>
@@ -710,11 +714,11 @@ export default function Architects() {
                 ) : (
                   <button
                     onClick={() => { setDraftForm(architectsFormUrl); setEditingForm(true); }}
-                    className="flex items-center gap-2 text-xs text-amber-500/60 hover:text-amber-400 transition-colors w-full"
+                    className="flex items-center justify-center gap-2 text-xs text-primary/80 hover:text-primary transition-colors w-full border border-dashed border-primary/30 py-3"
                   >
                     <Pencil size={11} />
                     {architectsFormUrl ? (
-                      <span className="truncate">{architectsFormUrl}</span>
+                      <span className="truncate px-2">{architectsFormUrl}</span>
                     ) : (
                       <span>Click to set Google Form link…</span>
                     )}
@@ -725,13 +729,13 @@ export default function Architects() {
 
             {/* CTA button */}
             {publicFormUrl ? (
-              <a href={publicFormUrl} target="_blank" rel="noopener noreferrer">
+              <a href={publicFormUrl} target="_blank" rel="noopener noreferrer" data-testid="link-arch-cta-form">
                 <Button className="bg-white text-black hover:bg-gray-200 rounded-none px-12 py-8 uppercase tracking-[0.2em] text-sm font-bold hover:scale-105 transition-transform inline-flex items-center gap-3">
                   Start a Project <ArrowRight size={16} />
                 </Button>
               </a>
             ) : (
-              <Button
+               <Button
                 disabled={!isAdmin}
                 className="bg-white text-black hover:bg-gray-200 rounded-none px-12 py-8 uppercase tracking-[0.2em] text-sm font-bold inline-flex items-center gap-3 disabled:opacity-40 disabled:cursor-not-allowed"
               >
@@ -744,25 +748,31 @@ export default function Architects() {
 
       {/* CONTACT SUBMISSIONS INBOX — admin only */}
       {isAdmin && (
-        <section className="py-16 bg-zinc-950 border-t border-amber-500/20">
+        <section className="py-20 bg-zinc-950 border-t border-primary/20">
           <div className="container mx-auto px-6 md:px-12">
             <div className="flex items-center gap-4 mb-8">
-              <p className="text-[10px] uppercase tracking-[0.5em] font-bold text-amber-500">Admin — Contact Inbox</p>
-              <span className="text-xs text-gray-600 font-mono">{submissions.length} submission{submissions.length !== 1 ? "s" : ""}</span>
+              <p className="text-xs uppercase tracking-[0.4em] font-bold text-primary">Admin Inbox</p>
+              <span className="text-xs text-gray-500 font-mono">{submissions.length} submission{submissions.length !== 1 ? "s" : ""}</span>
             </div>
             {submissions.length === 0 ? (
-              <p className="text-gray-700 text-sm uppercase tracking-widest">No submissions yet.</p>
+              <div className="p-8 border border-white/5 bg-black text-center">
+                <p className="text-gray-600 text-sm uppercase tracking-widest">No contact submissions yet.</p>
+              </div>
             ) : (
               <div className="space-y-4">
                 {submissions.map((s) => (
-                  <div key={s.id} className="border border-white/8 bg-black/40 p-6 grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-6">
-                    <div className="space-y-2">
-                      <p className="text-white font-bold text-sm">{s.name}</p>
-                      <p className="text-gray-400 text-xs">{s.email}</p>
+                  <div key={s.id} className="border border-white/5 bg-black p-6 md:p-8 grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-6">
+                    <div className="space-y-3">
+                      <div>
+                        <p className="text-white font-bold text-sm">{s.name}</p>
+                        <p className="text-gray-400 text-xs">{s.email}</p>
+                      </div>
                       <span className="inline-block text-[9px] uppercase tracking-[0.4em] font-bold border border-white/10 px-2 py-1 text-gray-500">{s.inquiry}</span>
-                      <p className="text-gray-700 text-[10px] font-mono pt-1">{new Date(s.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" })}</p>
+                      <p className="text-gray-600 text-[10px] font-mono">{new Date(s.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" })}</p>
                     </div>
-                    <p className="text-gray-300 text-sm leading-relaxed border-l border-white/8 pl-6">{s.message}</p>
+                    <div className="md:border-l border-white/10 md:pl-8">
+                      <p className="text-gray-300 text-sm leading-relaxed">{s.message}</p>
+                    </div>
                   </div>
                 ))}
               </div>

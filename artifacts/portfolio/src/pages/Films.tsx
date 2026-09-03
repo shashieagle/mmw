@@ -130,7 +130,7 @@ function AdminImageUpload({
     return (
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center gap-2 border border-white/20 px-4 py-2 text-xs uppercase tracking-widest text-white/70 hover:text-white hover:border-white/50 transition-all"
+        className="flex items-center gap-2 border border-white/20 px-4 py-2 text-xs uppercase tracking-widest text-white/70 hover:text-white hover:border-white/50 transition-all bg-white/5"
       >
         <Plus size={14} /> Add Image
       </button>
@@ -245,17 +245,17 @@ export default function Studio() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: idx * 0.05 }}
-      className="relative group mb-4 break-inside-avoid overflow-hidden bg-zinc-900"
+      className="relative group mb-4 break-inside-avoid overflow-hidden bg-zinc-900 border border-white/5"
     >
       <img
         src={getImageUrl(image.imagePath)}
         alt={image.caption || image.category}
-        className="w-full block object-cover group-hover:opacity-80 transition-opacity duration-300"
+        className="w-full block object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-300"
       />
-      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100">
+      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100">
         <button
           onClick={() => setLightbox(getImageUrl(image.imagePath))}
-          className="w-9 h-9 bg-white flex items-center justify-center text-black hover:bg-gray-200 transition-colors"
+          className="w-10 h-10 bg-white flex items-center justify-center text-black hover:bg-gray-200 transition-colors rounded-full shadow-xl"
           aria-label="View image"
         >
           <ZoomIn size={16} />
@@ -263,7 +263,7 @@ export default function Studio() {
         {isAdmin && (
           <button
             onClick={() => handleDeleteImage(image.id)}
-            className="w-9 h-9 bg-red-600 flex items-center justify-center text-white hover:bg-red-700 transition-colors"
+            className="w-10 h-10 bg-red-600 flex items-center justify-center text-white hover:bg-red-700 transition-colors rounded-full shadow-xl"
             aria-label="Delete image"
           >
             <Trash2 size={14} />
@@ -271,12 +271,12 @@ export default function Studio() {
         )}
       </div>
       {image.caption && (
-        <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-3 py-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-          <p className="text-xs text-white/80">{image.caption}</p>
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent pt-8 px-4 py-3 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+          <p className="text-xs text-white/90 drop-shadow-md">{image.caption}</p>
         </div>
       )}
-      <div className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <span className="text-[10px] uppercase tracking-widest bg-black/70 text-white/70 px-2 py-1">
+      <div className="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <span className="text-[10px] uppercase tracking-[0.2em] bg-black/80 backdrop-blur-sm text-white/80 px-2 py-1 border border-white/10 font-bold">
           {image.category}
         </span>
       </div>
@@ -284,54 +284,58 @@ export default function Studio() {
   );
 
   return (
-    <div className="min-h-screen bg-background flex flex-col pt-24">
+    <div className="min-h-screen bg-background flex flex-col pt-32">
       <Navbar />
       {lightbox && <ImageLightbox src={lightbox} onClose={() => setLightbox(null)} />}
-      <main className="flex-1 container mx-auto px-6 md:px-12 py-12 md:py-24">
+      
+      <main className="flex-1 container mx-auto px-6 md:px-12 py-12 md:py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="mb-16"
+          className="mb-20 max-w-4xl"
         >
-          <p className="text-xs uppercase tracking-[0.4em] font-bold mb-4" style={{ color: "#E8572A" }}>Creative Division</p>
-          <h1 className="text-4xl md:text-7xl font-bold tracking-tighter text-white mb-6 uppercase font-display">
+          <p className="text-xs uppercase tracking-[0.5em] font-bold mb-6 text-primary" data-testid="text-studio-hero-label">Creative Division</p>
+          <h1 className="text-5xl md:text-8xl font-bold tracking-tighter text-white mb-8 uppercase font-display leading-[0.9]" data-testid="text-studio-hero-heading">
             The Studio
           </h1>
-          <p className="text-gray-400 max-w-2xl text-lg md:text-xl font-light">Visual work built for emotional communcation.</p>
-          <div className="mt-8">
+          <p className="text-gray-400 text-lg md:text-xl font-light leading-relaxed mb-10" data-testid="text-studio-hero-subheading">
+            Visual work built for emotional communication. Where strategic narrative meets real-world execution and AI-assisted generation.
+          </p>
+          <div data-testid="container-studio-cta">
             <ProjectFormCta formUrl={projectFormUrl} />
           </div>
         </motion.div>
 
         {/* Films / Images toggle */}
-        <div className="flex items-center gap-8 mb-10">
+        <div className="flex items-center gap-10 mb-12 border-b border-white/10" data-testid="container-media-tabs">
           {(["video", "images"] as Tab[]).map((t) => (
             <button
               key={t}
               onClick={() => handleTabSwitch(t)}
-              className={`text-sm uppercase tracking-widest font-bold transition-all duration-300 pb-2 border-b-2 ${
-                tab === t ? "text-white border-white" : "text-gray-500 border-transparent hover:text-gray-300"
+              data-testid={`tab-${t}`}
+              className={`text-sm md:text-base uppercase tracking-widest font-bold transition-all duration-300 pb-3 border-b-2 relative top-[1px] ${
+                tab === t ? "text-primary border-primary" : "text-gray-500 border-transparent hover:text-white"
               }`}
             >
-              {t === "video" ? "Films" : "Images"}
+              {t === "video" ? "Films" : "Imagery"}
             </button>
           ))}
         </div>
 
         {/* Real-shot / AI film destinations */}
         {tab === "video" && (
-          <div className="grid grid-cols-2 gap-3 md:gap-4 mb-10 max-w-3xl">
+          <div className="grid grid-cols-2 gap-4 md:gap-6 mb-12 max-w-3xl" data-testid="container-destinations-video">
             {([
               {
                 value: "irl",
                 label: "IRL",
-                description: "Real-shot projects",
+                description: "Real-world production",
               },
               {
                 value: "ai",
                 label: "AI Films",
-                description: "AI-generated projects",
+                description: "AI-generated worlds",
               },
             ] as const).map((destination) => (
               <button
@@ -342,18 +346,22 @@ export default function Studio() {
                   setSelectedCategory(undefined);
                 }}
                 aria-pressed={filmDestination === destination.value}
-                className={`group relative overflow-hidden border p-5 md:p-7 text-left transition-all duration-300 ${
+                data-testid={`btn-dest-video-${destination.value}`}
+                className={`group relative overflow-hidden border p-6 md:p-8 text-left transition-all duration-300 ${
                   filmDestination === destination.value
-                    ? "border-white bg-white text-black"
-                    : "border-white/15 bg-white/[0.03] text-white hover:border-white/45 hover:bg-white/[0.06]"
+                    ? "border-primary bg-primary/5 text-white"
+                    : "border-white/10 bg-zinc-950 text-gray-400 hover:border-white/30 hover:bg-zinc-900"
                 }`}
               >
-                <span className="block text-xl md:text-3xl uppercase tracking-tight font-display font-bold">
+                {filmDestination === destination.value && (
+                  <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
+                )}
+                <span className={`block text-xl md:text-3xl uppercase tracking-tight font-display font-bold ${filmDestination === destination.value ? "text-white" : ""}`}>
                   {destination.label}
                 </span>
                 <span
-                  className={`mt-2 block text-[10px] md:text-xs uppercase tracking-[0.2em] ${
-                    filmDestination === destination.value ? "text-black/55" : "text-gray-500 group-hover:text-gray-300"
+                  className={`mt-3 block text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold ${
+                    filmDestination === destination.value ? "text-primary" : "text-gray-500 group-hover:text-gray-400"
                   }`}
                 >
                   {destination.description}
@@ -365,12 +373,12 @@ export default function Studio() {
 
         {/* Real-shot / AI image destinations */}
         {tab === "images" && (
-          <div className="grid grid-cols-2 gap-3 md:gap-4 mb-10 max-w-3xl">
+          <div className="grid grid-cols-2 gap-4 md:gap-6 mb-12 max-w-3xl" data-testid="container-destinations-images">
             {([
               {
                 value: "irl",
                 label: "IRL Images",
-                description: "Real-shot photography",
+                description: "Real-world photography",
               },
               {
                 value: "ai",
@@ -386,18 +394,22 @@ export default function Studio() {
                   setSelectedCategory(undefined);
                 }}
                 aria-pressed={imageDestination === destination.value}
-                className={`group relative overflow-hidden border p-5 md:p-7 text-left transition-all duration-300 ${
+                data-testid={`btn-dest-images-${destination.value}`}
+                className={`group relative overflow-hidden border p-6 md:p-8 text-left transition-all duration-300 ${
                   imageDestination === destination.value
-                    ? "border-white bg-white text-black"
-                    : "border-white/15 bg-white/[0.03] text-white hover:border-white/45 hover:bg-white/[0.06]"
+                    ? "border-primary bg-primary/5 text-white"
+                    : "border-white/10 bg-zinc-950 text-gray-400 hover:border-white/30 hover:bg-zinc-900"
                 }`}
               >
-                <span className="block text-lg md:text-2xl uppercase tracking-tight font-display font-bold">
+                {imageDestination === destination.value && (
+                  <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
+                )}
+                <span className={`block text-xl md:text-3xl uppercase tracking-tight font-display font-bold ${imageDestination === destination.value ? "text-white" : ""}`}>
                   {destination.label}
                 </span>
                 <span
-                  className={`mt-2 block text-[10px] md:text-xs uppercase tracking-[0.2em] ${
-                    imageDestination === destination.value ? "text-black/55" : "text-gray-500 group-hover:text-gray-300"
+                  className={`mt-3 block text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold ${
+                    imageDestination === destination.value ? "text-primary" : "text-gray-500 group-hover:text-gray-400"
                   }`}
                 >
                   {destination.description}
@@ -410,16 +422,17 @@ export default function Studio() {
         {/* Archive filters + admin upload */}
         {((tab === "video") ||
           (tab === "images" && (imageDestination === "ai" || isAdmin))) && (
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-3 mb-8 md:gap-6 md:mb-16 border-b border-white/10 pb-4 md:pb-8">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-4 mb-10 md:mb-16">
             {((tab === "video") ||
               (tab === "images" && imageDestination === "ai")) && (
               <>
                 <button
                   onClick={() => setSelectedCategory(undefined)}
-                  className={`shrink-0 text-sm uppercase tracking-widest font-bold transition-all duration-300 pb-1 border-b-2 ${
+                  data-testid="filter-all"
+                  className={`shrink-0 text-[10px] md:text-xs uppercase tracking-widest font-bold transition-all duration-300 px-4 py-2 border rounded-full ${
                     selectedCategory === undefined
-                      ? "text-white border-white"
-                      : "text-gray-500 border-transparent hover:text-gray-300"
+                      ? "text-black bg-white border-white"
+                      : "text-gray-400 border-white/20 hover:border-white/50 hover:text-white"
                   }`}
                 >
                   {tab === "video" ? "All Work" : "All Images"}
@@ -428,10 +441,11 @@ export default function Studio() {
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
-                    className={`shrink-0 text-sm uppercase tracking-widest font-bold transition-all duration-300 pb-1 border-b-2 ${
+                    data-testid={`filter-${category.toLowerCase()}`}
+                    className={`shrink-0 text-[10px] md:text-xs uppercase tracking-widest font-bold transition-all duration-300 px-4 py-2 border rounded-full ${
                       selectedCategory === category
-                        ? "text-white border-white"
-                        : "text-gray-500 border-transparent hover:text-gray-300"
+                        ? "text-black bg-white border-white"
+                        : "text-gray-400 border-white/20 hover:border-white/50 hover:text-white"
                     }`}
                   >
                     {category}
@@ -448,7 +462,7 @@ export default function Studio() {
             {isAdmin && tab === "video" && (
               <Link
                 href="/upload"
-                className="ml-auto flex items-center gap-2 border border-white/20 px-4 py-2 text-xs uppercase tracking-widest text-white/70 hover:border-white/50 hover:text-white transition-all"
+                className="ml-auto flex items-center gap-2 border border-white/20 bg-white/5 px-5 py-2.5 text-xs uppercase tracking-widest text-white/80 hover:border-white/50 hover:bg-white/10 hover:text-white transition-all"
               >
                 <Plus size={14} /> {filmDestination === "irl" ? "Add IRL Film" : "Add Film"}
               </Link>
@@ -468,15 +482,15 @@ export default function Studio() {
             >
               {isLoadingVideos ? (
                 <div
-                  className="grid gap-3 md:gap-4 grid-cols-1 md:grid-cols-3 [grid-auto-rows:280px] md:[grid-auto-rows:360px]"
+                  className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-3 [grid-auto-rows:280px] md:[grid-auto-rows:360px]"
                 >
                   {[...Array(6)].map((_, i) => (
-                    <div key={i} className="bg-white/5 animate-pulse" />
+                    <div key={i} className="bg-white/5 animate-pulse border border-white/5" />
                   ))}
                 </div>
               ) : videos && videos.length > 0 ? (
                 <div
-                  className="grid gap-3 md:gap-4 grid-cols-1 md:grid-cols-3 [grid-auto-flow:dense] [grid-auto-rows:280px] md:[grid-auto-rows:440px]"
+                  className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-3 [grid-auto-flow:dense] [grid-auto-rows:280px] md:[grid-auto-rows:440px]"
                 >
                   {videos.map((video, idx) => (
                     <motion.div
@@ -489,14 +503,15 @@ export default function Studio() {
                           ? "col-span-1"
                           : "col-span-1 md:col-span-2"
                       }
+                      data-testid={`video-card-${video.id}`}
                     >
                       <VideoCard video={video} index={idx} gridMode />
                     </motion.div>
                   ))}
                 </div>
               ) : (
-                <div className="py-32 text-center border border-white/5 bg-white/5">
-                  <h3 className="text-2xl text-white mb-4 tracking-tight">Nothing here yet</h3>
+                <div className="py-32 text-center border border-dashed border-white/10 bg-zinc-950">
+                  <h3 className="text-2xl text-white mb-4 tracking-tight font-display">Nothing here yet</h3>
                   <p className="text-gray-500 uppercase tracking-widest text-sm">
                     {filmDestination === "irl"
                       ? isAdmin
@@ -519,38 +534,38 @@ export default function Studio() {
               transition={{ duration: 0.3 }}
             >
               {isLoadingImages ? (
-                <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
+                <div className="columns-2 md:columns-3 lg:columns-4 gap-4 md:gap-6">
                   {[...Array(8)].map((_, i) => (
-                    <div key={i} className="mb-4 bg-white/5 animate-pulse" style={{ height: `${180 + (i % 3) * 60}px` }} />
+                    <div key={i} className="mb-4 md:mb-6 bg-white/5 border border-white/5 animate-pulse" style={{ height: `${180 + (i % 3) * 60}px` }} />
                   ))}
                 </div>
               ) : imageDestination === "irl" ? (
                 irlImageSections.length > 0 ? (
-                  <div className="space-y-20">
+                  <div className="space-y-24">
                     {irlImageSections.map((section, sectionIndex) => (
                       <section key={section.category} aria-labelledby={`irl-image-section-${sectionIndex}`}>
-                        <div className="flex items-end justify-between gap-6 mb-7 border-b border-white/10 pb-4">
+                        <div className="flex items-end justify-between gap-6 mb-8 border-b border-white/10 pb-6">
                           <div>
-                            <p className="text-[10px] uppercase tracking-[0.35em] text-gray-600 mb-2">
+                            <p className="text-[10px] uppercase tracking-[0.4em] text-primary font-bold mb-3">
                               IRL Images / {String(sectionIndex + 1).padStart(2, "0")}
                             </p>
                             <h2
                               id={`irl-image-section-${sectionIndex}`}
-                              className="text-2xl md:text-4xl uppercase tracking-tight text-white font-display"
+                              className="text-3xl md:text-5xl tracking-tighter text-white font-display font-bold"
                             >
                               {section.category}
                             </h2>
                           </div>
-                          <span className="text-[10px] uppercase tracking-[0.25em] text-gray-600">
+                          <span className="text-xs uppercase tracking-[0.2em] text-gray-500 font-bold border border-white/10 px-3 py-1">
                             {section.images.length} {section.images.length === 1 ? "image" : "images"}
                           </span>
                         </div>
                         {section.images.length > 0 ? (
-                          <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
+                          <div className="columns-2 md:columns-3 lg:columns-4 gap-4 md:gap-6">
                             {section.images.map(renderImageTile)}
                           </div>
                         ) : (
-                          <p className="border border-dashed border-white/10 px-5 py-8 text-xs uppercase tracking-[0.25em] text-gray-700">
+                          <p className="border border-dashed border-white/10 bg-zinc-950 px-6 py-12 text-center text-xs uppercase tracking-[0.25em] text-gray-600 font-bold">
                             Projects coming soon
                           </p>
                         )}
@@ -558,20 +573,20 @@ export default function Studio() {
                     ))}
                   </div>
                 ) : (
-                  <div className="py-32 text-center border border-white/5 bg-white/5">
-                    <h3 className="text-2xl text-white mb-4 tracking-tight">No IRL images yet</h3>
+                  <div className="py-32 text-center border border-dashed border-white/10 bg-zinc-950">
+                    <h3 className="text-2xl text-white mb-4 tracking-tight font-display">No IRL images yet</h3>
                     <p className="text-gray-500 uppercase tracking-widest text-sm">
                       {isAdmin ? "Use Add Image above to upload your first real-shot image" : "Real-shot images will appear here"}
                     </p>
                   </div>
                 )
               ) : images && images.length > 0 ? (
-                <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
+                <div className="columns-2 md:columns-3 lg:columns-4 gap-4 md:gap-6">
                   {images.map(renderImageTile)}
                 </div>
               ) : (
-                <div className="py-32 text-center border border-white/5 bg-white/5">
-                  <h3 className="text-2xl text-white mb-4 tracking-tight">No images yet</h3>
+                <div className="py-32 text-center border border-dashed border-white/10 bg-zinc-950">
+                  <h3 className="text-2xl text-white mb-4 tracking-tight font-display">No images yet</h3>
                   <p className="text-gray-500 uppercase tracking-widest text-sm">
                     {isAdmin ? "Use Add Image above to upload your first AI image" : "Check back soon"}
                   </p>

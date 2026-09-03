@@ -34,7 +34,7 @@ _Describe the high-level user-facing capabilities of this app once they exist._
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- Preserve the portfolio's existing typography. Do not add new font imports or replace the current `Clash Display` / `Inter` / `Georgia` / `Menlo` font stack during redesigns.
 
 ## Gotchas
 
