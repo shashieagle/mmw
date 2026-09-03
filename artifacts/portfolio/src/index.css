@@ -178,3 +178,49 @@
   animation: ticker 90s linear infinite;
   width: max-content;
 }
+
+@keyframes brand-logo-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.brand-logo-viewport {
+  overflow: hidden;
+}
+
+.brand-logo-track {
+  display: flex;
+  width: max-content;
+  gap: 0.75rem;
+  animation: brand-logo-marquee 75s linear infinite;
+}
+
+.brand-logo-track-reverse {
+  animation-direction: reverse;
+}
+
+.brand-logo-viewport:hover .brand-logo-track {
+  animation-play-state: paused;
+}
+
+.brand-logo-image {
+  filter: grayscale(1) brightness(0) invert(1);
+  opacity: 0.58;
+  transition: filter 300ms ease, opacity 300ms ease, transform 300ms ease;
+}
+
+.group:hover .brand-logo-image {
+  filter: none;
+  opacity: 1;
+  transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-logo-viewport {
+    overflow-x: auto;
+  }
+
+  .brand-logo-track {
+    animation: none;
+  }
+}

@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useGetVideoStats } from "@workspace/api-client-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { BrandLogoShowcase } from "@/components/BrandLogoShowcase";
 import { ProjectFormCta, useProjectFormUrl } from "@/components/ProjectFormCta";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -52,7 +53,15 @@ export default function Home() {
   const projectFormUrl = useProjectFormUrl();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const sectionId = window.location.hash.slice(1);
+
+    if (sectionId) {
+      requestAnimationFrame(() => {
+        document.getElementById(sectionId)?.scrollIntoView();
+      });
+    } else {
+      window.scrollTo(0, 0);
+    }
   }, []);
 
   return (
@@ -145,6 +154,7 @@ export default function Home() {
       </section>
       {/* TICKER 2 */}
       <Ticker text="Film · Product Photography · Catalogues · Brand Campaigns · AI Strategy · Implementation · Scale" />
+      <BrandLogoShowcase />
       {/* FEATURED CASE STUDY */}
       {caseStudies.length > 0 && (() => {
         const s = caseStudies[0];
