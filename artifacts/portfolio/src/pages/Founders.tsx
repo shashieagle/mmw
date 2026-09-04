@@ -91,8 +91,8 @@ export default function Founders() {
                 <RevealText>
                   <motion.div style={{ y: y1 }} className="relative overflow-hidden mb-10 group aspect-[4/5] bg-zinc-900 border border-white/5">
                     <img 
-                      src="/founders/founder-one.png" 
-                      alt="Studio Leadership"
+                      src="/founders/shashikanth.jpg" 
+                      alt="Shashikanth, Co-founder and Creative Director"
                       className="w-full h-full object-cover grayscale opacity-90 transition-all duration-700 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105"
                       data-testid="img-founder-one"
                     />
@@ -120,8 +120,8 @@ export default function Founders() {
                 <RevealText delay={0.1}>
                   <motion.div style={{ y: y2 }} className="relative overflow-hidden mb-10 group aspect-[4/5] bg-zinc-900 border border-white/5">
                     <img 
-                      src="/founders/founder-two.png" 
-                      alt="Studio Leadership"
+                      src="/founders/deepika-channaiah.jpg" 
+                      alt="Deepika Channaiah, Founder and Business Architect"
                       className="w-full h-full object-cover grayscale opacity-90 transition-all duration-700 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105"
                       data-testid="img-founder-two"
                     />
