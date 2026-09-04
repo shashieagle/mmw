@@ -102,9 +102,14 @@ export default function Founders() {
                 
                 <RevealText delay={0.1}>
                   <div className="border-l-2 border-primary/50 pl-6">
-                    <h3 className="text-3xl md:text-4xl font-display font-bold tracking-tight mb-4" data-testid="text-founder-one-role">Business Architecture</h3>
+                    <h3 className="text-3xl md:text-4xl font-display font-bold tracking-tight mb-2" data-testid="text-founder-one-name">
+                      Shashikanth
+                    </h3>
+                    <p className="text-xs uppercase tracking-[0.25em] font-bold text-primary mb-5" data-testid="text-founder-one-role">
+                      Co-founder &amp; Creative Director
+                    </p>
                     <p className="text-gray-400 leading-relaxed text-lg" data-testid="text-founder-one-desc">
-                      Better strategy. Stronger systems. Higher standards. Building the structures that allow creative businesses to scale without breaking. 
+                      Shashikanth leads creative direction across conceptualisation, storytelling, films, and AI-assisted workflows. He brings ideas into focus, shaping them into purposeful visual narratives while building the operational systems needed to execute consistently. His approach connects creative ambition with structured production—ensuring every project is distinctive, intentional, and built to communicate clearly.
                     </p>
                   </div>
                 </RevealText>
@@ -126,9 +131,14 @@ export default function Founders() {
 
                 <RevealText delay={0.2}>
                   <div className="border-l-2 border-white/20 pl-6">
-                    <h3 className="text-3xl md:text-4xl font-display font-bold tracking-tight mb-4 text-gray-300" data-testid="text-founder-two-role">Narrative Design</h3>
-                    <p className="text-gray-500 leading-relaxed text-lg" data-testid="text-founder-two-desc">
-                      Visual work built for emotional communication. Ideas, made visible—shaped by craft, sharpened by strategy, and brought to life with intention.
+                    <h3 className="text-3xl md:text-4xl font-display font-bold tracking-tight mb-2 text-gray-300" data-testid="text-founder-two-name">
+                      Deepika Channaiah
+                    </h3>
+                    <p className="text-xs uppercase tracking-[0.25em] font-bold text-primary mb-5" data-testid="text-founder-two-role">
+                      Founder &amp; Business Architect
+                    </p>
+                    <p className="text-gray-400 leading-relaxed text-lg" data-testid="text-founder-two-desc">
+                      Deepika helps businesses understand where they stand and define where they need to go next. Through detailed audits, analysis, positioning, growth strategy, and systems design, she identifies what is working, what is holding the business back, and what must change—turning complex challenges into clear, practical structures for sustainable growth.
                     </p>
                   </div>
                 </RevealText>
