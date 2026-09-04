@@ -287,7 +287,6 @@ export default function Studio() {
     <div className="min-h-screen bg-background flex flex-col pt-32">
       <Navbar />
       {lightbox && <ImageLightbox src={lightbox} onClose={() => setLightbox(null)} />}
-      
       <main className="flex-1 container mx-auto px-6 md:px-12 py-12 md:py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -299,9 +298,7 @@ export default function Studio() {
           <h1 className="text-5xl md:text-8xl font-bold tracking-tighter text-white mb-8 uppercase font-display leading-[0.9]" data-testid="text-studio-hero-heading">
             The Studio
           </h1>
-          <p className="text-gray-400 text-lg md:text-xl font-light leading-relaxed mb-10" data-testid="text-studio-hero-subheading">
-            Visual work built for emotional communication. Where strategic narrative meets real-world execution and AI-assisted generation.
-          </p>
+          <p className="text-gray-400 text-lg md:text-xl font-light leading-relaxed mb-10" data-testid="text-studio-hero-subheading">We create films and images that solve communication challenges—clarifying ideas, shaping perception, and making brands memorable. From real-world production to AI-assisted visuals, every project begins with purpose and ends with meaningful creative work.</p>
           <div data-testid="container-studio-cta">
             <ProjectFormCta formUrl={projectFormUrl} />
           </div>
