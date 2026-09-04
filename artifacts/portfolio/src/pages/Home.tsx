@@ -111,9 +111,6 @@ export default function Home() {
                   Explore Architecture
                 </Button>
               </Link>
-              <Link href="/studio" data-testid="link-hero-studio" className="text-xs uppercase tracking-[0.2em] text-white hover:text-primary transition-colors font-bold border-b border-white/20 hover:border-primary pb-1">
-                View Studio Work
-              </Link>
             </motion.div>
           </div>
         </div>
