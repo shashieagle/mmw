@@ -155,19 +155,19 @@ export default function Home() {
       <section className="py-32 md:py-48 bg-zinc-950 border-t border-white/5 relative">
         <div className="container mx-auto px-6 md:px-12 relative z-10">
           <RevealText>
-            <p className="text-xs uppercase tracking-[0.4em] font-bold text-primary mb-6" data-testid="text-model-label">Operating Model</p>
+            <p className="text-xs uppercase tracking-[0.4em] font-bold text-primary mb-6" data-testid="text-model-label">How We Work</p>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter text-white font-display leading-[0.95] mb-24 max-w-5xl" data-testid="text-model-heading">
-              Our identity is not the tools we use.<br/>
-              It is the system we apply.
+              A clear system for creating<br/>
+              meaningful business impact.
             </h2>
           </RevealText>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-4 mb-32" data-testid="grid-operating-model">
             {[
-              { title: "Strategy", desc: "We figure out what matters." },
-              { title: "Story", desc: "We figure out how it should be felt." },
-              { title: "Experience", desc: "We figure out how people should encounter it." },
-              { title: "Amplification", desc: "We make sure it travels." }
+              { title: "Strategy", desc: "We identify what matters and define the way forward." },
+              { title: "Story", desc: "We shape the message people need to understand and feel." },
+              { title: "Experience", desc: "We design how people encounter and engage with it." },
+              { title: "Amplification", desc: "We take the work to the audiences it needs to reach." }
             ].map((item, i) => (
               <RevealText key={i} delay={i * 0.1}>
                 <div className="border-t border-white/20 pt-6 group hover:border-primary transition-colors duration-500">
@@ -182,7 +182,7 @@ export default function Home() {
           <RevealText delay={0.4}>
             <div className="border border-white/5 bg-black p-8 md:p-16 relative overflow-hidden group">
               <div className="absolute top-0 left-0 w-1 h-full bg-white/10 group-hover:bg-primary transition-colors duration-500" />
-              <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-gray-500 mb-8" data-testid="text-tools-label">The Secondary Layer: Execution</p>
+              <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-gray-500 mb-8" data-testid="text-tools-label">Capabilities</p>
               
               <div className="flex flex-wrap gap-4 items-center mb-10" data-testid="container-tools-tags">
                 {["Photography", "Film", "Social", "Performance Marketing", "Digital", "AI", "Production"].map((tool, i) => (
@@ -193,7 +193,7 @@ export default function Home() {
               </div>
               
               <p className="text-gray-500 text-base lg:text-lg max-w-3xl font-light leading-relaxed border-t border-white/5 pt-8">
-                These capabilities are essential, but they are strictly tools. They do not define who we are; they simply give us the leverage to execute our four-part model at the highest possible fidelity.
+                We select the right combination for every brief. The tools may change, but the thinking remains consistent.
               </p>
             </div>
           </RevealText>
