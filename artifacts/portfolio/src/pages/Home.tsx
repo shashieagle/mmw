@@ -91,15 +91,15 @@ export default function Home() {
               className="text-6xl md:text-8xl lg:text-[7.5rem] font-bold tracking-tighter text-white leading-[0.85] font-display mb-8"
               data-testid="text-hero-heading"
             >
-              We engineer<br />
-              <span className="text-gray-600">impact.</span>
+              We build<br />
+              <span className="text-gray-600">what works.</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.9 }}
               className="text-gray-400 text-lg md:text-xl font-light max-w-2xl leading-relaxed mb-12"
               data-testid="text-hero-subheading"
             >
-              Business Architecture and Narrative Strategy operating as a single, coherent system. We help ambitious brands figure out what matters, and make sure it travels.
+              Business Architecture and Narrative Strategy operating as a single system. We help ambitious brands scale faster and look impossible to ignore.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 1.1 }}
@@ -123,7 +123,33 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <Ticker text="Strategy — Story — Experience — Amplification" />
+      <Ticker text="Business Architecture — Narrative Design — Built for Scale — Emotional Communication" />
+
+      {/* ABOUT */}
+      <section className="py-32 md:py-48 bg-zinc-950 border-t border-white/5 relative">
+        <div className="container mx-auto px-6 md:px-12 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+            <div className="lg:col-span-5">
+              <RevealText>
+                <p className="text-xs uppercase tracking-[0.4em] font-bold text-primary mb-6" data-testid="text-about-label">The Studio</p>
+                <h2 className="text-4xl md:text-5xl font-bold tracking-tighter text-white font-display leading-[0.95]" data-testid="text-about-heading">
+                  One team.<br/>Both sides of the intelligence revolution.
+                </h2>
+              </RevealText>
+            </div>
+            <div className="lg:col-span-7">
+              <RevealText delay={0.2} className="border-l border-white/10 pl-8 lg:pl-12">
+                <p className="text-gray-400 text-lg md:text-xl font-light leading-relaxed mb-8" data-testid="text-about-desc">
+                  Creative businesses often fail because great work isn't backed by solid systems. Commercial businesses stall because great systems lack a compelling narrative. We solve both. We build the strategy that makes you profitable, and the visual communication that makes you unforgettable.
+                </p>
+                <Link href="/founders" data-testid="link-about-founders" className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-white hover:text-primary transition-colors border-b border-white/20 hover:border-primary pb-1 group">
+                  Meet the Leadership <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </RevealText>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* OPERATING MODEL */}
       <section className="py-32 md:py-48 bg-zinc-950 border-t border-white/5 relative">
@@ -234,13 +260,13 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-black to-zinc-950 pointer-events-none" />
         <div className="container mx-auto px-6 md:px-12 relative z-10">
           <RevealText className="max-w-4xl mx-auto text-center">
-            <p className="text-xs uppercase tracking-[0.4em] font-bold text-primary mb-6" data-testid="text-studio-cta-label">The Execution Engine</p>
+            <p className="text-xs uppercase tracking-[0.4em] font-bold text-primary mb-6" data-testid="text-studio-cta-label">Creative Division</p>
             <h2 className="text-5xl md:text-7xl font-bold tracking-tighter text-white font-display leading-[0.9] mb-8" data-testid="text-studio-cta-heading">
-              Capabilities deployed<br />
-              <span className="text-gray-600">with precision.</span>
+              Ideas, made<br />
+              <span className="text-gray-600">visible.</span>
             </h2>
             <p className="text-gray-400 text-lg md:text-xl font-light leading-relaxed max-w-2xl mx-auto mb-12">
-              Explore how we harness photography, film, digital spaces, and AI-assisted creation to serve the underlying strategy and amplify the story.
+              Films, imagery, and visual worlds built to make your story impossible to ignore. Real-world production and AI-assisted creation working in sync.
             </p>
             <Link href="/studio">
               <Button
