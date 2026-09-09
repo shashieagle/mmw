@@ -55,3 +55,17 @@ mtime_ms = 1788942653087
 storage_uri = "gcs://replit-rams-assets-pike/rams/assets/repl:dbdeb14c-fe9b-4706-8449-e1e01f57fe7b/6fabd18f-88d8-4876-ad74-4626a438e04f/f9cbaddb-f530-477e-a8c1-d8ee34685608"
 storage_version_token = "1788942664473520"
 content_type = "text/html"
+
+[[outputs]]
+id = "DChxXAJv83dcY0hPTcox-"
+uri = "file://exports/index.html"
+type = "text"
+title = "Vercel-ready Leadership index.html"
+description = "Upload this index.html directly to Vercel. It is self-contained and includes both founder portraits embedded inside the file."
+logical_id = "ea24183d-005d-4039-9d25-ef4c168787be"
+content_hash = "sha256:8ce2f5f6e2492b610b72109c454229f138f1626b1db3364b498455d0874c39dc"
+size = 1078340
+mtime_ms = 1788942734523
+storage_uri = "gcs://replit-rams-assets-pike/rams/assets/repl:dbdeb14c-fe9b-4706-8449-e1e01f57fe7b/ea24183d-005d-4039-9d25-ef4c168787be/294f682e-d3c8-4677-b67d-80665080f034"
+storage_version_token = "1788942745904782"
+content_type = "text/html"
