@@ -2,6 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "outputDirectory": "dist/public",
   "rewrites": [
+    { "source": "/api/:path*", "destination": "https://mmw-dv4o.onrender.com/api/:path*" },
     { "source": "/studio", "destination": "/index.html" },
     { "source": "/films", "destination": "/index.html" },
     { "source": "/film/:id", "destination": "/index.html" },
