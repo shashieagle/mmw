@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "outputDirectory": "dist/public",
+  "rewrites": [
+    { "source": "/studio", "destination": "/index.html" },
+    { "source": "/films", "destination": "/index.html" },
+    { "source": "/film/:id", "destination": "/index.html" },
+    { "source": "/architects", "destination": "/index.html" },
+    { "source": "/catalyst", "destination": "/index.html" },
+    { "source": "/founders", "destination": "/index.html" },
+    { "source": "/upload", "destination": "/index.html" }
+  ]
+}
