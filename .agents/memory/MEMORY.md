@@ -1,1 +1,2 @@
 - [FireOrb cursor](fireorb.md) — comet tail cursor effect, currently disabled; user says "bring back FireOrb" to re-enable
+- [Database export boundaries](database-export-boundaries.md) — validate text formatting and row parity when exporting Replit production data to external PostgreSQL.
